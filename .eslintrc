@@ -1,0 +1,14 @@
+{   "parser": "@babel/eslint-parser",
+    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+    "env": {
+      "es6": true,
+      "node": true
+    },
+    "rules": {
+      "max-len": ["error", {"code": 80}],
+      "indent": ["error", 2]
+    },
+    "parserOptions": {
+        "sourceType": "module"
+    }
+  }
