@@ -44,6 +44,7 @@ const Map = () => {
   const [array, setArray] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [showCategory, setShowCategory] = useState(false);
 
   useEffect(() => {
     getData();
@@ -91,6 +92,17 @@ const Map = () => {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
+  };
+
+  const categoryHandler = async (category) => {
+    let categoryArray = [];
+    const querySnapshot = await getDocs(
+      query(collection(db, "Spots"), where("category", "==", `${category}`))
+    );
+    querySnapshot.forEach((doc) => {
+      categoryArray.push(doc.data());
+    });
+    setArray(categoryArray);
   };
 
   const { isLoaded } = useLoadScript({
@@ -164,6 +176,18 @@ const Map = () => {
         )}
       </GoogleMap>
       <p>map</p>
+      <button
+        onClick={() => {
+          setShowCategory((prev) => !prev);
+          if (showCategory) {
+            categoryHandler("museum");
+          } else {
+            getData();
+          }
+        }}
+      >
+        museum
+      </button>
     </div>
   );
 };

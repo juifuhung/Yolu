@@ -27,11 +27,23 @@ const db = getFirestore();
 
 const App = () => {
   const [favorites, setFavorites] = useState([]);
+  const [showCategory, setShowCategory] = useState(false);
 
   const localId = window.localStorage.getItem("localId");
 
   const deleteHandler = async (id) => {
     await deleteDoc(doc(db, "Favorites", `${id}`));
+  };
+
+  const categoryHandler = async (category) => {
+    let categoryArray = [];
+    const querySnapshot = await getDocs(
+      query(collection(db, "Favorites"), where("category", "==", `${category}`))
+    );
+    querySnapshot.forEach((doc) => {
+      categoryArray.push(doc.data());
+    });
+    setFavorites(categoryArray);
   };
 
   useEffect(() => {
@@ -66,6 +78,18 @@ const App = () => {
             />
           );
         })}
+      <button
+        onClick={() => {
+          setShowCategory((prev) => !prev);
+          if (showCategory) {
+            categoryHandler("museum");
+          } else {
+            getFavorites();
+          }
+        }}
+      >
+        {showCategory ? "museum" : "show all"}
+      </button>
     </div>
   );
 };
