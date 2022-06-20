@@ -1,8 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import "../CSS/Map.css";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { v4 as uuidv4 } from "uuid";
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, getDocs, collection } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -15,10 +16,25 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-getFirestore();
+const db = getFirestore();
 
 const Map = () => {
   const center = useMemo(() => ({ lat: 66.533688, lng: 25.75218 }), []);
+
+  const [array, setArray] = useState([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    let array = [];
+    const querySnapshot = await getDocs(collection(db, "Spots"));
+    querySnapshot.forEach((doc) => {
+      array.push(doc.data());
+    });
+    setArray(array);
+  };
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -34,7 +50,15 @@ const Map = () => {
         zoom={12}
         center={center}
         mapContainerClassName="map-container"
-      />
+      >
+        {array.map((location) => (
+          <Marker
+            key={uuidv4()}
+            icon={location.icon}
+            position={{ lat: location.lat, lng: location.lng }}
+          />
+        ))}
+      </GoogleMap>
       <p>map</p>
     </div>
   );
