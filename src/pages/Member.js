@@ -4,10 +4,10 @@ const Member = () => {
   const emailInputRef = useRef("");
   const passwordInputRef = useRef("");
 
-  const [loggedIn, setIsLoggedIn] = useState(true);
+  const [isLogin, setIsLogin] = useState(true);
 
-  const changeLoginStateHandler = () => {
-    setIsLoggedIn((prev) => !prev);
+  const isLoginHandler = () => {
+    setIsLogin((prev) => !prev);
   };
 
   const submitHandler = async (event) => {
@@ -17,7 +17,7 @@ const Member = () => {
     const enteredPassword = passwordInputRef.current.value;
 
     let url;
-    if (loggedIn) {
+    if (isLogin) {
       url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
     } else {
       url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
@@ -35,9 +35,10 @@ const Member = () => {
         },
       });
       const parsedResult = await result.json();
-      if (parsedResult.idToken) {
-        window.localStorage.setItem("token", parsedResult.idToken);
+      if (parsedResult.localId) {
+        window.localStorage.setItem("localId", parsedResult.localId);
         console.log(parsedResult);
+        location.replace("./");
       } else {
         alert(parsedResult.error.message);
       }
@@ -51,7 +52,7 @@ const Member = () => {
 
   return (
     <div>
-      <h1>{loggedIn ? "Sign Up" : "Sign In"}</h1>
+      <h1>{isLogin ? "Sign In" : "Sign Up"}</h1>
       <form onSubmit={submitHandler}>
         <div>
           <label>Email</label>
@@ -66,10 +67,11 @@ const Member = () => {
             ref={passwordInputRef}
           />
         </div>
-        <button onClick={changeLoginStateHandler}>
-          {loggedIn ? "Sign Up" : "Sign In"}
-        </button>
+        <button>{isLogin ? "Sign In" : "Sign Up"}</button>
       </form>
+      <button onClick={isLoginHandler}>
+        {isLogin ? "change to Sign Up" : "change to Sign In"}
+      </button>
     </div>
   );
 };

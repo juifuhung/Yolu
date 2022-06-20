@@ -6,6 +6,8 @@ import {
   collection,
   getDocs,
   getFirestore,
+  query,
+  where,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import Div from "../Components/Div";
@@ -26,6 +28,8 @@ const db = getFirestore();
 const App = () => {
   const [favorites, setFavorites] = useState([]);
 
+  const localId = window.localStorage.getItem("localId");
+
   const deleteHandler = async (id) => {
     await deleteDoc(doc(db, "Favorites", `${id}`));
   };
@@ -36,7 +40,9 @@ const App = () => {
 
   async function getFavorites() {
     let favoritesArray = [];
-    const querySnapshot = await getDocs(collection(db, "Favorites"));
+    const querySnapshot = await getDocs(
+      query(collection(db, "Favorites"), where("localId", "==", localId))
+    );
     querySnapshot.forEach((doc) => {
       favoritesArray.push(doc.data());
     });

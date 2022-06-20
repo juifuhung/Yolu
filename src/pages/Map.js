@@ -17,6 +17,8 @@ import {
   doc,
   setDoc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -37,7 +39,7 @@ const Map = () => {
 
   const navigate = useNavigate();
 
-  const token = window.localStorage.getItem("token");
+  const localId = window.localStorage.getItem("localId");
 
   const [array, setArray] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -62,7 +64,9 @@ const Map = () => {
 
   const getFavorites = async () => {
     let favoritesArray = [];
-    const querySnapshot = await getDocs(collection(db, "Favorites"));
+    const querySnapshot = await getDocs(
+      query(collection(db, "Favorites"), where("localId", "==", localId))
+    );
     querySnapshot.forEach((doc) => {
       favoritesArray.push(doc.data());
     });
@@ -82,6 +86,7 @@ const Map = () => {
         description: obj.description,
         photo: obj.img,
         created_time: new Date(),
+        localId: localId,
       });
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -121,7 +126,7 @@ const Map = () => {
             <div>
               <h1>{selected.title}</h1>
               <p>{selected.description}</p>
-              {token ? (
+              {localId ? (
                 favorites.find((element) => element.id === selected.id) ? (
                   <FaStar
                     onClick={() => {

@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Homepage = () => {
-  const token = window.localStorage.getItem("token");
+  const localId = window.localStorage.getItem("localId");
 
   const displayMessage = () => {
-    if (!token) {
+    if (!localId) {
       alert("please sign in");
     }
   };
@@ -32,9 +32,9 @@ const Homepage = () => {
             Map
           </div>
         </Link>
-        <Link to={token ? "./favorites" : "./member"}>
+        <Link to="/favorites">
           <div
-            className="map"
+            className="favorites"
             style={{ width: "500px", height: "500px", backgroundColor: "aqua" }}
             onClick={displayMessage}
           >
