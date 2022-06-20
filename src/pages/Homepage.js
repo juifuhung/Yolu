@@ -26,7 +26,7 @@ const Homepage = () => {
           style={{ width: "100vw", height: "300px" }}
         />
       </div>
-      <button onClick={logoutHandler}>Log out</button>
+      {localId ? <button onClick={logoutHandler}>Log out</button> : null}
       <div
         className="selection"
         style={{ display: "flex", justifyContent: "center" }}
