@@ -2,6 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Homepage = () => {
+  const localId = window.localStorage.getItem("localId");
+
+  const displayMessage = () => {
+    if (!localId) {
+      alert("please sign in");
+    }
+  };
+
+  const logoutHandler = () => {
+    window.localStorage.removeItem("localId");
+    alert("logged out");
+  };
+
   return (
     <div>
       <h1>Homepage</h1>
@@ -12,6 +25,7 @@ const Homepage = () => {
           style={{ width: "100vw", height: "300px" }}
         />
       </div>
+      <button onClick={logoutHandler}>Log out</button>
       <div
         className="selection"
         style={{ display: "flex", justifyContent: "center" }}
@@ -24,10 +38,11 @@ const Homepage = () => {
             Map
           </div>
         </Link>
-        <Link to="./favorites">
+        <Link to="/favorites">
           <div
-            className="map"
+            className="favorites"
             style={{ width: "500px", height: "500px", backgroundColor: "aqua" }}
+            onClick={displayMessage}
           >
             My Favorites
           </div>
