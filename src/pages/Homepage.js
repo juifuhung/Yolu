@@ -13,6 +13,7 @@ const Homepage = () => {
   const logoutHandler = () => {
     window.localStorage.removeItem("localId");
     alert("logged out");
+    location.replace("./");
   };
 
   return (
