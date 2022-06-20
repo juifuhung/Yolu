@@ -2,6 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Homepage = () => {
+  const token = window.localStorage.getItem("token");
+
+  const displayMessage = () => {
+    if (!token) {
+      alert("please sign in");
+    }
+  };
+
   return (
     <div>
       <h1>Homepage</h1>
@@ -24,10 +32,11 @@ const Homepage = () => {
             Map
           </div>
         </Link>
-        <Link to="./favorites">
+        <Link to={token ? "./favorites" : "./member"}>
           <div
             className="map"
             style={{ width: "500px", height: "500px", backgroundColor: "aqua" }}
+            onClick={displayMessage}
           >
             My Favorites
           </div>

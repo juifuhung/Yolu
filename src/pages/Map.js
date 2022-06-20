@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../CSS/Map.css";
 import { v4 as uuidv4 } from "uuid";
 import { FaHeart, FaStar } from "react-icons/fa";
@@ -33,6 +34,10 @@ const db = getFirestore();
 
 const Map = () => {
   const center = useMemo(() => ({ lat: 66.533688, lng: 25.75218 }), []);
+
+  const navigate = useNavigate();
+
+  const token = window.localStorage.getItem("token");
 
   const [array, setArray] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -116,26 +121,35 @@ const Map = () => {
             <div>
               <h1>{selected.title}</h1>
               <p>{selected.description}</p>
-              {favorites.find((element) => element.id === selected.id) ? (
-                <FaStar
-                  onClick={() => {
-                    deleteHandler(selected.id);
-                    getFavorites();
-                    alert(`removed ${selected.title} from favorite list`);
-                  }}
-                />
+              {token ? (
+                favorites.find((element) => element.id === selected.id) ? (
+                  <FaStar
+                    onClick={() => {
+                      deleteHandler(selected.id);
+                      getFavorites();
+                      alert(`removed ${selected.title} from favorite list`);
+                    }}
+                  />
+                ) : (
+                  <FaHeart
+                    onClick={() => {
+                      addToFavorite({
+                        id: selected.id,
+                        category: selected.category,
+                        title: selected.title,
+                        description: selected.description,
+                        img: selected.image,
+                      });
+                      getFavorites();
+                      alert(`added ${selected.title} to favorite list`);
+                    }}
+                  />
+                )
               ) : (
                 <FaHeart
                   onClick={() => {
-                    addToFavorite({
-                      id: selected.id,
-                      category: selected.category,
-                      title: selected.title,
-                      description: selected.description,
-                      img: selected.image,
-                    });
-                    getFavorites();
-                    alert(`added ${selected.title} to favorite list`);
+                    alert("please sign in");
+                    navigate("/member");
                   }}
                 />
               )}
