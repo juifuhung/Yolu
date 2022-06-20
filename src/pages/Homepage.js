@@ -10,6 +10,11 @@ const Homepage = () => {
     }
   };
 
+  const logoutHandler = () => {
+    window.localStorage.removeItem("localId");
+    alert("logged out");
+  };
+
   return (
     <div>
       <h1>Homepage</h1>
@@ -20,6 +25,7 @@ const Homepage = () => {
           style={{ width: "100vw", height: "300px" }}
         />
       </div>
+      <button onClick={logoutHandler}>Log out</button>
       <div
         className="selection"
         style={{ display: "flex", justifyContent: "center" }}
