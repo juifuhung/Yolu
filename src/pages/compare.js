@@ -6,11 +6,13 @@ import {
   collection,
   getDocs,
   getFirestore,
-  query,
   where,
+  query,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import Div from "../Components/Div";
+import Div from "./Div";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -29,55 +31,47 @@ const App = () => {
   const [favorites, setFavorites] = useState([]);
 
   const localId = window.localStorage.getItem("localId");
+  const displayName = window.localStorage.getItem("displayName");
+
+  const deleteHandler = async (id) => {
+    await deleteDoc(doc(db, "Favorites", `${id}`));
+  };
 
   useEffect(() => {
     getFavorites();
   }, []);
 
-  const deleteHandler = async (id) => {
-    try {
-      await deleteDoc(doc(db, "Favorites", `${id}`));
-    } catch (e) {
-      console.error("Error deleting document: ", e);
-    }
-  };
+  async function getFavorites() {
+    let favoritesArray = [];
+    const querySnapshot = await getDocs(
+      query(collection(db, "Favorites"), where("localId", "==", localId))
+    );
+    querySnapshot.forEach((doc) => {
+      favoritesArray.push({ ...doc.data(), id: doc.id });
+    });
+    setFavorites(favoritesArray);
+  }
 
   const categoryHandler = async (category) => {
-    try {
-      let categoryArray = [];
-      const querySnapshot = await getDocs(
-        query(
-          collection(db, "Favorites"),
-          where("category", "==", `${category}`)
-        )
-      );
-      querySnapshot.forEach((doc) => {
-        categoryArray.push(doc.data());
-      });
-      setFavorites(categoryArray);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+    let categoryArray = [];
+    const querySnapshot = await getDocs(
+      query(collection(db, "Favorites"), where("category", "==", `${category}`))
+    );
+    querySnapshot.forEach((doc) => {
+      categoryArray.push(doc.data());
+    });
+    setFavorites(categoryArray);
   };
-
-  async function getFavorites() {
-    try {
-      let favoritesArray = [];
-      const querySnapshot = await getDocs(
-        query(collection(db, "Favorites"), where("localId", "==", localId))
-      );
-      querySnapshot.forEach((doc) => {
-        favoritesArray.push({ ...doc.data(), id: doc.id });
-      });
-      setFavorites(favoritesArray);
-    } catch (e) {
-      console.error("Error getting favorite documents: ", e);
-    }
-  }
 
   return (
     <div className="App">
-      <p>paragraph</p>
+      <Header />
+      <p>{`hi ${displayName}`}</p>
+      {console.log(
+        favorites.forEach((item) => {
+          console.log(item.created_time.seconds);
+        })
+      )}
       {favorites &&
         favorites.map((item) => {
           return (
@@ -141,6 +135,7 @@ const App = () => {
       >
         show all
       </button>
+      <Footer />
     </div>
   );
 };
