@@ -20,6 +20,8 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import Header from "../Components/Header";
+import Footer from "../Components/Footer";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -129,6 +131,7 @@ const Map = () => {
 
   return (
     <div>
+      <Header />
       <GoogleMap
         zoom={12}
         center={center}
@@ -243,6 +246,7 @@ const Map = () => {
       >
         show all
       </button>
+      <Footer />
     </div>
   );
 };

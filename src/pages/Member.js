@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import Header from "../Components/Header";
+import Footer from "../Components/Footer";
 
 const Member = () => {
   const emailInputRef = useRef("");
@@ -56,6 +58,7 @@ const Member = () => {
 
   return (
     <div>
+      <Header />
       <h1>{isLogin ? "Sign In" : "Sign Up"}</h1>
       <form onSubmit={submitHandler}>
         {!isLogin && (
@@ -82,6 +85,7 @@ const Member = () => {
       <button onClick={isLoginHandler}>
         {isLogin ? "change to Sign Up" : "change to Sign In"}
       </button>
+      <Footer />
     </div>
   );
 };
