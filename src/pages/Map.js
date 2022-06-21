@@ -15,7 +15,7 @@ import {
   getDocs,
   collection,
   doc,
-  setDoc,
+  addDoc,
   deleteDoc,
   query,
   where,
@@ -44,7 +44,6 @@ const Map = () => {
   const [array, setArray] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [selected, setSelected] = useState(null);
-  const [showCategory, setShowCategory] = useState(false);
 
   useEffect(() => {
     getData();
@@ -55,33 +54,44 @@ const Map = () => {
   }, []);
 
   const getData = async () => {
-    let array = [];
-    const querySnapshot = await getDocs(collection(db, "Spots"));
-    querySnapshot.forEach((doc) => {
-      array.push(doc.data());
-    });
-    setArray(array);
+    try {
+      let array = [];
+      const querySnapshot = await getDocs(collection(db, "Spots"));
+      querySnapshot.forEach((doc) => {
+        array.push(doc.data());
+      });
+      setArray(array);
+    } catch (e) {
+      console.error("Error getting document: ", e);
+    }
   };
 
   const getFavorites = async () => {
-    let favoritesArray = [];
-    const querySnapshot = await getDocs(
-      query(collection(db, "Favorites"), where("localId", "==", localId))
-    );
-    querySnapshot.forEach((doc) => {
-      favoritesArray.push(doc.data());
-    });
-    setFavorites(favoritesArray);
+    try {
+      let favoritesArray = [];
+      const querySnapshot = await getDocs(
+        query(collection(db, "Favorites"), where("localId", "==", localId))
+      );
+      querySnapshot.forEach((doc) => {
+        favoritesArray.push({ ...doc.data(), id: doc.id });
+      });
+      setFavorites(favoritesArray);
+    } catch (e) {
+      console.error("Error getting favorite documents: ", e);
+    }
   };
 
   const deleteHandler = async (id) => {
-    await deleteDoc(doc(db, "Favorites", `${id}`));
+    try {
+      await deleteDoc(doc(db, "Favorites", `${id}`));
+    } catch (e) {
+      console.error("Error deleting document: ", e);
+    }
   };
 
   const addToFavorite = async (obj) => {
     try {
-      await setDoc(doc(db, "Favorites", `${obj.id}`), {
-        id: obj.id,
+      await addDoc(collection(db, "Favorites"), {
         title: obj.title,
         category: obj.category,
         description: obj.description,
@@ -95,14 +105,18 @@ const Map = () => {
   };
 
   const categoryHandler = async (category) => {
-    let categoryArray = [];
-    const querySnapshot = await getDocs(
-      query(collection(db, "Spots"), where("category", "==", `${category}`))
-    );
-    querySnapshot.forEach((doc) => {
-      categoryArray.push(doc.data());
-    });
-    setArray(categoryArray);
+    try {
+      let categoryArray = [];
+      const querySnapshot = await getDocs(
+        query(collection(db, "Spots"), where("category", "==", `${category}`))
+      );
+      querySnapshot.forEach((doc) => {
+        categoryArray.push(doc.data());
+      });
+      setArray(categoryArray);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
   };
 
   const { isLoaded } = useLoadScript({
@@ -114,7 +128,7 @@ const Map = () => {
   }
 
   return (
-    <div style={{ display: "flex" }}>
+    <div>
       <GoogleMap
         zoom={12}
         center={center}
@@ -139,10 +153,15 @@ const Map = () => {
               <h1>{selected.title}</h1>
               <p>{selected.description}</p>
               {localId ? (
-                favorites.find((element) => element.id === selected.id) ? (
+                favorites.find(
+                  (element) => element.title === selected.title
+                ) ? (
                   <FaStar
                     onClick={() => {
-                      deleteHandler(selected.id);
+                      const favoriteItem = favorites.find(
+                        (item) => item.title === selected.title
+                      );
+                      deleteHandler(favoriteItem.id);
                       getFavorites();
                       alert(`removed ${selected.title} from favorite list`);
                     }}
@@ -151,7 +170,6 @@ const Map = () => {
                   <FaHeart
                     onClick={() => {
                       addToFavorite({
-                        id: selected.id,
                         category: selected.category,
                         title: selected.title,
                         description: selected.description,
@@ -178,15 +196,52 @@ const Map = () => {
       <p>map</p>
       <button
         onClick={() => {
-          setShowCategory((prev) => !prev);
-          if (showCategory) {
-            categoryHandler("museum");
-          } else {
-            getData();
-          }
+          categoryHandler("museum");
         }}
       >
         museum
+      </button>
+      <button
+        onClick={() => {
+          categoryHandler("nature");
+        }}
+      >
+        nature
+      </button>
+      <button
+        onClick={() => {
+          categoryHandler("restaurant");
+        }}
+      >
+        restaurant
+      </button>
+      <button
+        onClick={() => {
+          categoryHandler("christmas");
+        }}
+      >
+        christmas
+      </button>
+      <button
+        onClick={() => {
+          categoryHandler("shopping");
+        }}
+      >
+        shopping
+      </button>
+      <button
+        onClick={() => {
+          categoryHandler("transportation");
+        }}
+      >
+        transportation
+      </button>
+      <button
+        onClick={() => {
+          getData();
+        }}
+      >
+        show all
       </button>
     </div>
   );
