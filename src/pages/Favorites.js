@@ -11,6 +11,8 @@ import {
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import Div from "../Components/Div";
+import Header from "../Components/Header";
+import Footer from "../Components/Footer";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -78,6 +80,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <Header />
       <p>paragraph</p>
       <p>{`hi ${displayName}`}</p>
       {favorites &&
@@ -143,6 +146,7 @@ const App = () => {
       >
         show all
       </button>
+      <Footer />
     </div>
   );
 };

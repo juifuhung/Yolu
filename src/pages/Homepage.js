@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Header from "../Components/Header";
+import Footer from "../Components/Footer";
 
 const Homepage = () => {
   const localId = window.localStorage.getItem("localId");
@@ -18,6 +20,7 @@ const Homepage = () => {
 
   return (
     <div>
+      <Header />
       <h1>Homepage</h1>
       <div className="carousel">
         <img
@@ -49,6 +52,7 @@ const Homepage = () => {
           </div>
         </Link>
       </div>
+      <Footer />
     </div>
   );
 };
