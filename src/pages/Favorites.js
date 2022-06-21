@@ -29,6 +29,7 @@ const App = () => {
   const [favorites, setFavorites] = useState([]);
 
   const localId = window.localStorage.getItem("localId");
+  const displayName = window.localStorage.getItem("displayName");
 
   useEffect(() => {
     getFavorites();
@@ -78,6 +79,7 @@ const App = () => {
   return (
     <div className="App">
       <p>paragraph</p>
+      <p>{`hi ${displayName}`}</p>
       {favorites &&
         favorites.map((item) => {
           return (
