@@ -1,4 +1,5 @@
 import React from "react";
+import Timer from "./Timer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -42,6 +43,7 @@ const Header = () => {
         <Link to="/">
           <div>Home</div>
         </Link>
+        <Timer />
         <Nav>
           <Link to="/map">
             <div>Map</div>
