@@ -1,17 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
-import "../CSS/Slide.css";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 
 const slideImages = [
-  "https://img.onl/PfqLdd",
-  "https://img.onl/IMyMaF",
-  "https://img.onl/hzTpbc",
-  "https://img.onl/XMlwLx",
-  "https://img.onl/vorfwC",
-  "https://img.onl/JXDyKX",
+  "https://img.onl/vlV7aI",
+  "https://img.onl/i40I94",
+  "https://img.onl/oJI794",
+  "https://img.onl/yToflG",
 ];
 
 const SlideShow = styled.div`
@@ -22,7 +19,7 @@ const SlideShow = styled.div`
 
 const SlideshowSlider = styled.div`
   width: 100vw;
-  height: 850px;
+  height: 440px;
   white-space: nowrap;
   transform: ${(props) => `translate3d(${-props.index * 100}%, 0, 0)`};
   transition: ease 1000ms;
@@ -48,11 +45,11 @@ const SlideShowDots = styled.div`
 
 const Dot = styled.div`
   display: inline-block;
-  height: 20px;
-  width: 20px;
+  height: 10px;
+  width: 10px;
   border-radius: 50%;
   margin: 0px 7px;
-  background-color: ${(props) => (props.active ? "#6a0dad" : "#c4c4c4")};
+  background-color: ${(props) => (props.active ? "#ff0000" : "#c4c4c4")};
 
   &:hover {
     cursor: pointer;
