@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../CSS/Slide.css";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 
@@ -12,6 +13,83 @@ const slideImages = [
   "https://img.onl/vorfwC",
   "https://img.onl/JXDyKX",
 ];
+
+const SlideShow = styled.div`
+  overflow: hidden;
+  position: relative;
+  zindex: 2;
+`;
+
+const SlideshowSlider = styled.div`
+  width: 100vw;
+  height: 850px;
+  white-space: nowrap;
+  transform: ${(props) => `translate3d(${-props.index * 100}%, 0, 0)`};
+  transition: ease 1000ms;
+`;
+
+const Slide = styled.div`
+  background-image: url(${(props) => props.img});
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+`;
+
+const SlideShowDots = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  position: absolute;
+  bottom: 25px;
+`;
+
+const Dot = styled.div`
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  margin: 0px 7px;
+  background-color: ${(props) => (props.active ? "#6a0dad" : "#c4c4c4")};
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const Selection = styled.div`
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+`;
+
+const Map = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 50%;
+  width: 500px;
+  height: 500px;
+  background-color: pink;
+`;
+
+const MyFavorites = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 50%;
+  width: 500px;
+  height: 500px;
+  background-color: aqua;
+`;
 
 const Homepage = () => {
   const [index, setIndex] = useState(0);
@@ -50,90 +128,34 @@ const Homepage = () => {
     <div>
       <Header />
       <h1>Homepage</h1>
-      <div
-        className="slideShow"
-        style={{ overflow: "hidden", position: "relative", zIndex: "2" }}
-      >
-        <div
-          className="slideshowSlider"
-          style={{
-            width: "100vw",
-            height: "850px",
-            whiteSpace: "nowrap",
-            transform: `translate3d(${-index * 100}%, 0, 0)`,
-            transition: "ease 1000ms",
-          }}
-        >
+      <SlideShow>
+        <SlideshowSlider index={index}>
           {slideImages.map((img, index) => (
-            <div
-              className="slide"
-              key={index}
-              style={{
-                backgroundImage: `url(${img})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "cover",
-                width: "100%",
-                height: "100%",
-                display: "inline-block",
+            <Slide key={index} img={img} />
+          ))}
+        </SlideshowSlider>
+
+        <SlideShowDots>
+          {slideImages.map((_, idx) => (
+            <Dot
+              key={idx}
+              active={index === idx}
+              onClick={() => {
+                setIndex(idx);
               }}
             />
           ))}
-        </div>
+        </SlideShowDots>
+      </SlideShow>
 
-        <div
-          className="slideshowDots"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "100vw",
-            position: "absolute",
-            bottom: "25px",
-          }}
-        >
-          {slideImages.map((_, idx) => (
-            <div
-              key={idx}
-              className={`slideshowDot${index === idx ? " active" : ""}`}
-              style={{
-                display: "inline-block",
-                height: "20px",
-                width: "20px",
-                borderRadius: "50%",
-                cursor: "pointer",
-                margin: "0px 7px 0px",
-              }}
-              onClick={() => {
-                setIndex(idx);
-                console.log("hi");
-              }}
-            ></div>
-          ))}
-        </div>
-      </div>
-
-      <div
-        className="selection"
-        style={{ display: "flex", justifyContent: "center" }}
-      >
-        <Link to="/map">
-          <div
-            className="map"
-            style={{ width: "500px", height: "500px", backgroundColor: "pink" }}
-          >
-            Map
-          </div>
+      <Selection>
+        <Link style={{ textDecoration: "none" }} to="/map">
+          <Map>Map</Map>
         </Link>
-        <Link to="/favorites">
-          <div
-            className="favorites"
-            style={{ width: "500px", height: "500px", backgroundColor: "aqua" }}
-            onClick={displayMessage}
-          >
-            My Favorites
-          </div>
+        <Link style={{ textDecoration: "none" }} to="/favorites">
+          <MyFavorites onClick={displayMessage}>My Favorites</MyFavorites>
         </Link>
-      </div>
+      </Selection>
       <Footer />
     </div>
   );
