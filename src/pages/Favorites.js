@@ -10,9 +10,11 @@ import {
   where,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import Div from "../Components/Div";
+import styled from "styled-components";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
+import Div from "../Components/Div";
+import FavoritesCategoryDiv from "../Components/FavoritesCategoryDiv";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -26,6 +28,14 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const db = getFirestore();
+
+const ButtonArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 150px;
+`;
 
 const App = () => {
   const [favorites, setFavorites] = useState([]);
@@ -97,55 +107,42 @@ const App = () => {
             />
           );
         })}
-      <button
-        onClick={() => {
-          categoryHandler("museum");
-        }}
-      >
-        museum
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("nature");
-        }}
-      >
-        nature
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("restaurant");
-        }}
-      >
-        restaurant
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("christmas");
-        }}
-      >
-        christmas
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("shopping");
-        }}
-      >
-        shopping
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("transportation");
-        }}
-      >
-        transportation
-      </button>
-      <button
-        onClick={() => {
-          getFavorites();
-        }}
-      >
-        show all
-      </button>
+      <ButtonArea>
+        <FavoritesCategoryDiv
+          category={"museum"}
+          categoryHandler={categoryHandler}
+          getFavorites={getFavorites}
+        />
+        <FavoritesCategoryDiv
+          category={"nature"}
+          categoryHandler={categoryHandler}
+          getFavorites={getFavorites}
+        />
+        <FavoritesCategoryDiv
+          category={"restaurant"}
+          categoryHandler={categoryHandler}
+          getFavorites={getFavorites}
+        />
+        <FavoritesCategoryDiv
+          category={"christmas"}
+          categoryHandler={categoryHandler}
+          getFavorites={getFavorites}
+        />
+        <FavoritesCategoryDiv
+          category={"shopping"}
+          categoryHandler={categoryHandler}
+          getFavorites={getFavorites}
+        />
+        <FavoritesCategoryDiv
+          category={"transportation"}
+          categoryHandler={categoryHandler}
+          getFavorites={getFavorites}
+        />
+        <FavoritesCategoryDiv
+          categoryHandler={categoryHandler}
+          getFavorites={getFavorites}
+        />
+      </ButtonArea>
       <Footer />
     </div>
   );

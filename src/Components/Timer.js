@@ -17,10 +17,10 @@ const Countdown = () => {
   const [remainingTime, setRemainingTime] = useState(defaultRemainingTime);
 
   function getNextChristimaDay() {
-    let today = new Date();
-    let christmasYear = today.getFullYear();
+    let today = dayJs().tz("Europe/Helsinki");
+    let christmasYear = today.year();
 
-    if (today.getMonth() == 11 && today.getDate() > 25) {
+    if (today.month() == 11 && today.day() > 25) {
       christmasYear = christmasYear + 1;
     }
 
