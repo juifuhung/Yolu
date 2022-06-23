@@ -242,6 +242,7 @@ const Map = () => {
       <ButtonArea>
         {categoryArray.map((category) => (
           <MapCategoryDiv
+            key={category}
             category={category}
             categoryHandler={categoryHandler}
           />

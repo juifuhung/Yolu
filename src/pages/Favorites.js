@@ -46,7 +46,9 @@ const ButtonArea = styled.div`
   height: 150px;
 `;
 
-const NoItemsFound = styled.div`
+const ItemQuantity = styled.div`
+  display: flex;
+  justify-content: center;
   width: 100vw;
   height: 100px;
   font-size: 1.5rem;
@@ -116,7 +118,14 @@ const App = () => {
     <div className="App">
       <Header />
       <WelcomeMessage>{`hi ${displayName}`}</WelcomeMessage>
-      {favorites ? (
+      {favorites.length === 1 ? (
+        <ItemQuantity>{`${favorites.length} item on the list`}</ItemQuantity>
+      ) : favorites.length > 1 ? (
+        <ItemQuantity>{`${favorites.length} items on the list`}</ItemQuantity>
+      ) : (
+        <ItemQuantity>No Item Found</ItemQuantity>
+      )}
+      {favorites &&
         favorites.map((item) => {
           return (
             <Div
@@ -129,13 +138,11 @@ const App = () => {
               getFavorites={getFavorites}
             />
           );
-        })
-      ) : (
-        <NoItemsFound>no000000</NoItemsFound>
-      )}
+        })}
       <ButtonArea>
         {categoryArray.map((category) => (
           <FavoritesCategoryDiv
+            key={category}
             category={category}
             categoryHandler={categoryHandler}
             getFavorites={getFavorites}
