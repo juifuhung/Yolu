@@ -148,6 +148,15 @@ const Map = () => {
     return <div>Loading...</div>;
   }
 
+  const categoryArray = [
+    "museum",
+    "nature",
+    "restaurant",
+    "christmas",
+    "shopping",
+    "transportation",
+  ];
+
   return (
     <div>
       <Header />
@@ -231,24 +240,13 @@ const Map = () => {
         )}
       </GoogleMap>
       <ButtonArea>
-        <MapCategoryDiv category={"museum"} categoryHandler={categoryHandler} />
-        <MapCategoryDiv category={"nature"} categoryHandler={categoryHandler} />
-        <MapCategoryDiv
-          category={"restaurant"}
-          categoryHandler={categoryHandler}
-        />
-        <MapCategoryDiv
-          category={"christmas"}
-          categoryHandler={categoryHandler}
-        />
-        <MapCategoryDiv
-          category={"shopping"}
-          categoryHandler={categoryHandler}
-        />
-        <MapCategoryDiv
-          category={"transportation"}
-          categoryHandler={categoryHandler}
-        />
+        {categoryArray.map((category) => (
+          <MapCategoryDiv
+            category={category}
+            categoryHandler={categoryHandler}
+          />
+        ))}
+
         <MapCategoryDiv getData={getData} />
         <MapCategoryDiv
           favorites={favorites}

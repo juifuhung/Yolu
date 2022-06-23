@@ -46,6 +46,12 @@ const ButtonArea = styled.div`
   height: 150px;
 `;
 
+const NoItemsFound = styled.div`
+  width: 100vw;
+  height: 100px;
+  font-size: 1.5rem;
+`;
+
 const App = () => {
   const [favorites, setFavorites] = useState([]);
 
@@ -97,11 +103,20 @@ const App = () => {
     }
   }
 
+  const categoryArray = [
+    "museum",
+    "nature",
+    "restaurant",
+    "christmas",
+    "shopping",
+    "transportation",
+  ];
+
   return (
     <div className="App">
       <Header />
       <WelcomeMessage>{`hi ${displayName}`}</WelcomeMessage>
-      {favorites &&
+      {favorites ? (
         favorites.map((item) => {
           return (
             <Div
@@ -114,38 +129,18 @@ const App = () => {
               getFavorites={getFavorites}
             />
           );
-        })}
+        })
+      ) : (
+        <NoItemsFound>no000000</NoItemsFound>
+      )}
       <ButtonArea>
-        <FavoritesCategoryDiv
-          category={"museum"}
-          categoryHandler={categoryHandler}
-          getFavorites={getFavorites}
-        />
-        <FavoritesCategoryDiv
-          category={"nature"}
-          categoryHandler={categoryHandler}
-          getFavorites={getFavorites}
-        />
-        <FavoritesCategoryDiv
-          category={"restaurant"}
-          categoryHandler={categoryHandler}
-          getFavorites={getFavorites}
-        />
-        <FavoritesCategoryDiv
-          category={"christmas"}
-          categoryHandler={categoryHandler}
-          getFavorites={getFavorites}
-        />
-        <FavoritesCategoryDiv
-          category={"shopping"}
-          categoryHandler={categoryHandler}
-          getFavorites={getFavorites}
-        />
-        <FavoritesCategoryDiv
-          category={"transportation"}
-          categoryHandler={categoryHandler}
-          getFavorites={getFavorites}
-        />
+        {categoryArray.map((category) => (
+          <FavoritesCategoryDiv
+            category={category}
+            categoryHandler={categoryHandler}
+            getFavorites={getFavorites}
+          />
+        ))}
         <FavoritesCategoryDiv
           categoryHandler={categoryHandler}
           getFavorites={getFavorites}
