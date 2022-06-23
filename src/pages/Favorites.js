@@ -54,6 +54,29 @@ const ItemQuantity = styled.div`
   font-size: 1.5rem;
 `;
 
+const SortButtonArea = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100px;
+  width: 100vw;
+`;
+
+const SortButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100px;
+  height: 100px;
+  font-size: 1rem;
+  color: white;
+  background-color: black;
+  cursor: pointer;
+  border-radius: 20%;
+`;
+
 const App = () => {
   const [favorites, setFavorites] = useState([]);
 
@@ -105,6 +128,20 @@ const App = () => {
     }
   }
 
+  const SortFromOldToNew = () => {
+    const oldToNewArray = [...favorites].sort((a, b) => {
+      return a.created_time.seconds - b.created_time.seconds;
+    });
+    setFavorites(oldToNewArray);
+  };
+
+  const SortFromNewToOld = () => {
+    const newToOldArray = [...favorites].sort((a, b) => {
+      return b.created_time.seconds - a.created_time.seconds;
+    });
+    setFavorites(newToOldArray);
+  };
+
   const categoryArray = [
     "museum",
     "nature",
@@ -153,6 +190,10 @@ const App = () => {
           getFavorites={getFavorites}
         />
       </ButtonArea>
+      <SortButtonArea>
+        <SortButton onClick={SortFromOldToNew}>Sort from old to new</SortButton>
+        <SortButton onClick={SortFromNewToOld}>Sort from new to old</SortButton>
+      </SortButtonArea>
       <Footer />
     </div>
   );
