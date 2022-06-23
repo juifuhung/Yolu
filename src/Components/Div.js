@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { FaStar } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
@@ -16,28 +17,51 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 getFirestore();
 
+const FavoriteItemSection = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const FavoriteItem = styled.div`
+  width: 90vw;
+  min-height: 320px;
+  border: solid black 1px;
+  margin-bottom: 25px;
+`;
+
+const FavoriteItemTitle = styled.div`
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+`;
+
+const FavoriteItemDescription = styled.div`
+  font-size: 1.2rem;
+`;
+
+const FavoriteItemImage = styled.div`
+  width: 780px;
+  height: 500px;
+  background-image: url(${(props) => props.img});
+`;
+
 const Div = ({ id, title, description, img, deleteHandler, getFavorites }) => {
   return (
     <div>
-      <div
-        style={{ width: "400px", height: "200px", backgroundColor: "aqua" }}
-        id={id}
-      >
-        <h1 style={{ margin: "0" }}>{title}</h1>
-        <p>{description}</p>
-        <img
-          src={img}
-          alt="image"
-          style={{ width: "200px", height: "100px" }}
-        />
-        <FaStar
-          onClick={() => {
-            deleteHandler(id);
-            getFavorites();
-            alert(`removed ${title} from favorite list`);
-          }}
-        />
-      </div>
+      <FavoriteItemSection>
+        <FavoriteItem id={id}>
+          <FavoriteItemTitle>{title}</FavoriteItemTitle>
+          <FavoriteItemDescription>{description}</FavoriteItemDescription>
+          <FavoriteItemImage img={img} alt="image" />
+          <FaStar
+            onClick={() => {
+              deleteHandler(id);
+              getFavorites();
+              alert(`removed ${title} from favorite list`);
+            }}
+          />
+        </FavoriteItem>
+      </FavoriteItemSection>
     </div>
   );
 };

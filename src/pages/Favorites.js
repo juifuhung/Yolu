@@ -10,9 +10,11 @@ import {
   where,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import Div from "../Components/Div";
+import styled from "styled-components";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
+import Div from "../Components/Div";
+import FavoritesCategoryDiv from "../Components/FavoritesCategoryDiv";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -26,6 +28,31 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const db = getFirestore();
+
+const WelcomeMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  background-color: pink;
+  padding: 1rem;
+`;
+
+const ButtonArea = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 150px;
+`;
+
+const ItemQuantity = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100px;
+  font-size: 1.5rem;
+`;
 
 const App = () => {
   const [favorites, setFavorites] = useState([]);
@@ -78,11 +105,26 @@ const App = () => {
     }
   }
 
+  const categoryArray = [
+    "museum",
+    "nature",
+    "restaurant",
+    "christmas",
+    "shopping",
+    "transportation",
+  ];
+
   return (
     <div className="App">
       <Header />
-      <p>paragraph</p>
-      <p>{`hi ${displayName}`}</p>
+      <WelcomeMessage>{`hi ${displayName}`}</WelcomeMessage>
+      {favorites.length === 1 ? (
+        <ItemQuantity>{`${favorites.length} item on the list`}</ItemQuantity>
+      ) : favorites.length > 1 ? (
+        <ItemQuantity>{`${favorites.length} items on the list`}</ItemQuantity>
+      ) : (
+        <ItemQuantity>No Item Found</ItemQuantity>
+      )}
       {favorites &&
         favorites.map((item) => {
           return (
@@ -97,55 +139,20 @@ const App = () => {
             />
           );
         })}
-      <button
-        onClick={() => {
-          categoryHandler("museum");
-        }}
-      >
-        museum
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("nature");
-        }}
-      >
-        nature
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("restaurant");
-        }}
-      >
-        restaurant
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("christmas");
-        }}
-      >
-        christmas
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("shopping");
-        }}
-      >
-        shopping
-      </button>
-      <button
-        onClick={() => {
-          categoryHandler("transportation");
-        }}
-      >
-        transportation
-      </button>
-      <button
-        onClick={() => {
-          getFavorites();
-        }}
-      >
-        show all
-      </button>
+      <ButtonArea>
+        {categoryArray.map((category) => (
+          <FavoritesCategoryDiv
+            key={category}
+            category={category}
+            categoryHandler={categoryHandler}
+            getFavorites={getFavorites}
+          />
+        ))}
+        <FavoritesCategoryDiv
+          categoryHandler={categoryHandler}
+          getFavorites={getFavorites}
+        />
+      </ButtonArea>
       <Footer />
     </div>
   );
