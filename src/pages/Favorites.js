@@ -29,6 +29,15 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
+const WelcomeMessage = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 600;
+  background-color: pink;
+  padding: 1rem;
+`;
+
 const ButtonArea = styled.div`
   display: flex;
   justify-content: center;
@@ -91,8 +100,7 @@ const App = () => {
   return (
     <div className="App">
       <Header />
-      <p>paragraph</p>
-      <p>{`hi ${displayName}`}</p>
+      <WelcomeMessage>{`hi ${displayName}`}</WelcomeMessage>
       {favorites &&
         favorites.map((item) => {
           return (
