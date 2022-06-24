@@ -78,15 +78,15 @@ const SortButton = styled.div`
 `;
 
 const categoryArray = [
-  "museum",
-  "nature",
-  "restaurant",
-  "christmas",
-  "shopping",
-  "transportation",
+  "Museum",
+  "Nature",
+  "Restaurant",
+  "Christmas",
+  "Shopping",
+  "Transportation",
 ];
 
-const App = () => {
+const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
 
   const localId = window.localStorage.getItem("localId");
@@ -201,4 +201,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Favorites;

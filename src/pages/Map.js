@@ -45,6 +45,15 @@ const ButtonArea = styled.div`
   height: 150px;
 `;
 
+const categoryArray = [
+  "Museum",
+  "Nature",
+  "Restaurant",
+  "Christmas",
+  "Shopping",
+  "Transportation",
+];
+
 const Map = () => {
   const center = useMemo(() => ({ lat: 66.533688, lng: 25.75218 }), []);
 
@@ -144,15 +153,6 @@ const Map = () => {
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
-
-  const categoryArray = [
-    "museum",
-    "nature",
-    "restaurant",
-    "christmas",
-    "shopping",
-    "transportation",
-  ];
 
   return (
     <div>
