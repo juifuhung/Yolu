@@ -59,9 +59,6 @@ const Map = () => {
 
   useEffect(() => {
     getData();
-  }, []);
-
-  useEffect(() => {
     getFavorites();
   }, []);
 

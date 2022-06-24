@@ -35,6 +35,20 @@ const FavoriteItemTitle = styled.div`
   font-weight: 800;
 `;
 
+const FavoriteItemCategory = styled.div`
+  margin-0;
+  background-color:aqua;
+  width:40%;
+  font-weight:600;
+`;
+
+const FavoriteItemTimestamp = styled.div`
+  margin: 0;
+  backgorund-color: yellow;
+  width: 45%;
+  font-weight: 600;
+`;
+
 const FavoriteItemDescription = styled.div`
   font-size: 1.2rem;
 `;
@@ -45,12 +59,29 @@ const FavoriteItemImage = styled.div`
   background-image: url(${(props) => props.img});
 `;
 
-const Div = ({ id, title, description, img, deleteHandler, getFavorites }) => {
+const Div = ({
+  id,
+  title,
+  description,
+  img,
+  category,
+  timestamp,
+  deleteHandler,
+  getFavorites,
+}) => {
   return (
     <div>
       <FavoriteItemSection>
         <FavoriteItem id={id}>
           <FavoriteItemTitle>{title}</FavoriteItemTitle>
+          <FavoriteItemCategory>{category}</FavoriteItemCategory>
+          <FavoriteItemTimestamp>{`${timestamp.getFullYear()}年 ${timestamp.getMonth()}月 ${timestamp.getDate()}日 ${timestamp.getHours()}:${
+            timestamp.getMinutes() === 0
+              ? "00"
+              : timestamp.getMinutes() < 10
+              ? "0" + timestamp.getMinutes().toString()
+              : timestamp.getMinutes().toString()
+          }`}</FavoriteItemTimestamp>
           <FavoriteItemDescription>{description}</FavoriteItemDescription>
           <FavoriteItemImage img={img} alt="image" />
           <FaStar

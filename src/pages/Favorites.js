@@ -77,6 +77,15 @@ const SortButton = styled.div`
   border-radius: 20%;
 `;
 
+const categoryArray = [
+  "museum",
+  "nature",
+  "restaurant",
+  "christmas",
+  "shopping",
+  "transportation",
+];
+
 const App = () => {
   const [favorites, setFavorites] = useState([]);
 
@@ -113,7 +122,7 @@ const App = () => {
     }
   };
 
-  async function getFavorites() {
+  const getFavorites = async () => {
     try {
       let favoritesArray = [];
       const querySnapshot = await getDocs(
@@ -126,7 +135,7 @@ const App = () => {
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
     }
-  }
+  };
 
   const SortFromOldToNew = () => {
     const oldToNewArray = [...favorites].sort((a, b) => {
@@ -141,15 +150,6 @@ const App = () => {
     });
     setFavorites(newToOldArray);
   };
-
-  const categoryArray = [
-    "museum",
-    "nature",
-    "restaurant",
-    "christmas",
-    "shopping",
-    "transportation",
-  ];
 
   return (
     <div className="App">
@@ -167,10 +167,12 @@ const App = () => {
           return (
             <Div
               key={uuidv4()}
+              category={item.category}
               id={item.id}
               title={item.title}
               description={item.description}
               img={item.photo}
+              timestamp={item.created_time.toDate()}
               deleteHandler={deleteHandler}
               getFavorites={getFavorites}
             />
