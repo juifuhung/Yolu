@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
 import headerLogo from "../images/header-yolu.png";
-import MemberLogo from "../images/web-member-logo.png";
+import webMemberIcon from "../images/web-member-icon.png";
+import mobileMemberIcon from "../images/mobile-member-icon.png";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -94,6 +95,44 @@ const WeatherIcon = styled.div`
   background-image: url(${(props) => props.icon});
 `;
 
+const Nav = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 2%;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+
+  @media (max-width: 1500px) {
+    display: none;
+  }
+`;
+
+const WebNavLink = styled(Link)`
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
+`;
+
+const SignInLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
+`;
+
+const LogOut = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
+  cursor: pointer;
+`;
+
 const MobileNav = styled.div`
   display: flex;
   justify-content: center;
@@ -124,48 +163,18 @@ const MobileNavCenterLine = styled.div`
   height: 60%;
 `;
 
-const Nav = styled.div`
+const MobileMember = styled(Link)`
   display: flex;
-  justify-content: space-between;
-  margin-right: 2%;
-  align-items: center;
-  width: 40%;
-  height: 100%;
-
-  @media (max-width: 1500px) {
-    display: none;
-  }
-`;
-
-const MapLink = styled(Link)`
-  font-size: 2rem;
-  text-decoration: none;
-  color: #000000;
-`;
-
-const FavoritesLink = styled(Link)`
-  font-size: 2rem;
-  text-decoration: none;
-  color: #000000;
-`;
-
-const SignInLink = styled(Link)`
-  display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  text-decoration: none;
-  color: #000000;
-`;
-
-const LogOut = styled.div`
-  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  text-decoration: none;
-  color: #000000;
+  width: 45px;
+  height: 45px;
+  background-color: #353030;
   cursor: pointer;
+  position: fixed;
+  top: 220px;
+  right: 0;
+  z-index: 10;
 `;
 
 const localId = window.localStorage.getItem("localId");
@@ -208,6 +217,12 @@ const Header = () => {
   return (
     <>
       <Font>
+        {localId ? null : (
+          <MobileMember to="/member">
+            <img src={mobileMemberIcon} />
+          </MobileMember>
+        )}
+
         <HeaderContainer>
           <HeaderContainerLeft>
             <HomepageLink to="/">
@@ -247,20 +262,20 @@ const Header = () => {
             )}
           </HeaderContainerLeft>
           <Nav>
-            <MapLink to="/map">羅瓦涅米地圖</MapLink>
-            <FavoritesLink to="/favorites" onClick={displayMessage}>
+            <WebNavLink to="/map">羅瓦涅米地圖</WebNavLink>
+            <WebNavLink to="/favorites" onClick={displayMessage}>
               我的最愛
-            </FavoritesLink>
+            </WebNavLink>
             {localId ? (
               <LogOut onClick={logoutHandler}>
                 登出
-                <img src={MemberLogo} />
+                <img src={webMemberIcon} />
               </LogOut>
             ) : null}
             {!localId ? (
               <SignInLink to="/member">
                 會員登入
-                <img src={MemberLogo} />
+                <img src={webMemberIcon} />
               </SignInLink>
             ) : null}
           </Nav>
