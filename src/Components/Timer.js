@@ -16,7 +16,7 @@ const defaultRemainingTime = {
 const Countdown = () => {
   const [remainingTime, setRemainingTime] = useState(defaultRemainingTime);
 
-  function getNextChristimaDay() {
+  const getNextChristimaDay = () => {
     let today = dayJs().tz("Europe/Helsinki");
     let christmasYear = today.year();
 
@@ -27,7 +27,7 @@ const Countdown = () => {
     let christmasDate = new Date(christmasYear, 11, 25);
     const christmasDateTimeStamp = Math.round(christmasDate.getTime());
     return christmasDateTimeStamp;
-  }
+  };
 
   useEffect(() => {
     const getRemainingSeconds = (nowDayJs, timeStampDayJs) => {
@@ -79,7 +79,7 @@ const Countdown = () => {
     }, 1000);
   }, [setRemainingTime]);
 
-  function showMessage(d, h, m, s) {
+  const showMessage = (d, h, m, s) => {
     if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
       return <span>Happy Christmas!</span>;
     } else {
@@ -96,13 +96,11 @@ const Countdown = () => {
         </>
       );
     }
-  }
+  };
 
   const { days, hours, minutes, seconds, initialValue } = remainingTime;
 
-  return (
-    <div>{!initialValue && showMessage(days, hours, minutes, seconds)}</div>
-  );
+  return <>{!initialValue && showMessage(days, hours, minutes, seconds)}</>;
 };
 
 export default Countdown;

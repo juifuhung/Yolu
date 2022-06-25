@@ -11,11 +11,11 @@ const FooterContainer = styled.div`
 
 const Footer = () => {
   return (
-    <div>
+    <>
       <FooterContainer>
         <div>footer</div>
       </FooterContainer>
-    </div>
+    </>
   );
 };
 

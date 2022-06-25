@@ -31,7 +31,7 @@ const CategoryButton = styled.div`
 
 const FavoritesCategoryDiv = ({ category, categoryHandler, getFavorites }) => {
   return (
-    <div>
+    <>
       <CategoryButton
         onClick={() => {
           category ? categoryHandler(`${category}`) : getFavorites();
@@ -39,7 +39,7 @@ const FavoritesCategoryDiv = ({ category, categoryHandler, getFavorites }) => {
       >
         {category ? category : "Show All"}
       </CategoryButton>
-    </div>
+    </>
   );
 };
 

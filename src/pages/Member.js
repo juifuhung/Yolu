@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import Header from "../Components/Header";
-import Footer from "../Components/Footer";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const Member = () => {
   const emailInputRef = useRef("");
@@ -57,7 +57,7 @@ const Member = () => {
   };
 
   return (
-    <div>
+    <>
       <Header />
       <h1>{isLogin ? "Sign In" : "Sign Up"}</h1>
       <form onSubmit={submitHandler}>
@@ -86,7 +86,7 @@ const Member = () => {
         {isLogin ? "change to Sign Up" : "change to Sign In"}
       </button>
       <Footer />
-    </div>
+    </>
   );
 };
 

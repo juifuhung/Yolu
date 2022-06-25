@@ -59,20 +59,23 @@ const FavoriteItemImage = styled.div`
   background-image: url(${(props) => props.img});
 `;
 
-const Div = ({
-  id,
-  title,
-  description,
-  img,
-  category,
-  timestamp,
-  deleteHandler,
-  getFavorites,
-}) => {
+const FavoriteItemDiv = (
+  {
+    id,
+    title,
+    description,
+    img,
+    category,
+    timestamp,
+    deleteHandler,
+    getFavorites,
+  },
+  ref
+) => {
   return (
-    <div>
+    <>
       <FavoriteItemSection>
-        <FavoriteItem id={id}>
+        <FavoriteItem ref={ref} id={id}>
           <FavoriteItemTitle>{title}</FavoriteItemTitle>
           <FavoriteItemCategory>{category}</FavoriteItemCategory>
           <FavoriteItemTimestamp>{`${timestamp.getFullYear()}年 ${timestamp.getMonth()}月 ${timestamp.getDate()}日 ${timestamp.getHours()}:${
@@ -93,8 +96,10 @@ const Div = ({
           />
         </FavoriteItem>
       </FavoriteItemSection>
-    </div>
+    </>
   );
 };
 
-export default Div;
+const favoriteItemDiv = React.forwardRef(FavoriteItemDiv);
+
+export default favoriteItemDiv;

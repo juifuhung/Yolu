@@ -1,6 +1,5 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import { FaHeart, FaStar } from "react-icons/fa";
 import styled from "styled-components";
 import {
@@ -20,9 +19,9 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import Header from "../Components/Header";
-import Footer from "../Components/Footer";
-import MapCategoryDiv from "../Components/MapCategoryDiv";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import MapCategoryItem from "../components/MapCategoryItem";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -54,17 +53,17 @@ const categoryArray = [
   "Transportation",
 ];
 
+const localId = window.localStorage.getItem("localId");
+
 const Map = () => {
-  const center = useMemo(() => ({ lat: 66.533688, lng: 25.75218 }), []);
-
-  const navigate = useNavigate();
-
-  const localId = window.localStorage.getItem("localId");
-
-  const [array, setArray] = useState([]);
+  const [allSpots, setAllSpots] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false);
   const [selected, setSelected] = useState(null);
+
+  const center = useMemo(() => ({ lat: 66.533688, lng: 25.75218 }), []);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getData();
@@ -78,12 +77,12 @@ const Map = () => {
   const getData = async () => {
     setShowFavorites(false);
     try {
-      let array = [];
+      let allSpotsArray = [];
       const querySnapshot = await getDocs(collection(db, "Spots"));
       querySnapshot.forEach((doc) => {
-        array.push(doc.data());
+        allSpotsArray.push(doc.data());
       });
-      setArray(array);
+      setAllSpots(allSpotsArray);
     } catch (e) {
       console.error("Error getting document: ", e);
     }
@@ -140,7 +139,7 @@ const Map = () => {
       querySnapshot.forEach((doc) => {
         categoryArray.push(doc.data());
       });
-      setArray(categoryArray);
+      setAllSpots(categoryArray);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -155,7 +154,7 @@ const Map = () => {
   }
 
   return (
-    <div>
+    <>
       <Header />
       <GoogleMap
         zoom={12}
@@ -163,9 +162,9 @@ const Map = () => {
         mapContainerStyle={{ width: "100vw", height: "90vh" }}
       >
         {!showFavorites &&
-          array.map((location) => (
+          allSpots.map((location) => (
             <Marker
-              key={uuidv4()}
+              key={location.title}
               icon={location.icon}
               position={{ lat: location.lat, lng: location.lng }}
               onClick={() => {
@@ -176,7 +175,7 @@ const Map = () => {
         {showFavorites &&
           favorites.map((location) => (
             <Marker
-              key={uuidv4()}
+              key={location.title}
               icon={location.icon}
               position={{ lat: location.lat, lng: location.lng }}
               onClick={() => {
@@ -238,21 +237,21 @@ const Map = () => {
       </GoogleMap>
       <ButtonArea>
         {categoryArray.map((category) => (
-          <MapCategoryDiv
+          <MapCategoryItem
             key={category}
             category={category}
             categoryHandler={categoryHandler}
           />
         ))}
 
-        <MapCategoryDiv getData={getData} />
-        <MapCategoryDiv
+        <MapCategoryItem getData={getData} />
+        <MapCategoryItem
           favorites={favorites}
           showFavoriteHandler={showFavoriteHandler}
         />
       </ButtonArea>
       <Footer />
-    </div>
+    </>
   );
 };
 
