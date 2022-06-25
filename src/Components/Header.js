@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
 import headerLogo from "../images/header-yolu.png";
+import MemberLogo from "../images/web-member-logo.png";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -32,24 +33,15 @@ const HomepageLink = styled(Link)`
   background-color: yellow;
 `;
 
-const Nav = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: solid black 1px;
-  width: 30%;
-  height: 100%;
-`;
-
 const WeatherLink = styled(Link)`
   display: flex;
   height: 100%;
-  width: 20%;
+  width: 195px;
   background-color: yellow;
   text-decoration: none;
   color: #000000;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1500px) {
     display: none;
   }
 `;
@@ -91,6 +83,43 @@ const WeatherIcon = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(${(props) => props.icon});
+`;
+
+const Nav = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 2%;
+  align-items: center;
+  border: solid black 1px;
+  width: 40%;
+  height: 100%;
+`;
+
+const MapLink = styled(Link)`
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
+`;
+
+const FavoritesLink = styled(Link)`
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
+`;
+
+const SignInLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
+`;
+
+const LogOutLink = styled(Link)`
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
 `;
 
 const localId = window.localStorage.getItem("localId");
@@ -153,17 +182,21 @@ const Header = () => {
             <HeaderTimer />
           </HeaderContainerLeft>
           <Nav>
-            <Link to="/map">
-              <div>Map</div>
-            </Link>
-            <Link to="/favorites">
-              <div onClick={displayMessage}>My Favorites</div>
-            </Link>
-            {localId ? <div onClick={logoutHandler}>Log out</div> : null}
+            <MapLink to="/map">羅瓦涅米地圖</MapLink>
+            <FavoritesLink to="/favorites" onClick={displayMessage}>
+              我的最愛
+            </FavoritesLink>
+            {localId ? (
+              <LogOutLink onClick={logoutHandler}>
+                登出
+                <img src={MemberLogo} />
+              </LogOutLink>
+            ) : null}
             {!localId ? (
-              <Link to="/member">
-                <div>sign in</div>
-              </Link>
+              <SignInLink to="/member">
+                會員登入
+                <img src={MemberLogo} />
+              </SignInLink>
             ) : null}
           </Nav>
         </HeaderContainer>
