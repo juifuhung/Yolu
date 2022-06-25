@@ -104,6 +104,10 @@ const MainTimer = styled.div`
   width: 100vw;
   height: 300px;
 
+  @media (max-width: 850px) {
+    height: 250px;
+  }
+
   @media (max-width: 570px) {
     height: 200px;
   }
@@ -113,8 +117,8 @@ const MainTimerTitle = styled.h3`
   color: #ff0000;
   font-size: 2.5rem;
 
-  @media (max-width: 1300px) {
-    margin-top: -30px;
+  @media (max-width: 1270px) {
+    margin-top: -20px;
   }
 
   @media (max-width: 950px) {
@@ -122,8 +126,11 @@ const MainTimerTitle = styled.h3`
   }
 
   @media (max-width: 570px) {
-    margin-bottom: 20px;
     font-size: 2rem;
+  }
+
+  @media (max-width: 490px) {
+    font-size: 1.6rem;
   }
 `;
 

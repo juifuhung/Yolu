@@ -13,7 +13,6 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   width: 100vw;
   height: 120px;
-  border: solid green 1px;
 
   @media (max-width: 800px) {
     height: 160px;

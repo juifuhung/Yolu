@@ -21,23 +21,35 @@ const TimerSection = styled.div`
   height: 150px;
   width: 80%;
 
-  @media (max-width: 1300px) {
-    margin-top: -30px;
+  @media (max-width: 1270px) {
+    height: 140px;
   }
 
-  @media (max-width: 1150px) {
-    margin-top: -50px;
+  @media (max-width: 1190px) {
+    height: 110px;
+  }
+
+  @media (max-width: 950px) {
+    height: 100px;
+  }
+
+  @media (max-width: 850px) {
+    height: 80px;
   }
 
   @media (max-width: 770px) {
-    height: 120px;
+    height: 70px;
   }
 
   @media (max-width: 570px) {
-    height: 25%;
+    height: 65px;
     font-size: 1.5rem;
-    width: 95%;
     margin: 0 5px 0 8px;
+  }
+
+  @media (max-width: 490px) {
+    width: 90%;
+    height: 50px;
   }
 `;
 
@@ -53,33 +65,31 @@ const Days = styled.div`
   font-size: 4rem;
   border-radius: 1rem;
 
-  @media (max-width: 1300px) {
-    height: 80%;
+  @media (max-width: 1270px) {
     width: 180px;
   }
 
-  @media (max-width: 1150px) {
-    font-size: 3rem;
-    height: 70%;
+  @media (max-width: 1190px) {
+    font-size: 3.5rem;
     width: 160px;
   }
 
   @media (max-width: 950px) {
-    font-size: 2.5rem;
-    height: 65%;
     width: 130px;
   }
 
+  @media (max-width: 850px) {
+    font-size: 2.5rem;
+  }
+
   @media (max-width: 770px) {
-    height: 60%;
-    width: 100px;
     font-size: 2rem;
+    width: 100px;
     margin: 0 5px 0 8px;
   }
 
   @media (max-width: 570px) {
-    height: 100%;
-    width: 70px;
+    width: 80px;
     font-size: 1.5rem;
     margin: 0 5px 0 8px;
   }
@@ -97,33 +107,31 @@ const Numbers = styled.div`
   font-size: 4rem;
   border-radius: 1rem;
 
-  @media (max-width: 1300px) {
-    height: 80%;
+  @media (max-width: 1270px) {
     width: 160px;
   }
 
-  @media (max-width: 1150px) {
-    font-size: 3rem;
-    height: 70%;
+  @media (max-width: 1190px) {
+    font-size: 3.5rem;
     width: 140px;
   }
 
   @media (max-width: 950px) {
-    font-size: 2.5rem;
-    height: 65%;
     width: 100px;
   }
 
+  @media (max-width: 850px) {
+    font-size: 2.5rem;
+  }
+
   @media (max-width: 770px) {
-    height: 60%;
-    width: 80px;
     font-size: 2rem;
+    width: 90px;
     margin: 0 5px 0 8px;
   }
 
   @media (max-width: 570px) {
-    height: 100%;
-    width: 60px;
+    width: 70px;
     font-size: 1.5rem;
     margin: 0 5px 0 8px;
   }
@@ -139,6 +147,7 @@ const ChineseWords = styled.h4`
   }
 
   @media (max-width: 570px) {
+    font-weight: 500;
     font-size: 1.5rem;
   }
 `;
