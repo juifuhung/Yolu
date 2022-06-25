@@ -16,7 +16,7 @@ const slideImages = [
 const SlideShow = styled.div`
   overflow: hidden;
   position: relative;
-  zindex: 2;
+  z-index: 2;
 `;
 
 const SlideshowSlider = styled.div`
@@ -25,6 +25,14 @@ const SlideshowSlider = styled.div`
   white-space: nowrap;
   transform: ${(props) => `translate3d(${-props.index * 100}%, 0, 0)`};
   transition: ease 1000ms;
+
+  @media (max-width: 550px) {
+    height: 350px;
+  }
+
+  @media (max-width: 460px) {
+    height: 300px;
+  }
 `;
 
 const Slide = styled.div`
@@ -92,6 +100,11 @@ const CarouselChinese = styled.h2`
 
   @media (max-width: 550px) {
     font-weight: 600;
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 460px) {
+    font-weight: 400;
     font-size: 1.2rem;
   }
 `;
@@ -138,32 +151,98 @@ const Selection = styled.div`
   margin-top: 50px;
   display: flex;
   justify-content: center;
+
+  @media (max-width: 1300px) {
+    margin-top: 0px;
+  }
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
-const Map = styled.div`
+const MainCircleContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 5rem;
-  color: white;
-  text-decoration: none;
   border-radius: 50%;
-  width: 500px;
-  height: 500px;
-  background-color: pink;
+  margin: 50px;
+  width: 38vw;
+  height: 38vw;
+  overflow: hidden;
+
+  @media (max-width: 820px) {
+    margin: 20px;
+  }
+
+  @media (max-width: 800px) {
+    width: 70vw;
+    height: 70vw;
+  }
 `;
 
-const MyFavorites = styled.div`
+const MainCircle = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 5rem;
-  color: white;
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease-in-out;
+  background-image: url(${(props) => props.img});
+  background-size: 150%;
+  background-position: center;
   text-decoration: none;
-  border-radius: 50%;
-  width: 500px;
-  height: 500px;
-  background-color: aqua;
+  color: white;
+
+  &:hover {
+    background-size: 210%;
+  }
+`;
+
+const MainCircleTitle = styled.h2`
+  margin: 0;
+  font-size: 8rem;
+
+  &:hover {
+    transform: scale(1);
+  }
+
+  @media (max-width: 1600px) {
+    font-size: 7rem;
+  }
+
+  @media (max-width: 1350px) {
+    font-size: 6rem;
+  }
+
+  @media (max-width: 1160px) {
+    font-size: 5rem;
+  }
+
+  @media (max-width: 960px) {
+    font-size: 4rem;
+  }
+
+  @media (max-width: 820px) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 6rem;
+  }
+
+  @media (max-width: 660px) {
+    font-size: 5rem;
+  }
+
+  @media (max-width: 550px) {
+    font-size: 4rem;
+  }
+
+  @media (max-width: 410px) {
+    font-size: 3rem;
+  }
 `;
 
 const localId = window.localStorage.getItem("localId");
@@ -235,12 +314,20 @@ const Homepage = () => {
         </MainTimer>
 
         <Selection>
-          <Link style={{ textDecoration: "none" }} to="/map">
-            <Map>Map</Map>
-          </Link>
-          <Link style={{ textDecoration: "none" }} to="/favorites">
-            <MyFavorites onClick={displayMessage}>My Favorites</MyFavorites>
-          </Link>
+          <MainCircleContainer>
+            <MainCircle img={`https://img.onl/PBCUmN`} to="/map">
+              <MainCircleTitle>互動地圖</MainCircleTitle>
+            </MainCircle>
+          </MainCircleContainer>
+          <MainCircleContainer>
+            <MainCircle
+              img={`https://img.onl/MyS2bP`}
+              to="/favorites"
+              onClick={displayMessage}
+            >
+              <MainCircleTitle>我的最愛</MainCircleTitle>
+            </MainCircle>
+          </MainCircleContainer>
         </Selection>
       </Font>
       <Footer />

@@ -100,7 +100,7 @@ const Nav = styled.div`
   justify-content: space-between;
   margin-right: 2%;
   align-items: center;
-  width: 40%;
+  width: 35%;
   height: 100%;
 
   @media (max-width: 1500px) {
