@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Timer from "./Timer";
+import HeaderTimer from "./HeaderTimer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { Container } from "../styles/styles";
+import headerLogo from "../images/header-yolu.png";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -9,6 +11,25 @@ const HeaderContainer = styled.div`
   width: 100vw;
   height: 120px;
   border: solid green 1px;
+`;
+
+const HeaderContainerLeft = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+  background-color: lightgrey;
+`;
+
+const HomepageLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 100%;
+  margin: 0 20px 0 20px;
+  background-color: yellow;
 `;
 
 const Nav = styled.div`
@@ -20,14 +41,29 @@ const Nav = styled.div`
   height: 100%;
 `;
 
-const Weather = styled.div`
+const WeatherSection = styled.div`
   display: flex;
-  flex-direction: column;
+  height: 100%;
   width: 30%;
   background-color: yellow;
 `;
 
-const WeatherContent = styled.div`
+const WeatherSectionLeft = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  height: 100%;
+  width: 50%;
+`;
+
+const WeatherInformationMain = styled.section`
+  display: flex;
+  justify-content: flex-end;
+  font-size: 35px;
+  background-color: white;
+`;
+
+const WeatherLeftContent = styled.div`
   width: 50%;
   height: 50%;
 `;
@@ -77,31 +113,39 @@ const Header = () => {
 
   return (
     <>
-      <HeaderContainer>
-        <Link to="/">
-          <div>Home</div>
-        </Link>
-        <Timer />
-        <Weather>
-          <WeatherContent>{weatherMain}</WeatherContent>
-          <WeatherContent>{temperature} °C</WeatherContent>
-          <WeatherIcon icon={`http://openweathermap.org/img/w/${icon}.png`} />
-        </Weather>
-        <Nav>
-          <Link to="/map">
-            <div>Map</div>
-          </Link>
-          <Link to="/favorites">
-            <div onClick={displayMessage}>My Favorites</div>
-          </Link>
-          {localId ? <div onClick={logoutHandler}>Log out</div> : null}
-          {!localId ? (
-            <Link to="/member">
-              <div>sign in</div>
+      <Container>
+        <HeaderContainer>
+          <HeaderContainerLeft>
+            <HomepageLink to="/">
+              <img src={headerLogo} />
+            </HomepageLink>
+            <WeatherSection>
+              <WeatherSectionLeft>
+                <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
+                <WeatherLeftContent>{temperature} °C</WeatherLeftContent>
+              </WeatherSectionLeft>
+              <WeatherIcon
+                icon={`http://openweathermap.org/img/w/${icon}.png`}
+              />
+            </WeatherSection>
+            <HeaderTimer />
+          </HeaderContainerLeft>
+          <Nav>
+            <Link to="/map">
+              <div>Map</div>
             </Link>
-          ) : null}
-        </Nav>
-      </HeaderContainer>
+            <Link to="/favorites">
+              <div onClick={displayMessage}>My Favorites</div>
+            </Link>
+            {localId ? <div onClick={logoutHandler}>Log out</div> : null}
+            {!localId ? (
+              <Link to="/member">
+                <div>sign in</div>
+              </Link>
+            ) : null}
+          </Nav>
+        </HeaderContainer>
+      </Container>
     </>
   );
 };

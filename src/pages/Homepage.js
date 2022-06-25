@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Timer from "../components/Timer";
 
 const slideImages = [
   "https://img.onl/vlV7aI",
@@ -124,7 +125,6 @@ const Homepage = () => {
   return (
     <>
       <Header />
-      <h1>Homepage</h1>
       <SlideShow>
         <SlideshowSlider index={index}>
           {slideImages.map((img, index) => (
@@ -144,7 +144,7 @@ const Homepage = () => {
           ))}
         </SlideShowDots>
       </SlideShow>
-
+      <Timer />
       <Selection>
         <Link style={{ textDecoration: "none" }} to="/map">
           <Map>Map</Map>
