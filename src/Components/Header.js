@@ -180,9 +180,17 @@ const MobileMember = styled(Link)`
   background-color: #353030;
   cursor: pointer;
   position: fixed;
-  top: 250px;
+  top: 150px;
   right: 0;
   z-index: 10;
+
+  @media (max-width: 1500px) {
+    top: 230px;
+  }
+
+  @media (max-width: 800px) {
+    top: 250px;
+  }
 `;
 
 const localId = window.localStorage.getItem("localId");

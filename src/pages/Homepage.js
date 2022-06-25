@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Timer from "../components/Timer";
@@ -196,7 +197,7 @@ const MainCircle = styled(Link)`
   color: white;
 
   &:hover {
-    background-size: 210%;
+    background-size: 180%;
   }
 `;
 
@@ -245,6 +246,40 @@ const MainCircleTitle = styled.h2`
   }
 `;
 
+const Next = styled(FaArrowRight)`
+  bottom: 45%;
+  right: 0;
+  position: absolute;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  z-index: 3;
+
+  @media (max-width: 800px) {
+    display: none;
+  }
+`;
+
+const Previous = styled(FaArrowLeft)`
+  bottom: 45%;
+  laef: 0;
+  position: absolute;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  z-index: 3;
+
+  @media (max-width: 800px) {
+    display: none;
+  }
+`;
+
 const localId = window.localStorage.getItem("localId");
 
 const Homepage = () => {
@@ -254,6 +289,24 @@ const Homepage = () => {
   const resetTimeout = () => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
+    }
+  };
+
+  const nextSlide = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      setIndex((prevIndex) =>
+        prevIndex === slideImages.length - 1
+          ? slideImages.length - 1
+          : prevIndex + 1
+      );
+    }
+  };
+
+  const previousSlide = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      setIndex((prevIndex) => (prevIndex === 0 ? 0 : prevIndex - 1));
     }
   };
 
@@ -289,6 +342,9 @@ const Homepage = () => {
             ))}
           </SlideshowSlider>
 
+          <Next onClick={nextSlide} />
+          <Previous onClick={previousSlide} />
+
           <SlideShowDots>
             {slideImages.map((_, idx) => (
               <Dot
@@ -308,6 +364,7 @@ const Homepage = () => {
             </CarouselChinese>
           </CarouselTitle>
         </SlideShow>
+
         <MainTimer>
           <MainTimerTitle>距離聖誕節還有</MainTimerTitle>
           <Timer />
