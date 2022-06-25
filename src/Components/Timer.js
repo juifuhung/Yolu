@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import styled from "styled-components";
 import dayJs from "dayjs";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone");
@@ -12,6 +13,135 @@ const defaultRemainingTime = {
   days: "00",
   initialValue: true,
 };
+
+const TimerSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  height: 150px;
+  width: 80%;
+
+  @media (max-width: 1300px) {
+    margin-top: -30px;
+  }
+
+  @media (max-width: 1150px) {
+    margin-top: -50px;
+  }
+
+  @media (max-width: 770px) {
+    height: 120px;
+  }
+
+  @media (max-width: 570px) {
+    height: 25%;
+    font-size: 1.5rem;
+    width: 95%;
+    margin: 0 5px 0 8px;
+  }
+`;
+
+const Days = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 210px;
+  height: 100%;
+  margin: 0 15px 0 25px;
+  background-color: #ff0000;
+  color: white;
+  font-size: 4rem;
+  border-radius: 1rem;
+
+  @media (max-width: 1300px) {
+    height: 80%;
+    width: 180px;
+  }
+
+  @media (max-width: 1150px) {
+    font-size: 3rem;
+    height: 70%;
+    width: 160px;
+  }
+
+  @media (max-width: 950px) {
+    font-size: 2.5rem;
+    height: 65%;
+    width: 130px;
+  }
+
+  @media (max-width: 770px) {
+    height: 60%;
+    width: 100px;
+    font-size: 2rem;
+    margin: 0 5px 0 8px;
+  }
+
+  @media (max-width: 570px) {
+    height: 100%;
+    width: 70px;
+    font-size: 1.5rem;
+    margin: 0 5px 0 8px;
+  }
+`;
+
+const Numbers = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 190px;
+  height: 100%;
+  margin: 0 15px 0 25px;
+  background-color: #ff0000;
+  color: white;
+  font-size: 4rem;
+  border-radius: 1rem;
+
+  @media (max-width: 1300px) {
+    height: 80%;
+    width: 160px;
+  }
+
+  @media (max-width: 1150px) {
+    font-size: 3rem;
+    height: 70%;
+    width: 140px;
+  }
+
+  @media (max-width: 950px) {
+    font-size: 2.5rem;
+    height: 65%;
+    width: 100px;
+  }
+
+  @media (max-width: 770px) {
+    height: 60%;
+    width: 80px;
+    font-size: 2rem;
+    margin: 0 5px 0 8px;
+  }
+
+  @media (max-width: 570px) {
+    height: 100%;
+    width: 60px;
+    font-size: 1.5rem;
+    margin: 0 5px 0 8px;
+  }
+`;
+
+const ChineseWords = styled.h4`
+  font-size: 3rem;
+  margin: 0;
+  color: #ff0000;
+
+  @media (max-width: 950px) {
+    font-size: 2rem;
+  }
+
+  @media (max-width: 570px) {
+    font-size: 1.5rem;
+  }
+`;
 
 const Countdown = () => {
   const [remainingTime, setRemainingTime] = useState(defaultRemainingTime);
@@ -85,14 +215,16 @@ const Countdown = () => {
     } else {
       return (
         <>
-          <span>{d}</span>
-          <span>days </span>
-          <span>{h}</span>
-          <span>hours </span>
-          <span>{m}</span>
-          <span>minutes </span>
-          <span>{s}</span>
-          <span>seconds </span>
+          <TimerSection>
+            <Days>{d}</Days>
+            <ChineseWords>天</ChineseWords>
+            <Numbers>{h}</Numbers>
+            <ChineseWords>時</ChineseWords>
+            <Numbers>{m}</Numbers>
+            <ChineseWords>分</ChineseWords>
+            <Numbers>{s}</Numbers>
+            <ChineseWords>秒</ChineseWords>
+          </TimerSection>
         </>
       );
     }

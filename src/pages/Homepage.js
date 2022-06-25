@@ -96,6 +96,37 @@ const CarouselChinese = styled.h2`
   }
 `;
 
+const MainTimer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 300px;
+
+  @media (max-width: 570px) {
+    height: 200px;
+  }
+`;
+
+const MainTimerTitle = styled.h3`
+  color: #ff0000;
+  font-size: 2.5rem;
+
+  @media (max-width: 1300px) {
+    margin-top: -30px;
+  }
+
+  @media (max-width: 950px) {
+    font-size: 2.2rem;
+  }
+
+  @media (max-width: 570px) {
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+`;
+
 const Selection = styled.div`
   margin-top: 50px;
   display: flex;
@@ -191,7 +222,11 @@ const Homepage = () => {
             </CarouselChinese>
           </CarouselTitle>
         </SlideShow>
-        <Timer />
+        <MainTimer>
+          <MainTimerTitle>距離聖誕節還有</MainTimerTitle>
+          <Timer />
+        </MainTimer>
+
         <Selection>
           <Link style={{ textDecoration: "none" }} to="/map">
             <Map>Map</Map>
