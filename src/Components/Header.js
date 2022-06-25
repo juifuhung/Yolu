@@ -12,6 +12,10 @@ const HeaderContainer = styled.div`
   width: 100vw;
   height: 120px;
   border: solid green 1px;
+
+  @media (max-width: 800px) {
+    height: 160px;
+  }
 `;
 
 const HeaderContainerLeft = styled.div`
@@ -20,7 +24,16 @@ const HeaderContainerLeft = styled.div`
   align-items: center;
   width: 50%;
   height: 100%;
-  background-color: lightgrey;
+
+  @media (max-width: 1500px) {
+    width: 100vw;
+  }
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const HomepageLink = styled(Link)`
@@ -30,18 +43,20 @@ const HomepageLink = styled(Link)`
   width: 200px;
   height: 100%;
   margin: 0 20px 0 20px;
-  background-color: yellow;
+
+  @media (max-width: 800px) {
+    height: 40%;
+  }
 `;
 
 const WeatherLink = styled(Link)`
   display: flex;
   height: 100%;
   width: 195px;
-  background-color: yellow;
   text-decoration: none;
   color: #000000;
 
-  @media (max-width: 1500px) {
+  @media (max-width: 800px) {
     display: none;
   }
 `;
@@ -52,10 +67,6 @@ const WeatherSectionLeft = styled.section`
   align-items: start;
   height: 100%;
   z-index: 2;
-
-  @media (max-width: 1300px) {
-    display: none;
-  }
 `;
 
 const WeatherInformationMain = styled.section`
@@ -63,7 +74,6 @@ const WeatherInformationMain = styled.section`
   align-items: end;
   font-size: 35px;
   height: 60%;
-  background-color: white;
 `;
 
 const Temperature = styled.section`
@@ -78,11 +88,40 @@ const WeatherIcon = styled.div`
   height: 100%;
   width: 50%;
   z-index: 1;
-  background-color: aqua;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-image: url(${(props) => props.icon});
+`;
+
+const MobileNav = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #403939;
+  width: 100%;
+  height: 70px;
+
+  @media (min-width: 1501px) {
+    display: none;
+  }
+`;
+
+const MobileNavLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  margin: 0;
+  font-size: 2rem;
+  color: white;
+  text-decoration: none;
+`;
+
+const MobileNavCenterLine = styled.div`
+  background-color: #9a9a9a;
+  width: 2px;
+  height: 60%;
 `;
 
 const Nav = styled.div`
@@ -90,9 +129,12 @@ const Nav = styled.div`
   justify-content: space-between;
   margin-right: 2%;
   align-items: center;
-  border: solid black 1px;
   width: 40%;
   height: 100%;
+
+  @media (max-width: 1500px) {
+    display: none;
+  }
 `;
 
 const MapLink = styled(Link)`
@@ -116,10 +158,14 @@ const SignInLink = styled(Link)`
   color: #000000;
 `;
 
-const LogOutLink = styled(Link)`
+const LogOut = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 2rem;
   text-decoration: none;
   color: #000000;
+  cursor: pointer;
 `;
 
 const localId = window.localStorage.getItem("localId");
@@ -167,19 +213,38 @@ const Header = () => {
             <HomepageLink to="/">
               <img src={headerLogo} />
             </HomepageLink>
-            <WeatherLink
-              to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
-              target="_blank"
-            >
-              <WeatherSectionLeft>
-                <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
-                <Temperature>{temperature} °C</Temperature>
-              </WeatherSectionLeft>
-              <WeatherIcon
-                icon={`http://openweathermap.org/img/w/${icon}.png`}
-              />
-            </WeatherLink>
-            <HeaderTimer />
+            {window.screen.width > 1500 ? (
+              <WeatherLink
+                to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
+                target="_blank"
+              >
+                <WeatherSectionLeft>
+                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
+                  <Temperature>{temperature} °C</Temperature>
+                </WeatherSectionLeft>
+                <WeatherIcon
+                  icon={`http://openweathermap.org/img/w/${icon}.png`}
+                />
+              </WeatherLink>
+            ) : (
+              <HeaderTimer />
+            )}
+            {window.screen.width > 1500 ? (
+              <HeaderTimer />
+            ) : (
+              <WeatherLink
+                to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
+                target="_blank"
+              >
+                <WeatherSectionLeft>
+                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
+                  <Temperature>{temperature} °C</Temperature>
+                </WeatherSectionLeft>
+                <WeatherIcon
+                  icon={`http://openweathermap.org/img/w/${icon}.png`}
+                />
+              </WeatherLink>
+            )}
           </HeaderContainerLeft>
           <Nav>
             <MapLink to="/map">羅瓦涅米地圖</MapLink>
@@ -187,10 +252,10 @@ const Header = () => {
               我的最愛
             </FavoritesLink>
             {localId ? (
-              <LogOutLink onClick={logoutHandler}>
+              <LogOut onClick={logoutHandler}>
                 登出
                 <img src={MemberLogo} />
-              </LogOutLink>
+              </LogOut>
             ) : null}
             {!localId ? (
               <SignInLink to="/member">
@@ -200,6 +265,13 @@ const Header = () => {
             ) : null}
           </Nav>
         </HeaderContainer>
+        <MobileNav>
+          <MobileNavLink to="/map">互動地圖</MobileNavLink>
+          <MobileNavCenterLine />
+          <MobileNavLink to="/favorites" onClick={displayMessage}>
+            我的最愛
+          </MobileNavLink>
+        </MobileNav>
       </Font>
     </>
   );
