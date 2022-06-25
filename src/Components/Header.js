@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import HeaderTimer from "./HeaderTimer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Container } from "../styles/styles";
+import { Font } from "../styles/styles";
 import headerLogo from "../images/header-yolu.png";
 
 const HeaderContainer = styled.div`
@@ -41,11 +41,17 @@ const Nav = styled.div`
   height: 100%;
 `;
 
-const WeatherSection = styled.div`
+const WeatherLink = styled(Link)`
   display: flex;
   height: 100%;
-  width: 30%;
+  width: 20%;
   background-color: yellow;
+  text-decoration: none;
+  color: #000000;
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
 `;
 
 const WeatherSectionLeft = styled.section`
@@ -53,24 +59,37 @@ const WeatherSectionLeft = styled.section`
   flex-direction: column;
   align-items: start;
   height: 100%;
-  width: 50%;
+  z-index: 2;
+
+  @media (max-width: 1300px) {
+    display: none;
+  }
 `;
 
 const WeatherInformationMain = styled.section`
   display: flex;
-  justify-content: flex-end;
+  align-items: end;
   font-size: 35px;
+  height: 60%;
   background-color: white;
 `;
 
-const WeatherLeftContent = styled.div`
-  width: 50%;
-  height: 50%;
+const Temperature = styled.section`
+  display: flex;
+  align-items: start;
+  font-size: 20px;
+  height: 40%;
 `;
 
 const WeatherIcon = styled.div`
-  width: 50px;
-  height: 50px;
+  align-items: center;
+  height: 100%;
+  width: 50%;
+  z-index: 1;
+  background-color: aqua;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   background-image: url(${(props) => props.icon});
 `;
 
@@ -113,21 +132,24 @@ const Header = () => {
 
   return (
     <>
-      <Container>
+      <Font>
         <HeaderContainer>
           <HeaderContainerLeft>
             <HomepageLink to="/">
               <img src={headerLogo} />
             </HomepageLink>
-            <WeatherSection>
+            <WeatherLink
+              to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
+              target="_blank"
+            >
               <WeatherSectionLeft>
                 <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
-                <WeatherLeftContent>{temperature} °C</WeatherLeftContent>
+                <Temperature>{temperature} °C</Temperature>
               </WeatherSectionLeft>
               <WeatherIcon
                 icon={`http://openweathermap.org/img/w/${icon}.png`}
               />
-            </WeatherSection>
+            </WeatherLink>
             <HeaderTimer />
           </HeaderContainerLeft>
           <Nav>
@@ -145,7 +167,7 @@ const Header = () => {
             ) : null}
           </Nav>
         </HeaderContainer>
-      </Container>
+      </Font>
     </>
   );
 };

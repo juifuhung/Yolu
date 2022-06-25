@@ -1,9 +1,17 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
-export const Container = styled.div`
-  @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+export default createGlobalStyle`
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+  }
+`;
+
+export const Font = styled.div`
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap");
 
   * {
-    font-family: "Poppins", sans-serif;
+    font-family: "Noto Sans TC", sans-serif;
   }
 `;

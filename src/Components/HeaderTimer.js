@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import dayJs from "dayjs";
+import styled from "styled-components";
+import { Font } from "../styles/styles";
 var utc = require("dayjs/plugin/utc");
 var timezone = require("dayjs/plugin/timezone");
 dayJs.extend(utc);
@@ -12,6 +14,29 @@ const defaultRemainingTime = {
   days: "00",
   initialValue: true,
 };
+
+const HeaderCountDownSection = styled.section`
+  display: flex;
+  align-items: center;
+`;
+
+const HeaderCountDownWords = styled.span`
+  font-size: 2rem;
+  color: #ff0000;
+`;
+
+const HeaderCountDownNumbers = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 95px;
+  height: 69px;
+  font-size: 2.2rem;
+  color: #ffffff;
+  font-weight: 400;
+  background-color: #ff0000;
+  margin: 0 8px 0 8px;
+`;
 
 const Countdown = () => {
   const [remainingTime, setRemainingTime] = useState(defaultRemainingTime);
@@ -58,8 +83,13 @@ const Countdown = () => {
     } else {
       return (
         <>
-          <span>{d}</span>
-          <span>天</span>
+          <Font>
+            <HeaderCountDownSection>
+              <HeaderCountDownWords>聖誕節倒數</HeaderCountDownWords>
+              <HeaderCountDownNumbers>{d}</HeaderCountDownNumbers>
+              <HeaderCountDownWords>天</HeaderCountDownWords>
+            </HeaderCountDownSection>
+          </Font>
         </>
       );
     }

@@ -4,12 +4,14 @@ import Homepage from "./pages/Homepage";
 import Favorites from "./pages/Favorites";
 import Map from "./pages/Map";
 import Member from "./pages/Member";
+import GlobalCSS from "./styles/styles";
 
 const App = () => {
   const localId = window.localStorage.getItem("localId");
 
   return (
     <>
+      <GlobalCSS />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route
