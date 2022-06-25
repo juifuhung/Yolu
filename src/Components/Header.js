@@ -5,7 +5,8 @@ import styled from "styled-components";
 import { Font } from "../styles/styles";
 import headerLogo from "../images/header-yolu.png";
 import webMemberIcon from "../images/web-member-icon.png";
-import mobileMemberIcon from "../images/mobile-member-icon.png";
+import mobileMemberLoginIcon from "../images/mobile-member-login.png";
+import mobileLogOutMemberIcon from "../images/mobile-member-logout.png";
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -172,7 +173,7 @@ const MobileMember = styled(Link)`
   background-color: #353030;
   cursor: pointer;
   position: fixed;
-  top: 220px;
+  top: 250px;
   right: 0;
   z-index: 10;
 `;
@@ -217,11 +218,9 @@ const Header = () => {
   return (
     <>
       <Font>
-        {localId ? null : (
-          <MobileMember to="/member">
-            <img src={mobileMemberIcon} />
-          </MobileMember>
-        )}
+        <MobileMember to="/member" onClick={localId && logoutHandler}>
+          <img src={localId ? mobileLogOutMemberIcon : mobileMemberLoginIcon} />
+        </MobileMember>
 
         <HeaderContainer>
           <HeaderContainerLeft>
