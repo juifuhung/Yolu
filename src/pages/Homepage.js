@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { Font } from "../styles/styles";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Timer from "../components/Timer";
@@ -54,6 +55,44 @@ const Dot = styled.div`
 
   &:hover {
     cursor: pointer;
+  }
+`;
+
+const CarouselTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100vw;
+  position: absolute;
+  top: -40px;
+`;
+
+const CarouselYolu = styled.h1`
+  margin: 0;
+  font-size: 7rem;
+  font-weight: 1200;
+  color: white;
+
+  @media (max-width: 770px) {
+    font-size: 5rem;
+  }
+`;
+
+const CarouselChinese = styled.h2`
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: white;
+
+  @media (max-width: 770px) {
+    font-size: 1.8rem;
+  }
+
+  @media (max-width: 550px) {
+    font-weight: 600;
+    font-size: 1.2rem;
   }
 `;
 
@@ -125,34 +164,43 @@ const Homepage = () => {
   return (
     <>
       <Header />
-      <SlideShow>
-        <SlideshowSlider index={index}>
-          {slideImages.map((img, index) => (
-            <Slide key={index} img={img} />
-          ))}
-        </SlideshowSlider>
+      <Font>
+        <SlideShow>
+          <SlideshowSlider index={index}>
+            {slideImages.map((img, index) => (
+              <Slide key={index} img={img} />
+            ))}
+          </SlideshowSlider>
 
-        <SlideShowDots>
-          {slideImages.map((_, idx) => (
-            <Dot
-              key={idx}
-              active={index === idx}
-              onClick={() => {
-                setIndex(idx);
-              }}
-            />
-          ))}
-        </SlideShowDots>
-      </SlideShow>
-      <Timer />
-      <Selection>
-        <Link style={{ textDecoration: "none" }} to="/map">
-          <Map>Map</Map>
-        </Link>
-        <Link style={{ textDecoration: "none" }} to="/favorites">
-          <MyFavorites onClick={displayMessage}>My Favorites</MyFavorites>
-        </Link>
-      </Selection>
+          <SlideShowDots>
+            {slideImages.map((_, idx) => (
+              <Dot
+                key={idx}
+                active={index === idx}
+                onClick={() => {
+                  setIndex(idx);
+                }}
+              />
+            ))}
+          </SlideShowDots>
+
+          <CarouselTitle>
+            <CarouselYolu>Yolu</CarouselYolu>
+            <CarouselChinese>
+              最詳細的羅瓦涅米繁體中文旅遊資訊網
+            </CarouselChinese>
+          </CarouselTitle>
+        </SlideShow>
+        <Timer />
+        <Selection>
+          <Link style={{ textDecoration: "none" }} to="/map">
+            <Map>Map</Map>
+          </Link>
+          <Link style={{ textDecoration: "none" }} to="/favorites">
+            <MyFavorites onClick={displayMessage}>My Favorites</MyFavorites>
+          </Link>
+        </Selection>
+      </Font>
       <Footer />
     </>
   );

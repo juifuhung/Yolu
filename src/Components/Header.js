@@ -145,6 +145,10 @@ const MobileNav = styled.div`
   @media (min-width: 1501px) {
     display: none;
   }
+
+  @media (max-width: 480px) {
+    height: 60px;
+  }
 `;
 
 const MobileNavLink = styled(Link)`
@@ -156,6 +160,10 @@ const MobileNavLink = styled(Link)`
   font-size: 2rem;
   color: white;
   text-decoration: none;
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const MobileNavCenterLine = styled.div`

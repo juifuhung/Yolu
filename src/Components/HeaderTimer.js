@@ -36,6 +36,11 @@ const HeaderCountDownNumbers = styled.div`
   font-weight: 400;
   background-color: #ff0000;
   margin: 0 8px 0 8px;
+
+  @media (max-width: 480px) {
+    width: 80px;
+    height: 55px;
+  }
 `;
 
 const Countdown = () => {
