@@ -3,9 +3,8 @@ import styled, { createGlobalStyle } from "styled-components";
 export const UniversalStyle = createGlobalStyle`
   body {
     margin: 0;
-    padding: 0;
+    padding: 0px;
     box-sizing:border-box;
-    // overflow-x: hidden;
   }
 `;
 
