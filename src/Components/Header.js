@@ -11,7 +11,7 @@ import mobileLogOutMemberIcon from "../images/mobile-member-logout.png";
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100vw;
+  width: 100%;
   height: 120px;
 
   @media (max-width: 800px) {
@@ -27,7 +27,7 @@ const HeaderContainerLeft = styled.div`
   height: 100%;
 
   @media (max-width: 1500px) {
-    width: 100vw;
+    width: 100%;
   }
 
   @media (max-width: 800px) {
@@ -98,7 +98,7 @@ const WeatherIcon = styled.div`
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-right: 2%;
+  padding-right: 2%;
   align-items: center;
   width: 35%;
   height: 100%;
@@ -183,6 +183,10 @@ const MobileMember = styled(Link)`
   top: 150px;
   right: 0;
   z-index: 10;
+
+  @media (min-width: 1501px) {
+    display: none;
+  }
 
   @media (max-width: 1500px) {
     top: 230px;

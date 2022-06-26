@@ -14,14 +14,18 @@ const slideImages = [
   "https://img.onl/yToflG",
 ];
 
+const HomepageContainer = styled.div`
+  width: 100%;
+`;
+
 const SlideShow = styled.div`
+  width: 100%;
   overflow: hidden;
   position: relative;
   z-index: 2;
 `;
 
 const SlideshowSlider = styled.div`
-  width: 100vw;
   height: 440px;
   white-space: nowrap;
   transform: ${(props) => `translate3d(${-props.index * 100}%, 0, 0)`};
@@ -49,7 +53,7 @@ const SlideShowDots = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   position: absolute;
   bottom: 25px;
 `;
@@ -73,7 +77,7 @@ const CarouselTitle = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100vw;
+  width: 100%;
   position: absolute;
   top: -40px;
 `;
@@ -115,7 +119,7 @@ const MainTimer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   height: 300px;
 
   @media (max-width: 850px) {
@@ -152,6 +156,7 @@ const Selection = styled.div`
   margin-top: 50px;
   display: flex;
   justify-content: center;
+  width: 100%;
 
   @media (max-width: 1300px) {
     margin-top: 0px;
@@ -333,61 +338,63 @@ const Homepage = () => {
 
   return (
     <>
-      <Header />
-      <Font>
-        <SlideShow>
-          <SlideshowSlider index={index}>
-            {slideImages.map((img, index) => (
-              <Slide key={index} img={img} />
-            ))}
-          </SlideshowSlider>
+      <HomepageContainer>
+        <Header />
+        <Font>
+          <SlideShow>
+            <SlideshowSlider index={index}>
+              {slideImages.map((img, index) => (
+                <Slide key={index} img={img} />
+              ))}
+            </SlideshowSlider>
 
-          <Next onClick={nextSlide} />
-          <Previous onClick={previousSlide} />
+            <Next onClick={nextSlide} />
+            <Previous onClick={previousSlide} />
 
-          <SlideShowDots>
-            {slideImages.map((_, idx) => (
-              <Dot
-                key={idx}
-                active={index === idx}
-                onClick={() => {
-                  setIndex(idx);
-                }}
-              />
-            ))}
-          </SlideShowDots>
+            <SlideShowDots>
+              {slideImages.map((_, idx) => (
+                <Dot
+                  key={idx}
+                  active={index === idx}
+                  onClick={() => {
+                    setIndex(idx);
+                  }}
+                />
+              ))}
+            </SlideShowDots>
 
-          <CarouselTitle>
-            <CarouselYolu>Yolu</CarouselYolu>
-            <CarouselChinese>
-              最詳細的羅瓦涅米繁體中文旅遊資訊網
-            </CarouselChinese>
-          </CarouselTitle>
-        </SlideShow>
+            <CarouselTitle>
+              <CarouselYolu>Yolu</CarouselYolu>
+              <CarouselChinese>
+                最詳細的羅瓦涅米繁體中文旅遊資訊網
+              </CarouselChinese>
+            </CarouselTitle>
+          </SlideShow>
 
-        <MainTimer>
-          <MainTimerTitle>距離聖誕節還有</MainTimerTitle>
-          <Timer />
-        </MainTimer>
+          <MainTimer>
+            <MainTimerTitle>距離聖誕節還有</MainTimerTitle>
+            <Timer />
+          </MainTimer>
 
-        <Selection>
-          <MainCircleContainer>
-            <MainCircle img={`https://img.onl/PBCUmN`} to="/map">
-              <MainCircleTitle>互動地圖</MainCircleTitle>
-            </MainCircle>
-          </MainCircleContainer>
-          <MainCircleContainer>
-            <MainCircle
-              img={`https://img.onl/MyS2bP`}
-              to="/favorites"
-              onClick={displayMessage}
-            >
-              <MainCircleTitle>我的最愛</MainCircleTitle>
-            </MainCircle>
-          </MainCircleContainer>
-        </Selection>
-      </Font>
-      <Footer />
+          <Selection>
+            <MainCircleContainer>
+              <MainCircle img={`https://img.onl/PBCUmN`} to="/map">
+                <MainCircleTitle>互動地圖</MainCircleTitle>
+              </MainCircle>
+            </MainCircleContainer>
+            <MainCircleContainer>
+              <MainCircle
+                img={`https://img.onl/MyS2bP`}
+                to="/favorites"
+                onClick={displayMessage}
+              >
+                <MainCircleTitle>我的最愛</MainCircleTitle>
+              </MainCircle>
+            </MainCircleContainer>
+          </Selection>
+        </Font>
+        <Footer />
+      </HomepageContainer>
     </>
   );
 };
