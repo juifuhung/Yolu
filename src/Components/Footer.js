@@ -51,6 +51,10 @@ const FooterTitle = styled.h4`
   @media (max-width: 380px) {
     font-size: 1.6rem;
   }
+
+  @media (max-width: 360px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const FooterSubTitle = styled.h5`
@@ -69,6 +73,10 @@ const FooterSubTitle = styled.h5`
 
   @media (max-width: 660px) {
     font-size: 1.2rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 1rem;
   }
 `;
 

@@ -69,6 +69,11 @@ const Dot = styled.div`
   &:hover {
     cursor: pointer;
   }
+
+  @media (max-width: 360px) {
+    height: 8px;
+    width: 8px;
+  }
 `;
 
 const CarouselTitle = styled.div`
@@ -111,6 +116,11 @@ const CarouselChinese = styled.h2`
   @media (max-width: 460px) {
     font-weight: 400;
     font-size: 1.2rem;
+  }
+
+  @media (max-width: 360px) {
+    font-weight: 300;
+    font-size: 1rem;
   }
 `;
 

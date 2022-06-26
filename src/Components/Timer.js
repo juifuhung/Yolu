@@ -58,6 +58,11 @@ const TimerSection = styled.div`
     width: 90%;
     height: 42px;
   }
+
+  @media (max-width: 360px) {
+    width: 95%;
+    height: 42px;
+  }
 `;
 
 const Days = styled.div`
@@ -104,6 +109,11 @@ const Days = styled.div`
     width: 60px;
     font-size: 1.5rem;
     margin: 0 8px;
+  }
+
+  @media (max-width: 360px) {
+    width: 55px;
+    font-size: 1.2rem;
   }
 `;
 
@@ -152,6 +162,11 @@ const Numbers = styled.div`
     font-size: 1.5rem;
     margin: 0 8px;
   }
+
+  @media (max-width: 360px) {
+    width: 45px;
+    font-size: 1.2rem;
+  }
 `;
 
 const ChineseWords = styled.h4`
@@ -166,6 +181,10 @@ const ChineseWords = styled.h4`
   @media (max-width: 570px) {
     font-weight: 500;
     font-size: 1.5rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 1.2rem;
   }
 `;
 
