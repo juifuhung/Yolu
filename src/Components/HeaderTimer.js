@@ -23,6 +23,10 @@ const HeaderCountDownSection = styled.section`
 const HeaderCountDownWords = styled.span`
   font-size: 2rem;
   color: #ff0000;
+
+  @media (max-width: 570px) {
+    font-size: 1.6rem;
+  }
 `;
 
 const HeaderCountDownNumbers = styled.div`
@@ -37,9 +41,16 @@ const HeaderCountDownNumbers = styled.div`
   background-color: #ff0000;
   margin: 0 8px 0 8px;
 
-  @media (max-width: 480px) {
+  @media (max-width: 800px) {
     width: 80px;
     height: 55px;
+    font-size: 2rem;
+  }
+
+  @media (max-width: 570px) {
+    width: 65px;
+    height: 48px;
+    font-size: 1.6rem;
   }
 `;
 

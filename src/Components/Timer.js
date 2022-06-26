@@ -21,16 +21,20 @@ const TimerSection = styled.div`
   height: 150px;
   width: 80%;
 
-  @media (max-width: 1270px) {
+  @media (max-width: 1350px) {
     height: 140px;
   }
 
-  @media (max-width: 1190px) {
-    height: 110px;
+  @media (max-width: 1280px) {
+    height: 120px;
   }
 
-  @media (max-width: 950px) {
+  @media (max-width: 1180px) {
     height: 100px;
+  }
+
+  @media (max-width: 990px) {
+    height: 90px;
   }
 
   @media (max-width: 850px) {
@@ -41,15 +45,18 @@ const TimerSection = styled.div`
     height: 70px;
   }
 
+  @media (max-width: 650px) {
+    height: 60px;
+  }
+
   @media (max-width: 570px) {
-    height: 65px;
+    height: 55px;
     font-size: 1.5rem;
-    margin: 0 5px 0 8px;
   }
 
   @media (max-width: 490px) {
     width: 90%;
-    height: 50px;
+    height: 42px;
   }
 `;
 
@@ -65,17 +72,21 @@ const Days = styled.div`
   font-size: 4rem;
   border-radius: 1rem;
 
-  @media (max-width: 1270px) {
+  @media (max-width: 1280px) {
     width: 180px;
   }
 
-  @media (max-width: 1190px) {
-    font-size: 3.5rem;
-    width: 160px;
+  @media (max-width: 1180px) {
+    font-size: 3rem;
+    width: 140px;
   }
 
-  @media (max-width: 950px) {
+  @media (max-width: 1080px) {
     width: 130px;
+  }
+
+  @media (max-width: 990px) {
+    width: 120px;
   }
 
   @media (max-width: 850px) {
@@ -84,14 +95,15 @@ const Days = styled.div`
 
   @media (max-width: 770px) {
     font-size: 2rem;
-    width: 100px;
-    margin: 0 5px 0 8px;
+    width: 90px;
+    border-radius: 0.8rem;
+    margin: 0 10px 0 15px;
   }
 
   @media (max-width: 570px) {
-    width: 80px;
+    width: 60px;
     font-size: 1.5rem;
-    margin: 0 5px 0 8px;
+    margin: 0 8px;
   }
 `;
 
@@ -107,16 +119,20 @@ const Numbers = styled.div`
   font-size: 4rem;
   border-radius: 1rem;
 
-  @media (max-width: 1270px) {
-    width: 160px;
+  @media (max-width: 1280px) {
+    width: 150px;
   }
 
-  @media (max-width: 1190px) {
-    font-size: 3.5rem;
-    width: 140px;
+  @media (max-width: 1180px) {
+    font-size: 3rem;
+    width: 120px;
   }
 
-  @media (max-width: 950px) {
+  @media (max-width: 1080px) {
+    width: 110px;
+  }
+
+  @media (max-width: 990px) {
     width: 100px;
   }
 
@@ -126,14 +142,15 @@ const Numbers = styled.div`
 
   @media (max-width: 770px) {
     font-size: 2rem;
-    width: 90px;
-    margin: 0 5px 0 8px;
+    width: 80px;
+    border-radius: 0.8rem;
+    margin: 0 10px 0 15px;
   }
 
   @media (max-width: 570px) {
-    width: 70px;
+    width: 50px;
     font-size: 1.5rem;
-    margin: 0 5px 0 8px;
+    margin: 0 8px;
   }
 `;
 
@@ -142,7 +159,7 @@ const ChineseWords = styled.h4`
   margin: 0;
   color: #ff0000;
 
-  @media (max-width: 950px) {
+  @media (max-width: 990px) {
     font-size: 2rem;
   }
 

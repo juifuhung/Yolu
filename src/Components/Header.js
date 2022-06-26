@@ -17,6 +17,10 @@ const HeaderContainer = styled.div`
   @media (max-width: 800px) {
     height: 160px;
   }
+
+  @media (max-width: 570px) {
+    height: 140px;
+  }
 `;
 
 const HeaderContainerLeft = styled.div`
@@ -46,6 +50,7 @@ const HomepageLink = styled(Link)`
   margin: 0 20px 0 20px;
 
   @media (max-width: 800px) {
+    margin-bottom: 5px;
     height: 40%;
   }
 `;
