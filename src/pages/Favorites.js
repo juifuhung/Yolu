@@ -211,6 +211,7 @@ const Favorites = () => {
   const deleteHandler = async (id) => {
     try {
       await deleteDoc(doc(db, "Favorites", `${id}`));
+      window.scroll({ top: 0, behavior: "smooth" });
     } catch (e) {
       console.error("Error deleting document: ", e);
     }
