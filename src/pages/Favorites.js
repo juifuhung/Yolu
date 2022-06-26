@@ -277,6 +277,7 @@ const Favorites = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
+    window.scroll({ top: 0, behavior: "smooth" });
   };
 
   const sortFromNewToOld = () => {
@@ -284,6 +285,7 @@ const Favorites = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setFavorites(newToOldArray);
+    window.scroll({ top: 0, behavior: "smooth" });
   };
 
   return (
