@@ -8,9 +8,9 @@ import {
   getFirestore,
   query,
   where,
-  orderBy,
-  limit,
-  startAfter,
+  // orderBy,
+  // limit,
+  // startAfter,
 } from "firebase/firestore";
 import styled from "styled-components";
 import Header from "../components/Header";
@@ -91,9 +91,9 @@ const displayName = window.localStorage.getItem("displayName");
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
-  const [favoritesArray, setFavoritesArray] = useState([]);
+  // const [favoritesArray, setFavoritesArray] = useState([]);
 
-  let previousDocumentSnapshots;
+  // let previousDocumentSnapshots;
 
   const observer = useRef();
   const lastFavoriteItem = useCallback((node) => {
@@ -106,51 +106,51 @@ const Favorites = () => {
       if (entries[0].isIntersecting) {
         console.log("visible");
         console.log(node);
-        loadMoreItems();
+        // loadMoreItems();
         return;
       }
     });
     if (node) observer.current.observe(node);
   }, []);
 
-  const getFavoritesWithPagination = async () => {
-    const first = query(
-      collection(db, "Favorites"),
-      where("localId", "==", localId),
-      orderBy("created_time"),
-      limit(3)
-    );
+  // const getFavoritesWithPagination = async () => {
+  //   const first = query(
+  //     collection(db, "Favorites"),
+  //     where("localId", "==", localId),
+  //     orderBy("created_time"),
+  //     limit(3)
+  //   );
 
-    const documentSnapshots = await getDocs(first);
-    let favoritesArray = [];
-    documentSnapshots.forEach((doc) => {
-      favoritesArray.push(doc.data());
-    });
-    setFavoritesArray(favoritesArray);
-    previousDocumentSnapshots = documentSnapshots;
-  };
+  //   const documentSnapshots = await getDocs(first);
+  //   let favoritesArray = [];
+  //   documentSnapshots.forEach((doc) => {
+  //     favoritesArray.push(doc.data());
+  //   });
+  //   setFavoritesArray(favoritesArray);
+  //   previousDocumentSnapshots = documentSnapshots;
+  // };
 
-  const loadMoreItems = async () => {
-    const lastVisible =
-      previousDocumentSnapshots.docs[previousDocumentSnapshots.docs.length - 1];
+  // const loadMoreItems = async () => {
+  //   const lastVisible =
+  //     previousDocumentSnapshots.docs[previousDocumentSnapshots.docs.length - 1];
 
-    const next = query(
-      collection(db, "Favorites"),
-      where("localId", "==", localId),
-      orderBy("created_time"),
-      startAfter(lastVisible),
-      limit(3)
-    );
+  //   const next = query(
+  //     collection(db, "Favorites"),
+  //     where("localId", "==", localId),
+  //     orderBy("created_time"),
+  //     startAfter(lastVisible),
+  //     limit(3)
+  //   );
 
-    const nextDocumentSnapshots = await getDocs(next);
-    nextDocumentSnapshots.forEach((doc) => {
-      favoritesArray.push(doc.data());
-    });
-    setFavoritesArray(favoritesArray);
-  };
+  //   const nextDocumentSnapshots = await getDocs(next);
+  //   nextDocumentSnapshots.forEach((doc) => {
+  //     favoritesArray.push(doc.data());
+  //   });
+  //   setFavoritesArray(favoritesArray);
+  // };
 
   useEffect(() => {
-    getFavoritesWithPagination(localId);
+    // getFavoritesWithPagination(localId);
     getFavorites(localId);
   }, []);
 
@@ -174,7 +174,7 @@ const Favorites = () => {
       querySnapshot.forEach((doc) => {
         categoryArray.push(doc.data());
       });
-      setFavoritesArray(categoryArray);
+      setFavorites(categoryArray);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -182,21 +182,21 @@ const Favorites = () => {
 
   const getFavorites = async () => {
     try {
-      let favoritesArray = [];
+      let favorites = [];
       const querySnapshot = await getDocs(
         query(collection(db, "Favorites"), where("localId", "==", localId))
       );
       querySnapshot.forEach((doc) => {
-        favoritesArray.push({ ...doc.data(), id: doc.id });
+        favorites.push({ ...doc.data(), id: doc.id });
       });
-      setFavorites(favoritesArray);
+      setFavorites(favorites);
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
     }
   };
 
   const sortFromOldToNew = () => {
-    const oldToNewArray = [...favoritesArray].sort((a, b) => {
+    const oldToNewArray = [...favorites].sort((a, b) => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
@@ -212,7 +212,7 @@ const Favorites = () => {
   return (
     <>
       <Header />
-      {console.log(favoritesArray)}
+      {console.log(favorites)}
       <WelcomeMessage>{`hi ${displayName}`}</WelcomeMessage>
       {favorites.length === 1 ? (
         <ItemQuantity>{`${favorites.length} item on the list`}</ItemQuantity>
@@ -221,9 +221,9 @@ const Favorites = () => {
       ) : (
         <ItemQuantity>No Item Found</ItemQuantity>
       )}
-      {favoritesArray &&
-        favoritesArray.map((item, index) => {
-          if (favoritesArray.length === index + 1) {
+      {favorites &&
+        favorites.map((item, index) => {
+          if (favorites.length === index + 1) {
             return (
               <FavoriteItem
                 ref={lastFavoriteItem}
