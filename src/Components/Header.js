@@ -1,41 +1,205 @@
 import React, { useState, useEffect } from "react";
-import Timer from "./Timer";
+import HeaderTimer from "./HeaderTimer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { Font } from "../styles/styles";
+import headerLogo from "../images/header-yolu.png";
+import webMemberIcon from "../images/web-member-icon.png";
+import mobileMemberLoginIcon from "../images/mobile-member-login.png";
+import mobileLogOutMemberIcon from "../images/mobile-member-logout.png";
 
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100vw;
+  width: 100%;
   height: 120px;
-  border: solid green 1px;
+
+  @media (max-width: 800px) {
+    height: 160px;
+  }
+
+  @media (max-width: 570px) {
+    height: 140px;
+  }
+`;
+
+const HeaderContainerLeft = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  height: 100%;
+
+  @media (max-width: 1500px) {
+    width: 100%;
+  }
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+const HomepageLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 100%;
+  margin: 0 20px 0 20px;
+
+  @media (max-width: 800px) {
+    margin-bottom: 5px;
+    height: 40%;
+  }
+`;
+
+const WeatherLink = styled(Link)`
+  display: flex;
+  height: 100%;
+  width: 195px;
+  text-decoration: none;
+  color: #000000;
+
+  @media (max-width: 800px) {
+    display: none;
+  }
+`;
+
+const WeatherSectionLeft = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  height: 100%;
+  z-index: 2;
+`;
+
+const WeatherInformationMain = styled.section`
+  display: flex;
+  align-items: end;
+  font-size: 35px;
+  height: 60%;
+`;
+
+const Temperature = styled.section`
+  display: flex;
+  align-items: start;
+  font-size: 20px;
+  height: 40%;
+`;
+
+const WeatherIcon = styled.div`
+  align-items: center;
+  height: 100%;
+  width: 50%;
+  z-index: 1;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(${(props) => props.icon});
 `;
 
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
+  padding-right: 2%;
   align-items: center;
-  border: solid black 1px;
-  width: 30%;
+  width: 35%;
   height: 100%;
+
+  @media (max-width: 1500px) {
+    display: none;
+  }
 `;
 
-const Weather = styled.div`
+const WebNavLink = styled(Link)`
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
+`;
+
+const SignInLink = styled(Link)`
   display: flex;
-  flex-direction: column;
-  width: 30%;
-  background-color: yellow;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
 `;
 
-const WeatherContent = styled.div`
+const LogOut = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  text-decoration: none;
+  color: #000000;
+  cursor: pointer;
+`;
+
+const MobileNav = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #403939;
+  width: 100%;
+  height: 70px;
+
+  @media (min-width: 1501px) {
+    display: none;
+  }
+
+  @media (max-width: 480px) {
+    height: 60px;
+  }
+`;
+
+const MobileNavLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 50%;
-  height: 50%;
+  margin: 0;
+  font-size: 2rem;
+  color: white;
+  text-decoration: none;
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+  }
 `;
 
-const WeatherIcon = styled.div`
-  width: 50px;
-  height: 50px;
-  background-image: url(${(props) => props.icon});
+const MobileNavCenterLine = styled.div`
+  background-color: #9a9a9a;
+  width: 2px;
+  height: 60%;
+`;
+
+const MobileMember = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  background-color: #353030;
+  cursor: pointer;
+  position: fixed;
+  top: 150px;
+  right: 0;
+  z-index: 10;
+
+  @media (min-width: 1501px) {
+    display: none;
+  }
+
+  @media (max-width: 1500px) {
+    top: 230px;
+  }
+
+  @media (max-width: 800px) {
+    top: 250px;
+  }
 `;
 
 const localId = window.localStorage.getItem("localId");
@@ -77,31 +241,76 @@ const Header = () => {
 
   return (
     <>
-      <HeaderContainer>
-        <Link to="/">
-          <div>Home</div>
-        </Link>
-        <Timer />
-        <Weather>
-          <WeatherContent>{weatherMain}</WeatherContent>
-          <WeatherContent>{temperature} °C</WeatherContent>
-          <WeatherIcon icon={`http://openweathermap.org/img/w/${icon}.png`} />
-        </Weather>
-        <Nav>
-          <Link to="/map">
-            <div>Map</div>
-          </Link>
-          <Link to="/favorites">
-            <div onClick={displayMessage}>My Favorites</div>
-          </Link>
-          {localId ? <div onClick={logoutHandler}>Log out</div> : null}
-          {!localId ? (
-            <Link to="/member">
-              <div>sign in</div>
-            </Link>
-          ) : null}
-        </Nav>
-      </HeaderContainer>
+      <Font>
+        <MobileMember to="/member" onClick={localId && logoutHandler}>
+          <img src={localId ? mobileLogOutMemberIcon : mobileMemberLoginIcon} />
+        </MobileMember>
+
+        <HeaderContainer>
+          <HeaderContainerLeft>
+            <HomepageLink to="/">
+              <img src={headerLogo} />
+            </HomepageLink>
+            {window.screen.width > 1500 ? (
+              <WeatherLink
+                to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
+                target="_blank"
+              >
+                <WeatherSectionLeft>
+                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
+                  <Temperature>{temperature} °C</Temperature>
+                </WeatherSectionLeft>
+                <WeatherIcon
+                  icon={`http://openweathermap.org/img/w/${icon}.png`}
+                />
+              </WeatherLink>
+            ) : (
+              <HeaderTimer />
+            )}
+            {window.screen.width > 1500 ? (
+              <HeaderTimer />
+            ) : (
+              <WeatherLink
+                to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
+                target="_blank"
+              >
+                <WeatherSectionLeft>
+                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
+                  <Temperature>{temperature} °C</Temperature>
+                </WeatherSectionLeft>
+                <WeatherIcon
+                  icon={`http://openweathermap.org/img/w/${icon}.png`}
+                />
+              </WeatherLink>
+            )}
+          </HeaderContainerLeft>
+          <Nav>
+            <WebNavLink to="/map">羅瓦涅米地圖</WebNavLink>
+            <WebNavLink to="/favorites" onClick={displayMessage}>
+              我的最愛
+            </WebNavLink>
+            {localId ? (
+              <LogOut onClick={logoutHandler}>
+                登出
+                <img src={webMemberIcon} />
+              </LogOut>
+            ) : null}
+            {!localId ? (
+              <SignInLink to="/member">
+                會員登入
+                <img src={webMemberIcon} />
+              </SignInLink>
+            ) : null}
+          </Nav>
+        </HeaderContainer>
+        <MobileNav>
+          <MobileNavLink to="/map">互動地圖</MobileNavLink>
+          <MobileNavCenterLine />
+          <MobileNavLink to="/favorites" onClick={displayMessage}>
+            我的最愛
+          </MobileNavLink>
+        </MobileNav>
+      </Font>
     </>
   );
 };
