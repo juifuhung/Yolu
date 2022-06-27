@@ -76,7 +76,7 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <>
       <HeaderContainer>
         <Link to="/">
           <div>Home</div>
@@ -102,7 +102,7 @@ const Header = () => {
           ) : null}
         </Nav>
       </HeaderContainer>
-    </div>
+    </>
   );
 };
 

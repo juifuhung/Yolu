@@ -5,11 +5,11 @@ import Favorites from "./pages/Favorites";
 import Map from "./pages/Map";
 import Member from "./pages/Member";
 
-function App() {
+const App = () => {
   const localId = window.localStorage.getItem("localId");
 
   return (
-    <div className="App">
+    <>
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route
@@ -22,8 +22,8 @@ function App() {
           element={localId ? <Navigate to="/" /> : <Member />}
         />
       </Routes>
-    </div>
+    </>
   );
-}
+};
 
 export default App;

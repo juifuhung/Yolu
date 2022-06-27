@@ -37,7 +37,7 @@ const MapCategoryDiv = ({
   showFavoriteHandler,
 }) => {
   return (
-    <div>
+    <>
       <CategoryButton
         onClick={() => {
           category
@@ -49,7 +49,7 @@ const MapCategoryDiv = ({
       >
         {category ? category : favorites ? "Show Favorites" : "Show All"}
       </CategoryButton>
-    </div>
+    </>
   );
 };
 

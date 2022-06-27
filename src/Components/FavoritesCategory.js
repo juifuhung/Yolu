@@ -29,17 +29,27 @@ const CategoryButton = styled.div`
   color: white;
 `;
 
-const FavoritesCategoryDiv = ({ category, categoryHandler, getFavorites }) => {
+const localId = window.localStorage.getItem("localId");
+
+const FavoritesCategoryDiv = ({
+  category,
+  categoryHandlerWithPagination,
+  getFavoritesWithPagination,
+  getTotalFavorites,
+}) => {
   return (
-    <div>
+    <>
       <CategoryButton
         onClick={() => {
-          category ? categoryHandler(`${category}`) : getFavorites();
+          getTotalFavorites(localId, `${category}`);
+          category
+            ? categoryHandlerWithPagination(`${category}`)
+            : getFavoritesWithPagination(localId);
         }}
       >
         {category ? category : "Show All"}
       </CategoryButton>
-    </div>
+    </>
   );
 };
 

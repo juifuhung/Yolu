@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import Header from "../Components/Header";
-import Footer from "../Components/Footer";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const slideImages = [
   "https://img.onl/vlV7aI",
@@ -88,6 +88,8 @@ const MyFavorites = styled.div`
   background-color: aqua;
 `;
 
+const localId = window.localStorage.getItem("localId");
+
 const Homepage = () => {
   const [index, setIndex] = useState(0);
   const timeoutRef = useRef(null);
@@ -113,8 +115,6 @@ const Homepage = () => {
     };
   }, [index]);
 
-  const localId = window.localStorage.getItem("localId");
-
   const displayMessage = () => {
     if (!localId) {
       alert("please sign in");
@@ -122,7 +122,7 @@ const Homepage = () => {
   };
 
   return (
-    <div>
+    <>
       <Header />
       <h1>Homepage</h1>
       <SlideShow>
@@ -154,7 +154,7 @@ const Homepage = () => {
         </Link>
       </Selection>
       <Footer />
-    </div>
+    </>
   );
 };
 
