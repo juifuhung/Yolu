@@ -70,7 +70,8 @@ const Dot = styled.div`
     cursor: pointer;
   }
 
-  @media (max-width: 360px) {
+  @media (max-width: 550px) {
+    margin: 0px 5px;
     height: 8px;
     width: 8px;
   }
