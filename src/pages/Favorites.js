@@ -92,6 +92,8 @@ const displayName = window.localStorage.getItem("displayName");
 const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
   const [favoritesArray, setFavoritesArray] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [hasMore, setHasMore] = useState(false);
 
   let previousDocumentSnapshots;
 
@@ -114,6 +116,7 @@ const Favorites = () => {
   }, []);
 
   const getFavoritesWithPagination = async () => {
+    // setLoading(true);
     const first = query(
       collection(db, "Favorites"),
       where("localId", "==", localId),
@@ -133,7 +136,7 @@ const Favorites = () => {
   const loadMoreItems = async () => {
     const lastVisible =
       previousDocumentSnapshots.docs[previousDocumentSnapshots.docs.length - 1];
-
+    console.log(lastVisible);
     const next = query(
       collection(db, "Favorites"),
       where("localId", "==", localId),
@@ -143,10 +146,14 @@ const Favorites = () => {
     );
 
     const nextDocumentSnapshots = await getDocs(next);
+    let newFavoritesArray = [];
     nextDocumentSnapshots.forEach((doc) => {
-      favoritesArray.push(doc.data());
+      newFavoritesArray.push(doc.data());
     });
-    setFavoritesArray(favoritesArray);
+    setFavoritesArray((prevFavorites) => {
+      return [...prevFavorites, ...newFavoritesArray];
+    });
+    previousDocumentSnapshots = nextDocumentSnapshots;
   };
 
   useEffect(() => {
