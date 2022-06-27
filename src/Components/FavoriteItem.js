@@ -68,7 +68,7 @@ const FavoriteItemDiv = (
     category,
     timestamp,
     deleteHandler,
-    getFavorites,
+    getFavoritesWithPagination,
   },
   ref
 ) => {
@@ -90,7 +90,7 @@ const FavoriteItemDiv = (
           <FaStar
             onClick={() => {
               deleteHandler(id);
-              getFavorites();
+              getFavoritesWithPagination();
               alert(`removed ${title} from favorite list`);
             }}
           />
