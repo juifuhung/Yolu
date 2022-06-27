@@ -35,11 +35,13 @@ const FavoritesCategoryDiv = ({
   category,
   categoryHandlerWithPagination,
   getFavoritesWithPagination,
+  getTotalFavorites,
 }) => {
   return (
     <>
       <CategoryButton
         onClick={() => {
+          getTotalFavorites(localId, `${category}`);
           category
             ? categoryHandlerWithPagination(`${category}`)
             : getFavoritesWithPagination(localId);
