@@ -16,20 +16,52 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 getFirestore();
 
-const CategoryButton = styled.div`
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 80px;
+  height: 110px;
+  margin: 2px;
+  cursor: pointer;
+
+  @media (max-width: 340px) {
+    height: 100px;
+    margin: 0;
+  }
+`;
+
+const CategoryWords = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 120px;
-  height: 100px;
-  margin: 2px;
-  border-radius: 20%;
+  width: 80px;
+  height: 30px;
   background-color: red;
-  cursor: pointer;
   color: white;
+
+  @media (max-width: 340px) {
+    font-size: 0.9rem;
+    width: 70px;
+  }
 `;
 
-const MapCategoryDiv = ({
+const Icon = styled.div`
+  width: 70px;
+  height: 70px;
+  background-image: url(${(props) => props.icon});
+  background-size: 95%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  @media (max-width: 340px) {
+    width: 60px;
+    height: 60px;
+  }
+`;
+
+const MapCategoryItem = ({
   category,
   favorites,
   categoryHandler,
@@ -38,19 +70,30 @@ const MapCategoryDiv = ({
 }) => {
   return (
     <>
-      <CategoryButton
+      <Container
         onClick={() => {
           category
-            ? categoryHandler(`${category}`)
+            ? categoryHandler(`${category.title}`)
             : favorites
             ? showFavoriteHandler()
             : getData();
         }}
       >
-        {category ? category : favorites ? "Show Favorites" : "Show All"}
-      </CategoryButton>
+        <Icon
+          icon={
+            category
+              ? category.icon
+              : favorites
+              ? "https://img.onl/sa6Si"
+              : "https://img.onl/M4U7Oy"
+          }
+        />
+        <CategoryWords>
+          {category ? category.title : favorites ? "顯示最愛" : "顯示全部"}
+        </CategoryWords>
+      </Container>
     </>
   );
 };
 
-export default MapCategoryDiv;
+export default MapCategoryItem;

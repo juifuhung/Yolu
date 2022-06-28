@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaStar } from "react-icons/fa";
 import styled from "styled-components";
@@ -36,21 +36,33 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
-const ButtonArea = styled.div`
+const ButtonSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 150px;
+  width: 100%;
+  margin: 17px 0;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  @media (max-width: 340px) {
+    height: 234px;
+  }
 `;
 
 const categoryArray = [
-  "Museum",
-  "Nature",
-  "Restaurant",
-  "Christmas",
-  "Shopping",
-  "Transportation",
+  { title: "博物館", icon: "https://img.onl/on0zJn" },
+  { title: "自然", icon: "https://img.onl/djbguI" },
+  { title: "餐廳", icon: "https://img.onl/Dw7xbi" },
+  { title: "聖誕主題", icon: "https://img.onl/t3NmW1" },
+  { title: "購物", icon: "https://img.onl/FKDkN6" },
+  { title: "交通", icon: "https://img.onl/n9K39V" },
 ];
 
 const localId = window.localStorage.getItem("localId");
@@ -61,7 +73,7 @@ const Map = () => {
   const [showFavorites, setShowFavorites] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const center = useMemo(() => ({ lat: 66.533688, lng: 25.75218 }), []);
+  const center = { lat: 66.533688, lng: 25.75218 };
 
   const navigate = useNavigate();
 
@@ -235,21 +247,25 @@ const Map = () => {
           </InfoWindow>
         )}
       </GoogleMap>
-      <ButtonArea>
-        {categoryArray.map((category) => (
-          <MapCategoryItem
-            key={category}
-            category={category}
-            categoryHandler={categoryHandler}
-          />
-        ))}
+      <ButtonSection>
+        <Buttons>
+          {categoryArray.map((category) => (
+            <MapCategoryItem
+              key={category.title}
+              category={category}
+              categoryHandler={categoryHandler}
+            />
+          ))}
 
-        <MapCategoryItem getData={getData} />
-        <MapCategoryItem
-          favorites={favorites}
-          showFavoriteHandler={showFavoriteHandler}
-        />
-      </ButtonArea>
+          <MapCategoryItem getData={getData} />
+          {localId && (
+            <MapCategoryItem
+              favorites={favorites}
+              showFavoriteHandler={showFavoriteHandler}
+            />
+          )}
+        </Buttons>
+      </ButtonSection>
       <Footer />
     </>
   );

@@ -47,7 +47,7 @@ const FavoritesCategoryDiv = ({
             : getFavoritesWithPagination(localId);
         }}
       >
-        {category ? category : "Show All"}
+        {category ? category : "顯示全部"}
       </CategoryButton>
     </>
   );

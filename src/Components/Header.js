@@ -117,6 +117,10 @@ const WebNavLink = styled(Link)`
   font-size: 2rem;
   text-decoration: none;
   color: #000000;
+
+  &:hover {
+    color: #7e7e7e;
+  }
 `;
 
 const SignInLink = styled(Link)`
@@ -167,6 +171,10 @@ const MobileNavLink = styled(Link)`
 
   @media (max-width: 480px) {
     font-size: 1.5rem;
+  }
+
+  :hover {
+    color: #c4c4c4;
   }
 `;
 
