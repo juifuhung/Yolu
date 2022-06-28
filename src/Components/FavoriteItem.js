@@ -89,9 +89,9 @@ const FavoriteItemDiv = (
           <FavoriteItemImage img={img} alt="image" />
           <FaStar
             onClick={() => {
-              deleteHandler(id);
+              deleteHandler(id, category);
               getFavoritesWithPagination();
-              alert(`removed ${title} from favorite list`);
+              alert(`已將「${title}」移出最愛清單`);
             }}
           />
         </FavoriteItem>

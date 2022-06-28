@@ -103,8 +103,6 @@ const Favorites = () => {
     }
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        console.log(previousDocumentSnapshots);
-        console.log(previousDocumentSnapshotsWithCategory);
         if (previousDocumentSnapshotsWithCategory) {
           categoryLoadMoreItems();
         } else {
@@ -120,7 +118,9 @@ const Favorites = () => {
   }, []);
 
   const getTotalFavorites = async (localId, category) => {
-    if (!category || category === "undefined") {
+    console.log(category);
+    console.log(typeof category);
+    if (!category || category === "undefined" || category === undefined) {
       console.log("沒選");
       const totalFavorites = query(
         collection(db, "Favorites"),
@@ -130,7 +130,7 @@ const Favorites = () => {
       const querySnapshot = await getDocs(totalFavorites);
       let totalFavoriteArray = [];
       querySnapshot.forEach((doc) => {
-        totalFavoriteArray.push(doc.data());
+        totalFavoriteArray.push({ ...doc.data(), id: doc.id });
       });
       setTotalFavorites(totalFavoriteArray);
     } else {
@@ -145,7 +145,7 @@ const Favorites = () => {
       const querySnapshot = await getDocs(totalCategoryFavorites);
       let totalCategoryFavoriteArray = [];
       querySnapshot.forEach((doc) => {
-        totalCategoryFavoriteArray.push(doc.data());
+        totalCategoryFavoriteArray.push({ ...doc.data(), id: doc.id });
       });
       setTotalFavorites(totalCategoryFavoriteArray);
     }
@@ -164,7 +164,7 @@ const Favorites = () => {
       const documentSnapshots = await getDocs(first);
       let favoritesArray = [];
       documentSnapshots.forEach((doc) => {
-        favoritesArray.push(doc.data());
+        favoritesArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites(favoritesArray);
       previousDocumentSnapshots = documentSnapshots;
@@ -192,7 +192,7 @@ const Favorites = () => {
       const nextDocumentSnapshots = await getDocs(next);
       let newFavoritesArray = [];
       nextDocumentSnapshots.forEach((doc) => {
-        newFavoritesArray.push(doc.data());
+        newFavoritesArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites((prevFavorites) => {
         return [...prevFavorites, ...newFavoritesArray];
@@ -208,9 +208,17 @@ const Favorites = () => {
     getFavoritesWithPagination(localId);
   }, []);
 
-  const deleteHandler = async (id) => {
+  const deleteHandler = async (id, category) => {
     try {
       await deleteDoc(doc(db, "Favorites", `${id}`));
+      console.log(category);
+      getTotalFavorites(localId);
+      if (!category || category === "undefined") {
+        getFavoritesWithPagination(localId);
+      } else {
+        categoryHandlerWithPagination(category);
+      }
+
       window.scroll({ top: 0, behavior: "smooth" });
     } catch (e) {
       console.error("Error deleting document: ", e);
@@ -231,10 +239,9 @@ const Favorites = () => {
       const categoryDocumentSnapshots = await getDocs(first);
       let categoryArray = [];
       categoryDocumentSnapshots.forEach((doc) => {
-        categoryArray.push(doc.data());
+        categoryArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites(categoryArray);
-      console.log(categoryDocumentSnapshots);
       previousDocumentSnapshots = undefined;
       previousDocumentSnapshotsWithCategory = categoryDocumentSnapshots;
     } catch (e) {
@@ -262,7 +269,7 @@ const Favorites = () => {
       const categoryNextDocumentSnapshots = await getDocs(next);
       let newCategoryArray = [];
       categoryNextDocumentSnapshots.forEach((doc) => {
-        newCategoryArray.push(doc.data());
+        newCategoryArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites((prevCategoryFavorites) => {
         return [...prevCategoryFavorites, ...newCategoryArray];
