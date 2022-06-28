@@ -11,8 +11,13 @@ import mobileLogOutMemberIcon from "../images/mobile-member-logout.png";
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  background-color: #ffffff;
   width: 100%;
   height: 120px;
+
+  @media (min-width: 1500px) {
+    box-shadow: 0 2px 5px #c4c4c4;
+  }
 
   @media (max-width: 800px) {
     height: 160px;

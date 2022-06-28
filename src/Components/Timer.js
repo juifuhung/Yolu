@@ -14,6 +14,51 @@ const defaultRemainingTime = {
   initialValue: true,
 };
 
+const ChristmasContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 100px;
+
+  @media (max-width: 1300px) {
+    margin-top: 10px;
+  }
+`;
+
+const ChristmasDayIcon = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 80%;
+  height: 300px;
+  background-image: url("https://img.onl/piHXvi");
+  background-size: 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  @media (max-width: 1800px) {
+    background-size: 70%;
+  }
+
+  @media (max-width: 1400px) {
+    background-size: 80%;
+  }
+
+  @media (max-width: 800px) {
+    background-size: 90%;
+  }
+
+  @media (max-width: 650px) {
+    background-size: 100%;
+  }
+
+  @media (max-width: 380px) {
+    background-size: 110%;
+  }
+`;
+
 const TimerSection = styled.div`
   display: flex;
   justify-content: center;
@@ -62,6 +107,28 @@ const TimerSection = styled.div`
   @media (max-width: 360px) {
     width: 95%;
     height: 42px;
+  }
+`;
+
+const MainTimerTitle = styled.h3`
+  color: #ff0000;
+  font-size: 2.5rem;
+
+  @media (max-width: 1270px) {
+    margin-top: -20px;
+  }
+
+  @media (max-width: 950px) {
+    font-size: 2.2rem;
+  }
+
+  @media (max-width: 570px) {
+    font-size: 2rem;
+    font-weight: 300;
+  }
+
+  @media (max-width: 490px) {
+    font-size: 1.6rem;
   }
 `;
 
@@ -256,10 +323,15 @@ const Countdown = () => {
 
   const showMessage = (d, h, m, s) => {
     if (d <= 0 && h <= 0 && m <= 0 && s <= 0) {
-      return <span>Happy Christmas!</span>;
+      return (
+        <ChristmasContainer>
+          <ChristmasDayIcon />
+        </ChristmasContainer>
+      );
     } else {
       return (
         <>
+          <MainTimerTitle>距離聖誕節還有</MainTimerTitle>
           <TimerSection>
             <Days>{d}</Days>
             <ChineseWords>天</ChineseWords>

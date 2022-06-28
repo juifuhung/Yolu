@@ -77,7 +77,14 @@ const SortButton = styled.div`
   border-radius: 20%;
 `;
 
-const categoryArray = ["博物館", "自然", "餐廳", "聖誕主題", "購物", "交通"];
+const categoryArray = [
+  "博物館",
+  "自然景觀",
+  "餐廳",
+  "聖誕主題",
+  "購物",
+  "交通",
+];
 
 const localId = window.localStorage.getItem("localId");
 const displayName = window.localStorage.getItem("displayName");

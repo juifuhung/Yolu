@@ -146,28 +146,6 @@ const MainTimer = styled.div`
   }
 `;
 
-const MainTimerTitle = styled.h3`
-  color: #ff0000;
-  font-size: 2.5rem;
-
-  @media (max-width: 1270px) {
-    margin-top: -20px;
-  }
-
-  @media (max-width: 950px) {
-    font-size: 2.2rem;
-  }
-
-  @media (max-width: 570px) {
-    font-size: 2rem;
-    font-weight: 300;
-  }
-
-  @media (max-width: 490px) {
-    font-size: 1.6rem;
-  }
-`;
-
 const Selection = styled.div`
   margin-top: 50px;
   display: flex;
@@ -314,21 +292,18 @@ const Homepage = () => {
   };
 
   const nextSlide = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      setIndex((prevIndex) =>
-        prevIndex === slideImages.length - 1
-          ? slideImages.length - 1
-          : prevIndex + 1
-      );
-    }
+    resetTimeout();
+    setIndex((prevIndex) =>
+      prevIndex === slideImages.length - 1
+        ? slideImages.length - 1
+        : prevIndex + 1
+    );
   };
 
   const previousSlide = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      setIndex((prevIndex) => (prevIndex === 0 ? 0 : prevIndex - 1));
-    }
+    resetTimeout();
+    clearTimeout(timeoutRef.current);
+    setIndex((prevIndex) => (prevIndex === 0 ? 0 : prevIndex - 1));
   };
 
   useEffect(() => {
@@ -336,7 +311,9 @@ const Homepage = () => {
     timeoutRef.current = setTimeout(
       () =>
         setIndex((prevIndex) =>
-          prevIndex === slideImages.length - 1 ? 0 : prevIndex + 1
+          slideImages && prevIndex === slideImages.length - 1
+            ? 0
+            : prevIndex + 1
         ),
       5000
     );
@@ -388,7 +365,6 @@ const Homepage = () => {
           </SlideShow>
 
           <MainTimer>
-            <MainTimerTitle>距離聖誕節還有</MainTimerTitle>
             <Timer />
           </MainTimer>
 

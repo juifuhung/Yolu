@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import Loading from "../images/loading.gif";
 import styled from "styled-components";
 import {
   GoogleMap,
@@ -35,6 +36,24 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const db = getFirestore();
+
+const LoadingDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const LoadingIcon = styled.div`
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url(${Loading});
+`;
 
 const MapContainer = styled.div`
   display: flex;
@@ -104,10 +123,10 @@ const FillHeart = styled(FaHeart)`
   }
 
   @media (max-width: 410px) {
-    top: 0;
-    right: 0;
-    height: 15px;
-    width: 15px;
+    top: 5px;
+    right: 5px;
+    height: 10px;
+    width: 10px;
   }
 `;
 
@@ -131,8 +150,8 @@ const EmptyHeart = styled(FaRegHeart)`
   }
 
   @media (max-width: 410px) {
-    top: 0;
-    right: 0;
+    top: 5px;
+    right: 5px;
     height: 10px;
     width: 10px;
   }
@@ -237,7 +256,7 @@ const Buttons = styled.div`
 
 const categoryArray = [
   { title: "博物館", icon: "https://img.onl/on0zJn" },
-  { title: "自然", icon: "https://img.onl/djbguI" },
+  { title: "自然景觀", icon: "https://img.onl/djbguI" },
   { title: "餐廳", icon: "https://img.onl/Dw7xbi" },
   { title: "聖誕主題", icon: "https://img.onl/t3NmW1" },
   { title: "購物", icon: "https://img.onl/FKDkN6" },
@@ -341,7 +360,12 @@ const Map = () => {
   });
 
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return (
+      <LoadingDiv>
+        <p>Loading...</p>
+        <LoadingIcon />
+      </LoadingDiv>
+    );
   }
 
   return (
