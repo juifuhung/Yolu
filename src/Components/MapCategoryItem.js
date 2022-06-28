@@ -23,7 +23,7 @@ const Container = styled.div`
   align-items: center;
   width: 80px;
   height: 110px;
-  margin: 2px;
+  margin: 10px;
   cursor: pointer;
 
   @media (max-width: 340px) {
