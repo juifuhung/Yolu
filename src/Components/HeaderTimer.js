@@ -29,6 +29,17 @@ const HeaderCountDownWords = styled.span`
   }
 `;
 
+const HeaderChristmasTitle = styled.h2`
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #ff0000;
+
+  @media (max-width: 570px) {
+    font-size: 1.8rem;
+  }
+`;
+
 const HeaderCountDownNumbers = styled.div`
   display: flex;
   justify-content: center;
@@ -95,7 +106,7 @@ const Countdown = () => {
 
   const showMessage = (d) => {
     if (d <= 0) {
-      return <span>Happy Christmas!</span>;
+      return <HeaderChristmasTitle>聖誕快樂</HeaderChristmasTitle>;
     } else {
       return (
         <>
