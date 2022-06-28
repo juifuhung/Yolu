@@ -130,6 +130,10 @@ const SignInLink = styled(Link)`
   font-size: 2rem;
   text-decoration: none;
   color: #000000;
+
+  &:hover {
+    color: #7e7e7e;
+  }
 `;
 
 const LogOut = styled.div`
@@ -140,6 +144,10 @@ const LogOut = styled.div`
   text-decoration: none;
   color: #000000;
   cursor: pointer;
+
+  &:hover {
+    color: #7e7e7e;
+  }
 `;
 
 const MobileNav = styled.div`

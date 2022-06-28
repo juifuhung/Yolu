@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaHeart, FaStar } from "react-icons/fa";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
 import {
   GoogleMap,
@@ -36,6 +36,59 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
+const InfoWindowDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  height: auto;
+  position: relative;
+`;
+
+const FillHeart = styled(FaHeart)`
+  color: #ff0000;
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+`;
+
+const EmptyHeart = styled(FaRegHeart)`
+  color: #ff0000;
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+`;
+
+const InfoWindowTitle = styled.h5`
+  margin: 12px 0 0;
+  font-size: 1.8rem;
+`;
+
+const InfoWindowSubTitle = styled.h6`
+  margin: 0 0 2px;
+  font-size: 0.8rem;
+  font-weight: 100;
+`;
+
+const InfoWindowDescription = styled.p`
+  margin: 5px 0 15px 0;
+  font-size: 1rem;
+`;
+
+const InfoWindowImage = styled.div`
+  width: 590px;
+  height: 300px;
+  background-image: url(${(props) => props.img});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
+
 const ButtonSection = styled.div`
   display: flex;
   justify-content: center;
@@ -62,7 +115,7 @@ const categoryArray = [
   { title: "餐廳", icon: "https://img.onl/Dw7xbi" },
   { title: "聖誕主題", icon: "https://img.onl/t3NmW1" },
   { title: "購物", icon: "https://img.onl/FKDkN6" },
-  { title: "交通", icon: "https://img.onl/n9K39V" },
+  { title: "交通", icon: "https://img.onl/0S0gd6" },
 ];
 
 const localId = window.localStorage.getItem("localId");
@@ -200,25 +253,30 @@ const Map = () => {
             position={{ lat: selected.lat, lng: selected.lng }}
             onCloseClick={() => setSelected(null)}
           >
-            <div>
-              <h1>{selected.title}</h1>
-              <p>{selected.description}</p>
+            <InfoWindowDiv>
+              <InfoWindowTitle>{selected.title}</InfoWindowTitle>
+              {selected.subtitle && (
+                <InfoWindowSubTitle>{selected.subtitle}</InfoWindowSubTitle>
+              )}
+              <InfoWindowDescription>
+                {selected.description}
+              </InfoWindowDescription>
               {localId ? (
                 favorites.find(
                   (element) => element.title === selected.title
                 ) ? (
-                  <FaStar
+                  <FillHeart
                     onClick={() => {
                       const favoriteItem = favorites.find(
                         (item) => item.title === selected.title
                       );
                       deleteHandler(favoriteItem.id);
                       getFavorites();
-                      alert(`removed ${selected.title} from favorite list`);
+                      alert(`已將「${selected.title}」移出最愛清單`);
                     }}
                   />
                 ) : (
-                  <FaHeart
+                  <EmptyHeart
                     onClick={() => {
                       addToFavorite({
                         category: selected.category,
@@ -230,20 +288,20 @@ const Map = () => {
                         icon: selected.icon,
                       });
                       getFavorites();
-                      alert(`added ${selected.title} to favorite list`);
+                      alert(`已將「${selected.title}」加入最愛清單`);
                     }}
                   />
                 )
               ) : (
-                <FaHeart
+                <FillHeart
                   onClick={() => {
-                    alert("please sign in");
+                    alert("請先登入");
                     navigate("/member");
                   }}
                 />
               )}
-              <img src={selected.image} alt="" />
-            </div>
+              <InfoWindowImage img={selected.image} />
+            </InfoWindowDiv>
           </InfoWindow>
         )}
       </GoogleMap>
