@@ -11,8 +11,13 @@ import mobileLogOutMemberIcon from "../images/mobile-member-logout.png";
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  background-color: #ffffff;
   width: 100%;
   height: 120px;
+
+  @media (min-width: 1500px) {
+    box-shadow: 0 2px 5px #c4c4c4;
+  }
 
   @media (max-width: 800px) {
     height: 160px;
@@ -117,6 +122,10 @@ const WebNavLink = styled(Link)`
   font-size: 2rem;
   text-decoration: none;
   color: #000000;
+
+  &:hover {
+    color: #7e7e7e;
+  }
 `;
 
 const SignInLink = styled(Link)`
@@ -126,6 +135,10 @@ const SignInLink = styled(Link)`
   font-size: 2rem;
   text-decoration: none;
   color: #000000;
+
+  &:hover {
+    color: #7e7e7e;
+  }
 `;
 
 const LogOut = styled.div`
@@ -136,6 +149,10 @@ const LogOut = styled.div`
   text-decoration: none;
   color: #000000;
   cursor: pointer;
+
+  &:hover {
+    color: #7e7e7e;
+  }
 `;
 
 const MobileNav = styled.div`
@@ -167,6 +184,10 @@ const MobileNavLink = styled(Link)`
 
   @media (max-width: 480px) {
     font-size: 1.5rem;
+  }
+
+  :hover {
+    color: #c4c4c4;
   }
 `;
 

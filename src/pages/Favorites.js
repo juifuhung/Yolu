@@ -78,12 +78,12 @@ const SortButton = styled.div`
 `;
 
 const categoryArray = [
-  "Museum",
-  "Nature",
-  "Restaurant",
-  "Christmas",
-  "Shopping",
-  "Transportation",
+  "博物館",
+  "自然景觀",
+  "餐廳",
+  "聖誕主題",
+  "購物",
+  "交通",
 ];
 
 const localId = window.localStorage.getItem("localId");
