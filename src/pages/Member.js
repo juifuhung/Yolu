@@ -63,7 +63,7 @@ const Member = () => {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 450px;
+    height: 70vh;
     background-image: url(${memberBackground});
     background-size: cover;
     background-repeat: no-repeat;
@@ -80,12 +80,22 @@ const Member = () => {
     background-color: #fffdfa;
     border: solid black 1.5px;
     box-shadow: 6px 6px 5px black;
+
+    @media (max-width: 450px) {
+      height: 266px;
+      width: 252px;
+    }
   `;
 
   const Title = styled.h1`
     margin: 10px 0;
     font-size: 2rem;
     color: black;
+
+    @media (max-width: 450px) {
+      margin: 5px 0;
+      font-size: ${(props) => (props.isLogin ? "1.6rem" : "1.2rem")};
+    }
   `;
 
   const Form = styled.form`
@@ -115,6 +125,10 @@ const Member = () => {
     margin: 2px 0;
     color: #000000;
     font-size: ${(props) => (props.isLogin ? "1.4rem" : "1rem")};
+
+    @media (max-width: 450px) {
+      font-size: ${(props) => (props.isLogin ? "1rem" : "0.7rem")};
+    }
   `;
 
   const Input = styled.input`
@@ -123,7 +137,12 @@ const Member = () => {
     margin: 2px 0;
     padding: 0;
 
-    height: ${(props) => (props.isLogin ? "20px" : "25px")};
+    height: ${(props) => (props.isLogin ? "25px" : "20px")};
+
+    @media (max-width: 450px) {
+      height: ${(props) => (props.isLogin ? "20px" : "12px")};
+      font-size: 0.6rem;
+    }
   `;
 
   const Button = styled.button`
@@ -146,18 +165,32 @@ const Member = () => {
       <Header />
       <MemberpageContainer>
         <LoginContainer>
-          <Title>{isLogin ? "登入" : "註冊"}</Title>
+          <Title isLogin={isLogin ? true : false}>
+            {isLogin ? "登入" : "註冊"}
+          </Title>
           <Form onSubmit={submitHandler}>
             <FormContainer isLogin={isLogin ? true : false}>
               {!isLogin && (
-                <InputContainer>
+                <InputContainer isLogin={isLogin ? true : false}>
                   <Label isLogin={isLogin ? true : false}>會員名稱</Label>
-                  <Input type="string" id="name" required ref={nameInputRef} />
+                  <Input
+                    type="string"
+                    id="name"
+                    required
+                    ref={nameInputRef}
+                    isLogin={isLogin ? true : false}
+                  />
                 </InputContainer>
               )}
               <InputContainer isLogin={isLogin ? true : false}>
                 <Label isLogin={isLogin ? true : false}>信箱</Label>
-                <Input type="email" id="email" required ref={emailInputRef} />
+                <Input
+                  type="email"
+                  id="email"
+                  required
+                  ref={emailInputRef}
+                  isLogin={isLogin ? true : false}
+                />
               </InputContainer>
               <InputContainer isLogin={isLogin ? true : false}>
                 <Label isLogin={isLogin ? true : false}>密碼</Label>
@@ -165,6 +198,7 @@ const Member = () => {
                   type="password"
                   id="password"
                   required
+                  isLogin={isLogin ? true : false}
                   ref={passwordInputRef}
                 />
               </InputContainer>
