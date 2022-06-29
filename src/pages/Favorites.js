@@ -120,10 +120,7 @@ const Favorites = () => {
 
   const getTotalFavorites = async (localId, category) => {
     console.log("getTotalFavorites");
-    console.log(localId);
-    console.log(category);
-    console.log(typeof category);
-    if (!category || category === "undefined" || category === undefined) {
+    if (!category || category === "undefined") {
       console.log("沒選");
       const totalFavorites = query(
         collection(db, "Favorites"),
@@ -214,11 +211,11 @@ const Favorites = () => {
   const deleteHandler = async (id, category) => {
     try {
       await deleteDoc(doc(db, "Favorites", `${id}`));
-      console.log(category);
-      getTotalFavorites(localId, category);
-      if (!category || category === "undefined" || category === undefined) {
+      if (!categorySelected) {
+        getTotalFavorites(localId);
         getFavoritesWithPagination(localId);
       } else {
+        getTotalFavorites(localId, category);
         categoryHandlerWithPagination(category);
       }
 
@@ -273,7 +270,6 @@ const Favorites = () => {
       const categoryNextDocumentSnapshots = await getDocs(next);
       let newCategoryArray = [];
       categoryNextDocumentSnapshots.forEach((doc) => {
-        console.log(doc.data());
         newCategoryArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites((prevCategoryFavorites) => {

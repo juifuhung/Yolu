@@ -31,7 +31,7 @@ const CategoryButton = styled.div`
 
 const localId = window.localStorage.getItem("localId");
 
-const FavoritesCategoryDiv = ({
+const FavoritesCategory = ({
   category,
   categoryHandlerWithPagination,
   getFavoritesWithPagination,
@@ -53,4 +53,4 @@ const FavoritesCategoryDiv = ({
   );
 };
 
-export default FavoritesCategoryDiv;
+export default FavoritesCategory;
