@@ -63,7 +63,7 @@ const Member = () => {
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 80vh;
+    height: 450px;
     background-image: url(${memberBackground});
     background-size: cover;
     background-repeat: no-repeat;
@@ -74,8 +74,8 @@ const Member = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 550px;
-    height: 600px;
+    width: 360px;
+    height: 380px;
     border-radius: 8%;
     background-color: #fffdfa;
     border: solid black 1.5px;
@@ -83,13 +83,13 @@ const Member = () => {
   `;
 
   const Title = styled.h1`
-    margin: 25px 0 15px;
-    font-size: 2.5rem;
+    margin: 10px 0;
+    font-size: 2rem;
     color: black;
   `;
 
   const Form = styled.form`
-    width: 70%;
+    width: 60%;
     height: 65%;
   `;
 
@@ -99,44 +99,44 @@ const Member = () => {
     align-items: center;
     width: 100%;
     height: 100%;
-
-    justify-content: ${(props) =>
-      props.isLogin ? "space-around" : "space-between"};
+    justify-content: space-between;
   `;
 
   const InputContainer = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     width: 100%;
 
-    height: ${(props) => (props.isLogin ? "100px" : "90px")};
+    height: ${(props) => (props.isLogin ? "80px" : "50px")};
   `;
 
   const Label = styled.label`
-    margin: 5px 0;
-    font-size: 1.5rem;
+    margin: 2px 0;
     color: #000000;
+    font-size: ${(props) => (props.isLogin ? "1.4rem" : "1rem")};
   `;
 
   const Input = styled.input`
     font-size: 1.2rem;
     width: 100%;
-    height: 40px;
-    margin: 5px 0;
+    margin: 2px 0;
     padding: 0;
+
+    height: ${(props) => (props.isLogin ? "20px" : "25px")};
   `;
 
   const Button = styled.button`
-    margin: 10px 0;
-    height: 60px;
+    margin: 5px 0;
+    height: 40px;
     background-color: #006ee6;
     color: white;
     cursor: pointer;
     border: none;
     border-radius: 1rem;
 
-    width: ${(props) => (props.changeIsLogin ? "250px" : "170px")};
-    font-size: ${(props) => (props.changeIsLogin ? "1.2rem" : "1.5rem")};
+    width: ${(props) => (props.changeIsLogin ? "220px" : "160px")};
+    font-size: ${(props) => (props.changeIsLogin ? "0.8rem" : "1rem")};
     background-color: ${(props) =>
       props.changeIsLogin ? " #003777" : " #006ee6"};
   `;
@@ -151,16 +151,16 @@ const Member = () => {
             <FormContainer isLogin={isLogin ? true : false}>
               {!isLogin && (
                 <InputContainer>
-                  <Label>會員名稱</Label>
+                  <Label isLogin={isLogin ? true : false}>會員名稱</Label>
                   <Input type="string" id="name" required ref={nameInputRef} />
                 </InputContainer>
               )}
               <InputContainer isLogin={isLogin ? true : false}>
-                <Label>信箱</Label>
+                <Label isLogin={isLogin ? true : false}>信箱</Label>
                 <Input type="email" id="email" required ref={emailInputRef} />
               </InputContainer>
               <InputContainer isLogin={isLogin ? true : false}>
-                <Label>密碼</Label>
+                <Label isLogin={isLogin ? true : false}>密碼</Label>
                 <Input
                   type="password"
                   id="password"
