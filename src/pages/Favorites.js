@@ -91,6 +91,7 @@ const displayName = window.localStorage.getItem("displayName");
 
 let previousDocumentSnapshots;
 let previousDocumentSnapshotsWithCategory;
+let categorySelected;
 
 const Favorites = () => {
   const [totalFavorites, setTotalFavorites] = useState([]);
@@ -104,7 +105,7 @@ const Favorites = () => {
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         if (previousDocumentSnapshotsWithCategory) {
-          categoryLoadMoreItems();
+          categoryLoadMoreItems(categorySelected);
         } else {
           console.log("hi");
           loadMoreItems();
@@ -118,6 +119,8 @@ const Favorites = () => {
   }, []);
 
   const getTotalFavorites = async (localId, category) => {
+    console.log("getTotalFavorites");
+    console.log(localId);
     console.log(category);
     console.log(typeof category);
     if (!category || category === "undefined" || category === undefined) {
@@ -212,8 +215,8 @@ const Favorites = () => {
     try {
       await deleteDoc(doc(db, "Favorites", `${id}`));
       console.log(category);
-      getTotalFavorites(localId);
-      if (!category || category === "undefined") {
+      getTotalFavorites(localId, category);
+      if (!category || category === "undefined" || category === undefined) {
         getFavoritesWithPagination(localId);
       } else {
         categoryHandlerWithPagination(category);
@@ -244,12 +247,13 @@ const Favorites = () => {
       setFavorites(categoryArray);
       previousDocumentSnapshots = undefined;
       previousDocumentSnapshotsWithCategory = categoryDocumentSnapshots;
+      categorySelected = category;
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
     }
   };
 
-  const categoryLoadMoreItems = async (category) => {
+  const categoryLoadMoreItems = async (categorySelected) => {
     try {
       console.log("categoryLoadMoreItems");
       const categoryLastVisible =
@@ -260,7 +264,7 @@ const Favorites = () => {
       const next = query(
         collection(db, "Favorites"),
         where("localId", "==", localId),
-        where("category", "==", `${category}`),
+        where("category", "==", `${categorySelected}`),
         orderBy("created_time"),
         startAfter(categoryLastVisible),
         limit(3)
@@ -269,6 +273,7 @@ const Favorites = () => {
       const categoryNextDocumentSnapshots = await getDocs(next);
       let newCategoryArray = [];
       categoryNextDocumentSnapshots.forEach((doc) => {
+        console.log(doc.data());
         newCategoryArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites((prevCategoryFavorites) => {
@@ -299,7 +304,6 @@ const Favorites = () => {
   return (
     <>
       <Header />
-      {console.log(totalFavorites)}
       {console.log(favorites)}
       <ButtonArea>
         {categoryArray.map((category) => (
@@ -340,7 +344,6 @@ const Favorites = () => {
                 img={item.photo}
                 timestamp={item.created_time.toDate()}
                 deleteHandler={deleteHandler}
-                getFavoritesWithPagination={getFavoritesWithPagination}
               />
             );
           } else {
@@ -354,7 +357,6 @@ const Favorites = () => {
                 img={item.photo}
                 timestamp={item.created_time.toDate()}
                 deleteHandler={deleteHandler}
-                getFavoritesWithPagination={getFavoritesWithPagination}
               />
             );
           }

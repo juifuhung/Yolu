@@ -60,16 +60,7 @@ const FavoriteItemImage = styled.div`
 `;
 
 const FavoriteItemDiv = (
-  {
-    id,
-    title,
-    description,
-    img,
-    category,
-    timestamp,
-    deleteHandler,
-    getFavoritesWithPagination,
-  },
+  { id, title, description, img, category, timestamp, deleteHandler },
   ref
 ) => {
   return (
@@ -90,7 +81,6 @@ const FavoriteItemDiv = (
           <FaStar
             onClick={() => {
               deleteHandler(id, category);
-              getFavoritesWithPagination();
               alert(`已將「${title}」移出最愛清單`);
             }}
           />

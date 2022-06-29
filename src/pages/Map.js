@@ -248,10 +248,6 @@ const Buttons = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-
-  @media (max-width: 340px) {
-    height: 234px;
-  }
 `;
 
 const categoryArray = [
