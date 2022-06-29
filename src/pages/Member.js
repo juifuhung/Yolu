@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
+import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import memberBackground from "../images/aurora_gif.gif";
 
 const Member = () => {
   const emailInputRef = useRef("");
@@ -56,35 +58,124 @@ const Member = () => {
     passwordInputRef.current.value = "";
   };
 
+  const MemberpageContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80vh;
+    background-image: url(${memberBackground});
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  `;
+
+  const LoginContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 550px;
+    height: 600px;
+    border-radius: 8%;
+    background-color: #fffdfa;
+    border: solid black 1.5px;
+    box-shadow: 6px 6px 5px black;
+  `;
+
+  const Title = styled.h1`
+    margin: 25px 0 15px;
+    font-size: 2.5rem;
+    color: black;
+  `;
+
+  const Form = styled.form`
+    width: 70%;
+    height: 65%;
+  `;
+
+  const FormContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    justify-content: ${(props) =>
+      props.isLogin ? "space-around" : "space-between"};
+  `;
+
+  const InputContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    height: ${(props) => (props.isLogin ? "100px" : "90px")};
+  `;
+
+  const Label = styled.label`
+    margin: 5px 0;
+    font-size: 1.5rem;
+    color: #000000;
+  `;
+
+  const Input = styled.input`
+    font-size: 1.2rem;
+    width: 100%;
+    height: 40px;
+    margin: 5px 0;
+    padding: 0;
+  `;
+
+  const Button = styled.button`
+    margin: 10px 0;
+    height: 60px;
+    background-color: #006ee6;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 1rem;
+
+    width: ${(props) => (props.changeIsLogin ? "250px" : "170px")};
+    font-size: ${(props) => (props.changeIsLogin ? "1.2rem" : "1.5rem")};
+    background-color: ${(props) =>
+      props.changeIsLogin ? " #003777" : " #006ee6"};
+  `;
+
   return (
     <>
       <Header />
-      <h1>{isLogin ? "Sign In" : "Sign Up"}</h1>
-      <form onSubmit={submitHandler}>
-        {!isLogin && (
-          <div>
-            <label>Name</label>
-            <input type="string" id="name" required ref={nameInputRef} />
-          </div>
-        )}
-        <div>
-          <label>Email</label>
-          <input type="email" id="email" required ref={emailInputRef} />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            id="password"
-            required
-            ref={passwordInputRef}
-          />
-        </div>
-        <button>{isLogin ? "Sign In" : "Sign Up"}</button>
-      </form>
-      <button onClick={isLoginHandler}>
-        {isLogin ? "change to Sign Up" : "change to Sign In"}
-      </button>
+      <MemberpageContainer>
+        <LoginContainer>
+          <Title>{isLogin ? "登入" : "註冊"}</Title>
+          <Form onSubmit={submitHandler}>
+            <FormContainer isLogin={isLogin ? true : false}>
+              {!isLogin && (
+                <InputContainer>
+                  <Label>會員名稱</Label>
+                  <Input type="string" id="name" required ref={nameInputRef} />
+                </InputContainer>
+              )}
+              <InputContainer isLogin={isLogin ? true : false}>
+                <Label>信箱</Label>
+                <Input type="email" id="email" required ref={emailInputRef} />
+              </InputContainer>
+              <InputContainer isLogin={isLogin ? true : false}>
+                <Label>密碼</Label>
+                <Input
+                  type="password"
+                  id="password"
+                  required
+                  ref={passwordInputRef}
+                />
+              </InputContainer>
+              <Button>{isLogin ? "登入" : "註冊"}</Button>
+            </FormContainer>
+          </Form>
+          <Button onClick={isLoginHandler} changeIsLogin={true}>
+            {isLogin ? "註冊新帳號" : "我已註冊，讓我登入"}
+          </Button>
+        </LoginContainer>
+      </MemberpageContainer>
       <Footer />
     </>
   );

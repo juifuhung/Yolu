@@ -103,11 +103,14 @@ const Favorites = () => {
     }
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        if (!categorySelected) {
-          loadMoreItems();
-        } else {
-          loadMoreItems(categorySelected);
+        if (previousDocumentSnapshots) {
+          if (categorySelected) {
+            loadMoreItems(categorySelected);
+          } else {
+            loadMoreItems();
+          }
         }
+
         return;
       }
     });
@@ -273,7 +276,11 @@ const Favorites = () => {
       </SortButtonArea>
       <WelcomeMessage>{`hi ${displayName}`}</WelcomeMessage>
       {totalFavorites.length > 0 ? (
-        <ItemQuantity>{`共有${totalFavorites.length}個景點`}</ItemQuantity>
+        categorySelected === undefined ? (
+          <ItemQuantity>{`全部共有${totalFavorites.length}個景點`}</ItemQuantity>
+        ) : (
+          <ItemQuantity>{`${categorySelected}共有${totalFavorites.length}個景點`}</ItemQuantity>
+        )
       ) : (
         <ItemQuantity>無景點</ItemQuantity>
       )}
@@ -288,6 +295,7 @@ const Favorites = () => {
                 category={item.category}
                 id={item.id}
                 title={item.title}
+                subtitle={item.subtitle}
                 description={item.description}
                 img={item.photo}
                 timestamp={item.created_time.toDate()}
@@ -301,6 +309,7 @@ const Favorites = () => {
                 category={item.category}
                 id={item.id}
                 title={item.title}
+                subtitle={item.subtitle}
                 description={item.description}
                 img={item.photo}
                 timestamp={item.created_time.toDate()}

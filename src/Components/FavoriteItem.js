@@ -60,7 +60,7 @@ const FavoriteItemImage = styled.div`
 `;
 
 const FavoriteItemDiv = (
-  { id, title, description, img, category, timestamp, deleteHandler },
+  { id, title, subtitle, description, img, category, timestamp, deleteHandler },
   ref
 ) => {
   return (
@@ -68,8 +68,11 @@ const FavoriteItemDiv = (
       <FavoriteItemSection>
         <FavoriteItem ref={ref} id={id}>
           <FavoriteItemTitle>{title}</FavoriteItemTitle>
+          <FavoriteItemTitle>{subtitle}</FavoriteItemTitle>
           <FavoriteItemCategory>{category}</FavoriteItemCategory>
-          <FavoriteItemTimestamp>{`${timestamp.getFullYear()}年 ${timestamp.getMonth()}月 ${timestamp.getDate()}日 ${timestamp.getHours()}:${
+          <FavoriteItemTimestamp>{`${timestamp.getFullYear()}年 ${
+            timestamp.getMonth() + 1
+          }月 ${timestamp.getDate()}日 ${timestamp.getHours()}:${
             timestamp.getMinutes() === 0
               ? "00"
               : timestamp.getMinutes() < 10
