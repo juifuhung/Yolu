@@ -33,7 +33,6 @@ const localId = window.localStorage.getItem("localId");
 
 const FavoritesCategory = ({
   category,
-  categoryHandlerWithPagination,
   getFavoritesWithPagination,
   getTotalFavorites,
 }) => {
@@ -43,7 +42,7 @@ const FavoritesCategory = ({
         onClick={() => {
           getTotalFavorites(localId, `${category}`);
           category
-            ? categoryHandlerWithPagination(`${category}`)
+            ? getFavoritesWithPagination(localId, `${category}`)
             : getFavoritesWithPagination(localId);
         }}
       >
