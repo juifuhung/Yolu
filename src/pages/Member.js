@@ -93,8 +93,8 @@ const Member = () => {
     color: black;
 
     @media (max-width: 450px) {
-      margin: 5px 0;
-      font-size: ${(props) => (props.isLogin ? "1.6rem" : "1.2rem")};
+      font-size: 1.5rem;
+      margin: 5px 0 0 0;
     }
   `;
 
@@ -118,7 +118,7 @@ const Member = () => {
     justify-content: space-evenly;
     width: 100%;
 
-    height: ${(props) => (props.isLogin ? "80px" : "50px")};
+    height: ${(props) => (props.isLogin ? "50px" : "42px")};
   `;
 
   const Label = styled.label`
