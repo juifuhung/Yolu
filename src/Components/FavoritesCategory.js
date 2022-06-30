@@ -31,9 +31,8 @@ const CategoryButton = styled.div`
 
 const localId = window.localStorage.getItem("localId");
 
-const FavoritesCategoryDiv = ({
+const FavoritesCategory = ({
   category,
-  categoryHandlerWithPagination,
   getFavoritesWithPagination,
   getTotalFavorites,
 }) => {
@@ -43,7 +42,7 @@ const FavoritesCategoryDiv = ({
         onClick={() => {
           getTotalFavorites(localId, `${category}`);
           category
-            ? categoryHandlerWithPagination(`${category}`)
+            ? getFavoritesWithPagination(localId, `${category}`)
             : getFavoritesWithPagination(localId);
         }}
       >
@@ -53,4 +52,4 @@ const FavoritesCategoryDiv = ({
   );
 };
 
-export default FavoritesCategoryDiv;
+export default FavoritesCategory;

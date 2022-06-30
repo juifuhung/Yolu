@@ -27,8 +27,7 @@ const Container = styled.div`
   cursor: pointer;
 
   @media (max-width: 340px) {
-    height: 100px;
-    margin: 0;
+    height: 95px;
   }
 `;
 

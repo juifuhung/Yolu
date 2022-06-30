@@ -22,6 +22,7 @@ const ChristmasContainer = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 100px;
+  border: solid red 1px;
 
   @media (max-width: 1300px) {
     margin-top: 10px;

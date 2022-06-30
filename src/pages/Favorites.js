@@ -90,7 +90,7 @@ const localId = window.localStorage.getItem("localId");
 const displayName = window.localStorage.getItem("displayName");
 
 let previousDocumentSnapshots;
-let previousDocumentSnapshotsWithCategory;
+let categorySelected;
 
 const Favorites = () => {
   const [totalFavorites, setTotalFavorites] = useState([]);
@@ -103,14 +103,14 @@ const Favorites = () => {
     }
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        console.log(previousDocumentSnapshots);
-        console.log(previousDocumentSnapshotsWithCategory);
-        if (previousDocumentSnapshotsWithCategory) {
-          categoryLoadMoreItems();
-        } else {
-          console.log("hi");
-          loadMoreItems();
+        if (previousDocumentSnapshots) {
+          if (categorySelected) {
+            loadMoreItems(categorySelected);
+          } else {
+            loadMoreItems();
+          }
         }
+
         return;
       }
     });
@@ -119,80 +119,97 @@ const Favorites = () => {
     }
   }, []);
 
+  useEffect(() => {
+    getTotalFavorites(localId);
+    getFavoritesWithPagination(localId);
+  }, []);
+
   const getTotalFavorites = async (localId, category) => {
+    let totalFavorites;
     if (!category || category === "undefined") {
-      console.log("沒選");
-      const totalFavorites = query(
+      totalFavorites = query(
         collection(db, "Favorites"),
         where("localId", "==", localId)
       );
-
-      const querySnapshot = await getDocs(totalFavorites);
-      let totalFavoriteArray = [];
-      querySnapshot.forEach((doc) => {
-        totalFavoriteArray.push(doc.data());
-      });
-      setTotalFavorites(totalFavoriteArray);
     } else {
-      console.log("有選種類要走這");
-      console.log(category);
-      const totalCategoryFavorites = query(
+      totalFavorites = query(
         collection(db, "Favorites"),
         where("localId", "==", localId),
         where("category", "==", `${category}`)
       );
-
-      const querySnapshot = await getDocs(totalCategoryFavorites);
-      let totalCategoryFavoriteArray = [];
-      querySnapshot.forEach((doc) => {
-        totalCategoryFavoriteArray.push(doc.data());
-      });
-      setTotalFavorites(totalCategoryFavoriteArray);
     }
+
+    const querySnapshot = await getDocs(totalFavorites);
+    let totalFavoriteArray = [];
+    querySnapshot.forEach((doc) => {
+      totalFavoriteArray.push({ ...doc.data(), id: doc.id });
+    });
+    setTotalFavorites(totalFavoriteArray);
   };
 
-  const getFavoritesWithPagination = async (localId) => {
+  const getFavoritesWithPagination = async (localId, category) => {
     try {
-      console.log("getFavoritesWithPagination");
-      const first = query(
-        collection(db, "Favorites"),
-        where("localId", "==", localId),
-        orderBy("created_time"),
-        limit(3)
-      );
+      let first;
+      if (category) {
+        first = query(
+          collection(db, "Favorites"),
+          where("localId", "==", localId),
+          where("category", "==", `${category}`),
+          orderBy("created_time"),
+          limit(3)
+        );
+      } else {
+        first = query(
+          collection(db, "Favorites"),
+          where("localId", "==", localId),
+          orderBy("created_time"),
+          limit(3)
+        );
+      }
 
       const documentSnapshots = await getDocs(first);
       let favoritesArray = [];
       documentSnapshots.forEach((doc) => {
-        favoritesArray.push(doc.data());
+        favoritesArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites(favoritesArray);
+      categorySelected = category;
       previousDocumentSnapshots = documentSnapshots;
-      previousDocumentSnapshotsWithCategory = undefined;
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
     }
   };
 
-  const loadMoreItems = async () => {
+  const loadMoreItems = async (category) => {
     try {
-      console.log("loadMoreItems");
       const lastVisible =
         previousDocumentSnapshots.docs[
           previousDocumentSnapshots.docs.length - 1
         ];
-      const next = query(
-        collection(db, "Favorites"),
-        where("localId", "==", localId),
-        orderBy("created_time"),
-        startAfter(lastVisible),
-        limit(3)
-      );
+      let next;
+      if (category) {
+        next = query(
+          collection(db, "Favorites"),
+          where("localId", "==", localId),
+          where("category", "==", category),
+          orderBy("created_time"),
+          startAfter(lastVisible),
+          limit(3)
+        );
+      } else {
+        next = query(
+          collection(db, "Favorites"),
+          where("localId", "==", localId),
+          orderBy("created_time"),
+          startAfter(lastVisible),
+          limit(3)
+        );
+      }
 
       const nextDocumentSnapshots = await getDocs(next);
       let newFavoritesArray = [];
       nextDocumentSnapshots.forEach((doc) => {
-        newFavoritesArray.push(doc.data());
+        newFavoritesArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites((prevFavorites) => {
         return [...prevFavorites, ...newFavoritesArray];
@@ -203,73 +220,20 @@ const Favorites = () => {
     }
   };
 
-  useEffect(() => {
-    getTotalFavorites(localId);
-    getFavoritesWithPagination(localId);
-  }, []);
-
-  const deleteHandler = async (id) => {
+  const deleteHandler = async (id, category) => {
     try {
       await deleteDoc(doc(db, "Favorites", `${id}`));
+      if (!categorySelected) {
+        getTotalFavorites(localId);
+        getFavoritesWithPagination(localId);
+      } else {
+        getTotalFavorites(localId, category);
+        getFavoritesWithPagination(localId, category);
+      }
+
       window.scroll({ top: 0, behavior: "smooth" });
     } catch (e) {
       console.error("Error deleting document: ", e);
-    }
-  };
-
-  const categoryHandlerWithPagination = async (category) => {
-    try {
-      console.log("categoryHandlerWithPagination");
-      const first = query(
-        collection(db, "Favorites"),
-        where("localId", "==", localId),
-        where("category", "==", `${category}`),
-        orderBy("created_time"),
-        limit(3)
-      );
-
-      const categoryDocumentSnapshots = await getDocs(first);
-      let categoryArray = [];
-      categoryDocumentSnapshots.forEach((doc) => {
-        categoryArray.push(doc.data());
-      });
-      setFavorites(categoryArray);
-      console.log(categoryDocumentSnapshots);
-      previousDocumentSnapshots = undefined;
-      previousDocumentSnapshotsWithCategory = categoryDocumentSnapshots;
-    } catch (e) {
-      console.error("Error getting favorite documents: ", e);
-    }
-  };
-
-  const categoryLoadMoreItems = async (category) => {
-    try {
-      console.log("categoryLoadMoreItems");
-      const categoryLastVisible =
-        previousDocumentSnapshotsWithCategory.docs[
-          previousDocumentSnapshotsWithCategory.docs.length - 1
-        ];
-
-      const next = query(
-        collection(db, "Favorites"),
-        where("localId", "==", localId),
-        where("category", "==", `${category}`),
-        orderBy("created_time"),
-        startAfter(categoryLastVisible),
-        limit(3)
-      );
-
-      const categoryNextDocumentSnapshots = await getDocs(next);
-      let newCategoryArray = [];
-      categoryNextDocumentSnapshots.forEach((doc) => {
-        newCategoryArray.push(doc.data());
-      });
-      setFavorites((prevCategoryFavorites) => {
-        return [...prevCategoryFavorites, ...newCategoryArray];
-      });
-      previousDocumentSnapshotsWithCategory = categoryNextDocumentSnapshots;
-    } catch (e) {
-      console.error("Error getting more favorite documents: ", e);
     }
   };
 
@@ -292,15 +256,13 @@ const Favorites = () => {
   return (
     <>
       <Header />
-      {console.log(totalFavorites)}
-      {console.log(favorites)}
       <ButtonArea>
         {categoryArray.map((category) => (
           <FavoritesCategory
             key={category}
             category={category}
             getTotalFavorites={getTotalFavorites}
-            categoryHandlerWithPagination={categoryHandlerWithPagination}
+            getFavoritesWithPagination={getFavoritesWithPagination}
           />
         ))}
         <FavoritesCategory
@@ -314,7 +276,11 @@ const Favorites = () => {
       </SortButtonArea>
       <WelcomeMessage>{`hi ${displayName}`}</WelcomeMessage>
       {totalFavorites.length > 0 ? (
-        <ItemQuantity>{`共有${totalFavorites.length}個景點`}</ItemQuantity>
+        categorySelected === undefined ? (
+          <ItemQuantity>{`全部共有${totalFavorites.length}個景點`}</ItemQuantity>
+        ) : (
+          <ItemQuantity>{`${categorySelected}共有${totalFavorites.length}個景點`}</ItemQuantity>
+        )
       ) : (
         <ItemQuantity>無景點</ItemQuantity>
       )}
@@ -329,11 +295,11 @@ const Favorites = () => {
                 category={item.category}
                 id={item.id}
                 title={item.title}
+                subtitle={item.subtitle}
                 description={item.description}
                 img={item.photo}
                 timestamp={item.created_time.toDate()}
                 deleteHandler={deleteHandler}
-                getFavoritesWithPagination={getFavoritesWithPagination}
               />
             );
           } else {
@@ -343,11 +309,11 @@ const Favorites = () => {
                 category={item.category}
                 id={item.id}
                 title={item.title}
+                subtitle={item.subtitle}
                 description={item.description}
                 img={item.photo}
                 timestamp={item.created_time.toDate()}
                 deleteHandler={deleteHandler}
-                getFavoritesWithPagination={getFavoritesWithPagination}
               />
             );
           }

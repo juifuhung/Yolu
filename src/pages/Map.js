@@ -248,10 +248,6 @@ const Buttons = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-
-  @media (max-width: 340px) {
-    height: 234px;
-  }
 `;
 
 const categoryArray = [
@@ -325,6 +321,7 @@ const Map = () => {
     try {
       await addDoc(collection(db, "Favorites"), {
         title: obj.title,
+        subtitle: obj.subtitle,
         category: obj.category,
         description: obj.description,
         photo: obj.img,
@@ -432,6 +429,7 @@ const Map = () => {
                         addToFavorite({
                           category: selected.category,
                           title: selected.title,
+                          subtitle: selected.subtitle,
                           description: selected.description,
                           img: selected.image,
                           lng: selected.lng,
