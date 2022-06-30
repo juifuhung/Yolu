@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
+import NotFound from "./pages/NotFound";
 import Homepage from "./pages/Homepage";
 import Favorites from "./pages/Favorites";
 import Map from "./pages/Map";
@@ -14,6 +15,7 @@ const App = () => {
       <Font>
         <UniversalStyle />
         <Routes>
+          <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Homepage />} />
           <Route
             path="/favorites"
