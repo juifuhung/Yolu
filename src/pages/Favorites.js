@@ -15,6 +15,7 @@ import {
 import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+// import FavoritesCover from "../images/favorites_cover.jpg";
 import FavoriteItem from "../components/FavoriteItem";
 import FavoritesCategory from "../components/FavoritesCategory";
 

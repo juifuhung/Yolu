@@ -30,6 +30,14 @@ const ErrorTitle = styled.h1`
   font-size: 6rem;
   font-weight: 800;
   color: white;
+
+  @media (max-width: 460px) {
+    font-size: 4.5rem;
+  }
+
+  @media (max-width: 350px) {
+    font-size: 4rem;
+  }
 `;
 
 const ErrorSubTitle = styled.p`
@@ -37,6 +45,14 @@ const ErrorSubTitle = styled.p`
   font-size: 2rem;
   font-weight: 600;
   color: white;
+
+  @media (max-width: 460px) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 350px) {
+    font-size: 1.3rem;
+  }
 `;
 
 const HomepageButton = styled(Link)`
@@ -54,6 +70,19 @@ const HomepageButton = styled(Link)`
   color: #ecd4b4;
   font-size: 1.5rem;
   box-shadow: 3px 3px 4px black;
+
+  @media (max-width: 460px) {
+    height: 45px;
+    width: 120px;
+    font-size: 0.95rem;
+    box-shadow: 2px 2px 3px black;
+  }
+
+  @media (max-width: 350px) {
+    height: 40px;
+    width: 115px;
+    font-size: 0.9rem;
+  }
 `;
 
 const NotFound = () => {
