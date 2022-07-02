@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { signUp, signIn } from "../utils/Firebase";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import memberBackground from "../images/aurora_gif.gif";
@@ -113,14 +114,16 @@ const Button = styled.button`
     props.changeIsLogin ? " #003777" : " #006ee6"};
 `;
 
+const db = getFirestore();
+
 const Member = () => {
   const emailInputRef = useRef("");
   const passwordInputRef = useRef("");
   const nameInputRef = useRef("");
 
-  const enteredName = nameInputRef.current.value;
-  const enteredEmail = emailInputRef.current.value;
-  const enteredPassword = passwordInputRef.current.value;
+  // const enteredName = nameInputRef.current.value;
+  // const enteredEmail = emailInputRef.current.value;
+  // const enteredPassword = passwordInputRef.current.value;
 
   const [isLogin, setIsLogin] = useState(true);
 
@@ -130,9 +133,12 @@ const Member = () => {
 
   const signUpHandler = async () => {
     try {
-      const result = await signUp(enteredEmail, enteredPassword);
+      const result = await signUp(
+        emailInputRef.current.value,
+        passwordInputRef.current.value
+      );
       await setDoc(doc(db, "User", `${result.user.uid}`), {
-        name: enteredName,
+        name: nameInputRef.current.value,
         uid: result.user.uid,
         email: result.user.email,
       });
