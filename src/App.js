@@ -6,6 +6,7 @@ import Favorites from "./pages/Favorites";
 import Map from "./pages/Map";
 import Member from "./pages/Member";
 import { useAuth } from "./utils/Firebase";
+import Post from "./pages/Post";
 import { Font, UniversalStyle } from "./styles/styles";
 
 let localId;
@@ -33,6 +34,7 @@ const App = () => {
             path={"/member"}
             element={localId ? <Navigate to="/" /> : <Member />}
           />
+          <Route path={"/post"} element={<Post />} />
         </Routes>
       </Font>
     </>
