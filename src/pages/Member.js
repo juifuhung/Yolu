@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
+import { signUp, signIn } from "../utils/Firebase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import memberBackground from "../images/aurora_gif.gif";
@@ -117,48 +118,48 @@ const Member = () => {
   const passwordInputRef = useRef("");
   const nameInputRef = useRef("");
 
+  const enteredName = nameInputRef.current.value;
+  const enteredEmail = emailInputRef.current.value;
+  const enteredPassword = passwordInputRef.current.value;
+
   const [isLogin, setIsLogin] = useState(true);
 
   const isLoginHandler = () => {
     setIsLogin((prev) => !prev);
   };
 
+  const signUpHandler = async () => {
+    try {
+      const result = await signUp(enteredEmail, enteredPassword);
+      await setDoc(doc(db, "User", `${result.user.uid}`), {
+        name: enteredName,
+        uid: result.user.uid,
+        email: result.user.email,
+      });
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const signInHandler = async () => {
+    try {
+      const result = await signIn(
+        emailInputRef.current.value,
+        passwordInputRef.current.value
+      );
+      console.log(result);
+    } catch (e) {
+      alert(e);
+    }
+  };
+
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    const enteredName = nameInputRef.current.value;
-    const enteredEmail = emailInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value;
-
-    let url;
     if (isLogin) {
-      url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+      await signInHandler();
     } else {
-      url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
-    }
-    try {
-      const result = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          displayName: enteredName,
-          email: enteredEmail,
-          password: enteredPassword,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const parsedResult = await result.json();
-      if (parsedResult.localId) {
-        window.localStorage.setItem("localId", parsedResult.localId);
-        window.localStorage.setItem("displayName", parsedResult.displayName);
-        location.replace("./");
-      } else {
-        alert(parsedResult.error.message);
-      }
-    } catch (error) {
-      return error;
+      await signUpHandler();
     }
 
     nameInputRef.current.value = "";
