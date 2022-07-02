@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -5,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   setPersistence,
   browserSessionPersistence,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -37,4 +39,17 @@ export const signIn = async (email, password) => {
   console.log("signin outside");
   await setPersistence(auth, browserSessionPersistence);
   return signInWithEmailAndPassword(auth, email, password);
+};
+
+export const useAuth = async () => {
+  const [currentUser, setCurrentUser] = useState();
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
+    console.log(unsub);
+    return unsub;
+  }, []);
+
+  console.log(currentUser);
+  return currentUser;
 };

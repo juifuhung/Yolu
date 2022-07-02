@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { signUp, signIn } from "../utils/Firebase";
+import { signUp, signIn, useAuth } from "../utils/Firebase";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -120,6 +120,9 @@ const Member = () => {
   const emailInputRef = useRef("");
   const passwordInputRef = useRef("");
   const nameInputRef = useRef("");
+
+  const currentUser = useAuth();
+  console.log(currentUser);
 
   const [isLogin, setIsLogin] = useState(true);
 
