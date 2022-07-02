@@ -149,11 +149,12 @@ const Member = () => {
 
   const signInHandler = async () => {
     try {
+      console.log(emailInputRef.current.value);
+      console.log(passwordInputRef.current.value);
       const result = await signIn(
         emailInputRef.current.value,
         passwordInputRef.current.value
       );
-      console.log(result);
     } catch (e) {
       alert(e);
     }
@@ -168,7 +169,9 @@ const Member = () => {
       await signUpHandler();
     }
 
-    nameInputRef.current.value = "";
+    if (nameInputRef.current !== "") {
+      nameInputRef.current.value = "";
+    }
     emailInputRef.current.value = "";
     passwordInputRef.current.value = "";
   };
