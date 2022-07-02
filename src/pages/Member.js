@@ -121,10 +121,6 @@ const Member = () => {
   const passwordInputRef = useRef("");
   const nameInputRef = useRef("");
 
-  // const enteredName = nameInputRef.current.value;
-  // const enteredEmail = emailInputRef.current.value;
-  // const enteredPassword = passwordInputRef.current.value;
-
   const [isLogin, setIsLogin] = useState(true);
 
   const isLoginHandler = () => {
@@ -149,12 +145,12 @@ const Member = () => {
 
   const signInHandler = async () => {
     try {
-      console.log(emailInputRef.current.value);
-      console.log(passwordInputRef.current.value);
       const result = await signIn(
         emailInputRef.current.value,
         passwordInputRef.current.value
       );
+      console.log(result);
+      console.log("signed in");
     } catch (e) {
       alert(e);
     }

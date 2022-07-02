@@ -19,6 +19,15 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const auth = getAuth();
+const user = auth.currentUser;
+
+if (user) {
+  console.log("yes logged in");
+  console.log(user);
+  console.log(user.uid);
+} else {
+  console.log("logged out");
+}
 
 export const signUp = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
