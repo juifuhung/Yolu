@@ -3,8 +3,8 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  // setPersistence,
-  // browserSessionPersistence,
+  setPersistence,
+  browserSessionPersistence,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -33,14 +33,8 @@ export const signUp = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
 };
 
-// export const signIn = async (email, password) => {
-//   console.log("signin outside");
-//   setPersistence(auth, browserSessionPersistence).then(() => {
-//     console.log("signin inside");
-//     return signInWithEmailAndPassword(auth, email, password);
-//   });
-// };
-
 export const signIn = async (email, password) => {
+  console.log("signin outside");
+  await setPersistence(auth, browserSessionPersistence);
   return signInWithEmailAndPassword(auth, email, password);
 };
