@@ -16,6 +16,7 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import FavoritesCover from "../images/favorites_cover.jpg";
+import TopIcon from "../images/top.png";
 import FavoriteItem from "../components/FavoriteItem";
 import FavoritesCategory from "../components/FavoritesCategory";
 
@@ -31,6 +32,38 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const db = getFirestore();
+
+const TopButton = styled.div`
+  width: 150px;
+  height: 150px;
+  background-image: url(${TopIcon});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: fixed;
+  bottom: 50px;
+  left: 30px;
+  cursor: pointer;
+
+  &:hover {
+    animation: shake 0.82s cubic-bezier(0.30, 0.07, 0.19, 0.97) both;
+  }
+
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1.5px, 0px, 0);
+    }
+    20%, 80% {
+      transform: translate3d(0, 1.5px, 0);
+    }
+    
+    30%, 50%, 70% {
+      transform: translate3d(-1.5px, 0, 0);
+    }
+    40%, 60% {
+      transform: translate3d(0, 1.5px, 0);
+  }
+`;
 
 const FavoritesCoverSection = styled.div`
   width: 100%;
@@ -65,6 +98,7 @@ const FavoritesCoverTitleWords = styled.h1`
 const BodyContainer = styled.div`
   display: flex;
   width: 100%;
+  margin-bottom: 20px;
 `;
 
 const BodyLeft = styled.div`
@@ -122,20 +156,24 @@ const ButtonArea = styled.div`
   width: 90%;
 `;
 
-const SortOptionArea = styled.select`
+const SortOptionArea = styled.div`
+  margin-right: 20px;
   display: flex;
-  justify-content: center;
-  background-color: black;
-  color: white;
-  height: 30px;
-  width: 160px;
-  border: none;
-  margin-bottom: 2px;
+  justify-content: flex-end;
+  align-items: end;
+  width: 500px;
 `;
 
-const SortOption = styled.option`
-  color: #7a7373;
-  background-color: #ece9e9;
+const SortOption = styled.div`
+  margin-bottom: -10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-left: 15px;
+  color: #767676;
+
+  &:hover {
+    color: #111111;
+  }
 `;
 
 const categoryArray = [
@@ -324,7 +362,7 @@ const Favorites = () => {
       </FavoritesCoverSection>
       <BodyContainer>
         <BodyLeft>
-          <UserName>{`${displayName}`}</UserName>
+          <UserName>{`你好，${displayName}`}</UserName>
         </BodyLeft>
         <BodyRight>
           <SubtitleContainer>
@@ -336,15 +374,8 @@ const Favorites = () => {
               )}
             </Subtitle>
             <SortOptionArea>
-              <option selected disabled hidden>
-                排序依據
-              </option>
-              <SortOption onClick={sortFromOldToNew}>
-                新增日期（舊到新）
-              </SortOption>
-              <SortOption onClick={sortFromNewToOld}>
-                新增日期（新到舊）
-              </SortOption>
+              <SortOption onClick={sortFromOldToNew}>由舊到新</SortOption>
+              <SortOption onClick={sortFromNewToOld}>由新到舊</SortOption>
             </SortOptionArea>
           </SubtitleContainer>
           <BodyRightLine />
@@ -398,7 +429,11 @@ const Favorites = () => {
             })}
         </BodyRight>
       </BodyContainer>
-
+      <TopButton
+        onClick={() => {
+          window.scroll({ top: 0, behavior: "smooth" });
+        }}
+      />
       <Footer />
     </>
   );

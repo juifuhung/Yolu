@@ -28,6 +28,10 @@ const CategoryButton = styled.div`
   background-color: red;
   cursor: pointer;
   color: white;
+
+  &:hover {
+    background-color: #c30010;
+  }
 `;
 
 const localId = window.localStorage.getItem("localId");

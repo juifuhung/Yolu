@@ -21,20 +21,27 @@ getFirestore();
 const FavoriteItemSection = styled.div`
   width: 90%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `;
 
 const FavoriteItem = styled.div`
   background-color: white;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 92%;
   height: 250px;
   border: solid black 4px;
   border-radius: 1rem;
   padding: 1.2rem;
   margin: 10px 0;
   position: relative;
+
+  &:hover {
+    cursor: pointer;
+    margin-top: 9px;
+    margin-left: -5px;
+    box-shadow: 3px 3px 4px #333333;
+  }
 `;
 
 const FavoriteItemLeft = styled.div`
