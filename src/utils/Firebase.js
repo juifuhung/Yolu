@@ -41,8 +41,20 @@ export const signIn = async (email, password) => {
   return signInWithEmailAndPassword(auth, email, password);
 };
 
-export const useAuth = async () => {
+export const useAuth = () => {
   const [currentUser, setCurrentUser] = useState();
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/firebase.User
+      const uid = user.uid;
+      // ...
+    } else {
+      // User is signed out
+      // ...
+    }
+  });
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
