@@ -258,6 +258,18 @@ const SortOption = styled.div`
   }
 `;
 
+const LoadingSection = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LoadingWords = styled.p`
+  font-size: 1.5rem;
+`;
+
 const categoryArray = [
   "博物館",
   "自然景觀",
@@ -475,7 +487,12 @@ const Favorites = () => {
               />
             ))}
           </ButtonArea>
-          {!favorites && <img src={Loading} />}
+          {!favorites && (
+            <LoadingSection>
+              <LoadingWords>Loading...</LoadingWords>
+              <img src={Loading} />
+            </LoadingSection>
+          )}
           {favorites &&
             favorites.map((item, index) => {
               if (favorites.length === index + 1) {

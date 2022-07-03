@@ -227,7 +227,7 @@ const FavoriteItemDiv = (
     <>
       <FavoriteItemSection>
         <FavoriteItem ref={ref} id={id}>
-          <FavoriteItemLeft img={img} alt="image">
+          <FavoriteItemLeft img={img} alt="Loading...">
             <FavoriteItemCategory>{category}</FavoriteItemCategory>
           </FavoriteItemLeft>
           <FavoriteItemRight>
