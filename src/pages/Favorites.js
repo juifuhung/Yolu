@@ -271,12 +271,12 @@ const LoadingWords = styled.p`
 `;
 
 const categoryArray = [
-  "博物館",
-  "自然景觀",
-  "餐廳",
-  "聖誕主題",
-  "購物",
-  "交通",
+  { title: "博物館", selected: false },
+  { title: "自然景觀", selected: false },
+  { title: "餐廳", selected: false },
+  { title: "聖誕主題", selected: false },
+  { title: "購物", selected: false },
+  { title: "交通", selected: false },
 ];
 
 const localId = window.localStorage.getItem("localId");
@@ -288,6 +288,7 @@ let categorySelected;
 const Favorites = () => {
   const [totalFavorites, setTotalFavorites] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [categories, setCategories] = useState(categoryArray);
 
   const observer = useRef();
   const lastFavoriteItem = useCallback((node) => {
@@ -446,6 +447,18 @@ const Favorites = () => {
     window.scroll({ top: 0, behavior: "smooth" });
   };
 
+  const selectionHandler = (i) => {
+    const newCategoryArray = [...categoryArray].map((item, index) => {
+      if (i === index) {
+        return { ...item, selected: !item.selected };
+      } else {
+        return item;
+      }
+    });
+    setCategories(newCategoryArray);
+    window.scroll({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
       <Header />
@@ -475,13 +488,17 @@ const Favorites = () => {
           <BodyRightLine />
           <ButtonArea>
             <FavoritesCategory
+              selectionHandler={selectionHandler}
               getTotalFavorites={getTotalFavorites}
               getFavoritesWithPagination={getFavoritesWithPagination}
             />
-            {categoryArray.map((category) => (
+            {categories.map((category, index) => (
               <FavoritesCategory
-                key={category}
-                category={category}
+                key={category.title}
+                category={category.title}
+                selected={category.selected}
+                index={index}
+                selectionHandler={selectionHandler}
                 getTotalFavorites={getTotalFavorites}
                 getFavoritesWithPagination={getFavoritesWithPagination}
               />

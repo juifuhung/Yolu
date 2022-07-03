@@ -25,7 +25,7 @@ const CategoryButton = styled.div`
   margin: 2px;
   font-size: 1.1rem;
   border-radius: 1rem;
-  background-color: red;
+  background-color: ${(props) => (props.selected ? "#c30010" : "#ff0000")};
   cursor: pointer;
   color: white;
 
@@ -54,13 +54,18 @@ const localId = window.localStorage.getItem("localId");
 
 const FavoritesCategory = ({
   category,
+  selected,
+  selectionHandler,
   getFavoritesWithPagination,
   getTotalFavorites,
+  index,
 }) => {
   return (
     <>
       <CategoryButton
+        selected={selected}
         onClick={() => {
+          selectionHandler(index);
           getTotalFavorites(localId, `${category}`);
           category
             ? getFavoritesWithPagination(localId, `${category}`)
