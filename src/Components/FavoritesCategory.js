@@ -29,6 +29,22 @@ const CategoryButton = styled.div`
   cursor: pointer;
   color: white;
 
+  @media (max-width: 510px) {
+    border-radius: 0.8rem;
+    width: 90px;
+    height: 40px;
+    margin: 1.5px;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 420px) {
+    border-radius: 0.5rem;
+    width: 80px;
+    height: 30px;
+    margin: 1px;
+    font-size: 0.8rem;
+  }
+
   &:hover {
     background-color: #c30010;
   }

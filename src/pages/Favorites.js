@@ -17,6 +17,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import FavoritesCover from "../images/favorites_cover.jpg";
 import TopIcon from "../images/top.png";
+import Loading from "../images/loading.gif";
 import FavoriteItem from "../components/FavoriteItem";
 import FavoritesCategory from "../components/FavoritesCategory";
 
@@ -44,6 +45,25 @@ const TopButton = styled.div`
   bottom: 50px;
   left: 30px;
   cursor: pointer;
+
+  @media (max-width: 1100px) {
+    width: 110px;
+    height: 110px;
+  }
+
+  @media (max-width: 850px) {
+    width: 100px;
+    height: 100px;
+    bottom: 30px;
+    left: 20px;
+  }
+
+  @media (max-width: 490px) {
+    width: 90px;
+    height: 90px;
+    bottom: 30px;
+    left: 15px;
+  }
 
   &:hover {
     animation: shake 0.82s cubic-bezier(0.30, 0.07, 0.19, 0.97) both;
@@ -74,6 +94,14 @@ const FavoritesCoverSection = styled.div`
   background-attachment: fixed;
   z-index: -1;
   position: relative;
+
+  @media (max-width: 880px) {
+    height: 200px;
+  }
+
+  @media (max-width: 420px) {
+    height: 160px;
+  }
 `;
 
 const FavoritesCoverTitle = styled.div`
@@ -93,16 +121,36 @@ const FavoritesCoverTitleWords = styled.h1`
   text-shadow: 5px 5px 4px black;
   font-weight: 800;
   font-size: 4.5rem;
+
+  @media (max-width: 880px) {
+    font-size: 3.5rem;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 3rem;
+  }
 `;
 
 const BodyContainer = styled.div`
   display: flex;
   width: 100%;
   margin-bottom: 20px;
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const BodyLeft = styled.div`
   width: 20%;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 1100px) {
+    justify-content: flex-start;
+    width: 90%;
+  }
 `;
 
 const BodyRight = styled.div`
@@ -110,6 +158,10 @@ const BodyRight = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 1100px) {
+    width: 100%;
+  }
 `;
 
 const UserName = styled.div`
@@ -118,6 +170,14 @@ const UserName = styled.div`
   font-size: 2rem;
   font-weight: 600;
   margin: 2rem 0;
+
+  @media (max-width: 1100px) {
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const SubtitleContainer = styled.div`
@@ -125,7 +185,12 @@ const SubtitleContainer = styled.div`
   justify-content: space-between;
   align-items: end;
   width: 90%;
+  height: 35px;
   margin-top: 2rem;
+
+  @media (max-width: 1100px) {
+    margin-top: 0;
+  }
 `;
 
 const Subtitle = styled.h3`
@@ -136,9 +201,13 @@ const Subtitle = styled.h3`
 
 const TotalQuantity = styled.div`
   display: flex;
-  justify-content: center;
-  width: 100%;
+  justify-content: flex-start;
+  width: auto;
   font-size: 1.5rem;
+
+  @media (max-width: 420px) {
+    font-size: 1.3rem;
+  }
 `;
 
 const BodyRightLine = styled.div`
@@ -154,22 +223,35 @@ const ButtonArea = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 90%;
+  flex-wrap: wrap;
 `;
 
 const SortOptionArea = styled.div`
-  margin-right: 20px;
+  height: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: end;
-  width: 500px;
+  min-width: 60px;
+
+  @media (max-width: 570px) {
+    flex-direction: column;
+  }
 `;
 
 const SortOption = styled.div`
-  margin-bottom: -10px;
   font-size: 1.1rem;
   cursor: pointer;
   margin-left: 15px;
   color: #767676;
+
+  @media (max-width: 570px) {
+    margin-left: 0;
+    margin-bottom: 1px;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 0.9rem;
+  }
 
   &:hover {
     color: #111111;
@@ -393,7 +475,7 @@ const Favorites = () => {
               />
             ))}
           </ButtonArea>
-
+          {!favorites && <img src={Loading} />}
           {favorites &&
             favorites.map((item, index) => {
               if (favorites.length === index + 1) {
