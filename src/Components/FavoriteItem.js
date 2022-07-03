@@ -36,6 +36,12 @@ const FavoriteItem = styled.div`
   margin: 10px 0;
   position: relative;
 
+  &:hover {
+    margin-top: 9px;
+    margin-left: -5px;
+    box-shadow: 3px 3px 4px #333333;
+  }
+
   @media (max-width: 880px) {
     padding: 1.8rem 1.2rem;
     margin: 6px 0;
@@ -46,13 +52,6 @@ const FavoriteItem = styled.div`
     flex-direction: column-reverse;
     justify-content: start;
     align-items: flex-start;
-  }
-
-  &:hover {
-    cursor: pointer;
-    margin-top: 9px;
-    margin-left: -5px;
-    box-shadow: 3px 3px 4px #333333;
   }
 `;
 
@@ -196,6 +195,10 @@ const Heart = styled(FaHeart)`
   right: 20px;
   cursor: pointer;
 
+  &hover: {
+    cursor: pointer;
+  }
+
   @media (max-width: 900px) {
     height: 30px;
     width: 30px;
@@ -259,6 +262,7 @@ const FavoriteItemDiv = (
           }`}</FavoriteItemTimestamp>
 
           <Heart
+            title={"移出最愛清單"}
             onClick={() => {
               deleteHandler(id, category);
               alert(`已將「${title}」移出最愛清單`);

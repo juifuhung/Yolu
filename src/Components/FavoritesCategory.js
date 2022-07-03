@@ -25,7 +25,7 @@ const CategoryButton = styled.div`
   margin: 2px;
   font-size: 1.1rem;
   border-radius: 1rem;
-  background-color: ${(props) => (props.selected ? "#c30010" : "#ff0000")};
+  background-color: ${(props) => (props.selected ? "#7f0000" : "#ff0000")};
   cursor: pointer;
   color: white;
 
@@ -46,7 +46,7 @@ const CategoryButton = styled.div`
   }
 
   &:hover {
-    background-color: #c30010;
+    background-color: #7f0000;
   }
 `;
 
