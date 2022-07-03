@@ -15,7 +15,7 @@ import {
 import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-// import FavoritesCover from "../images/favorites_cover.jpg";
+import FavoritesCover from "../images/favorites_cover.jpg";
 import FavoriteItem from "../components/FavoriteItem";
 import FavoritesCategory from "../components/FavoritesCategory";
 
@@ -32,50 +32,110 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
-const WelcomeMessage = styled.div`
+const FavoritesCoverSection = styled.div`
+  width: 100%;
+  height: 250px;
+  background-image: url(${FavoritesCover});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: -1;
+  position: relative;
+`;
+
+const FavoritesCoverTitle = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-attachment: fixed;
+  z-index: -1;
+`;
+
+const FavoritesCoverTitleWords = styled.h1`
+  margin: 0;
+  color: white;
+  text-shadow: 5px 5px 4px black;
+  font-weight: 800;
+  font-size: 4.5rem;
+`;
+
+const BodyContainer = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+const BodyLeft = styled.div`
+  width: 20%;
+`;
+
+const BodyRight = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const UserName = styled.div`
   display: flex;
   justify-content: center;
   font-size: 2rem;
   font-weight: 600;
-  background-color: pink;
-  padding: 1rem;
+  margin: 2rem 0;
 `;
 
-const ButtonArea = styled.div`
+const SubtitleContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100vw;
-  height: 150px;
+  justify-content: space-between;
+  align-items: end;
+  width: 90%;
+  margin-top: 2rem;
 `;
 
-const ItemQuantity = styled.div`
+const Subtitle = styled.h3`
+  margin: 0;
+  font-weight: 500;
+  color: black;
+`;
+
+const TotalQuantity = styled.div`
   display: flex;
   justify-content: center;
-  width: 100vw;
-  height: 100px;
+  width: 100%;
   font-size: 1.5rem;
 `;
 
-const SortButtonArea = styled.div`
-  display: flex;
-  justify-content: center;
-  height: 100px;
-  width: 100vw;
+const BodyRightLine = styled.div`
+  margin-top: 20px;
+  height: 5px;
+  width: 90%;
+  background-color: black;
 `;
 
-const SortButton = styled.div`
+const ButtonArea = styled.div`
+  margin: 20px 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 90%;
+`;
+
+const SortOptionArea = styled.select`
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 0 5px 0 0;
-  width: 100px;
-  height: 100px;
-  font-size: 1rem;
-  color: white;
   background-color: black;
-  cursor: pointer;
-  border-radius: 20%;
+  color: white;
+  height: 30px;
+  width: 160px;
+  border: none;
+  margin-bottom: 2px;
+`;
+
+const SortOption = styled.option`
+  color: #7a7373;
+  background-color: #ece9e9;
 `;
 
 const categoryArray = [
@@ -257,68 +317,87 @@ const Favorites = () => {
   return (
     <>
       <Header />
-      <ButtonArea>
-        {categoryArray.map((category) => (
-          <FavoritesCategory
-            key={category}
-            category={category}
-            getTotalFavorites={getTotalFavorites}
-            getFavoritesWithPagination={getFavoritesWithPagination}
-          />
-        ))}
-        <FavoritesCategory
-          getTotalFavorites={getTotalFavorites}
-          getFavoritesWithPagination={getFavoritesWithPagination}
-        />
-      </ButtonArea>
-      <SortButtonArea>
-        <SortButton onClick={sortFromOldToNew}>Sort from old to new</SortButton>
-        <SortButton onClick={sortFromNewToOld}>Sort from new to old</SortButton>
-      </SortButtonArea>
-      <WelcomeMessage>{`hi ${displayName}`}</WelcomeMessage>
-      {totalFavorites.length > 0 ? (
-        categorySelected === undefined ? (
-          <ItemQuantity>{`全部共有${totalFavorites.length}個景點`}</ItemQuantity>
-        ) : (
-          <ItemQuantity>{`${categorySelected}共有${totalFavorites.length}個景點`}</ItemQuantity>
-        )
-      ) : (
-        <ItemQuantity>無景點</ItemQuantity>
-      )}
+      <FavoritesCoverSection>
+        <FavoritesCoverTitle>
+          <FavoritesCoverTitleWords>最愛清單</FavoritesCoverTitleWords>
+        </FavoritesCoverTitle>
+      </FavoritesCoverSection>
+      <BodyContainer>
+        <BodyLeft>
+          <UserName>{`${displayName}`}</UserName>
+        </BodyLeft>
+        <BodyRight>
+          <SubtitleContainer>
+            <Subtitle>
+              {categorySelected === undefined ? (
+                <TotalQuantity>{`全部共有${totalFavorites.length}個景點`}</TotalQuantity>
+              ) : (
+                <TotalQuantity>{`${categorySelected}共有${totalFavorites.length}個景點`}</TotalQuantity>
+              )}
+            </Subtitle>
+            <SortOptionArea>
+              <option selected disabled hidden>
+                排序依據
+              </option>
+              <SortOption onClick={sortFromOldToNew}>
+                新增日期（舊到新）
+              </SortOption>
+              <SortOption onClick={sortFromNewToOld}>
+                新增日期（新到舊）
+              </SortOption>
+            </SortOptionArea>
+          </SubtitleContainer>
+          <BodyRightLine />
+          <ButtonArea>
+            <FavoritesCategory
+              getTotalFavorites={getTotalFavorites}
+              getFavoritesWithPagination={getFavoritesWithPagination}
+            />
+            {categoryArray.map((category) => (
+              <FavoritesCategory
+                key={category}
+                category={category}
+                getTotalFavorites={getTotalFavorites}
+                getFavoritesWithPagination={getFavoritesWithPagination}
+              />
+            ))}
+          </ButtonArea>
 
-      {favorites &&
-        favorites.map((item, index) => {
-          if (favorites.length === index + 1) {
-            return (
-              <FavoriteItem
-                ref={lastFavoriteItem}
-                key={item.title}
-                category={item.category}
-                id={item.id}
-                title={item.title}
-                subtitle={item.subtitle}
-                description={item.description}
-                img={item.photo}
-                timestamp={item.created_time.toDate()}
-                deleteHandler={deleteHandler}
-              />
-            );
-          } else {
-            return (
-              <FavoriteItem
-                key={item.title}
-                category={item.category}
-                id={item.id}
-                title={item.title}
-                subtitle={item.subtitle}
-                description={item.description}
-                img={item.photo}
-                timestamp={item.created_time.toDate()}
-                deleteHandler={deleteHandler}
-              />
-            );
-          }
-        })}
+          {favorites &&
+            favorites.map((item, index) => {
+              if (favorites.length === index + 1) {
+                return (
+                  <FavoriteItem
+                    ref={lastFavoriteItem}
+                    key={item.title}
+                    category={item.category}
+                    id={item.id}
+                    title={item.title}
+                    subtitle={item.subtitle}
+                    description={item.description}
+                    img={item.photo}
+                    timestamp={item.created_time.toDate()}
+                    deleteHandler={deleteHandler}
+                  />
+                );
+              } else {
+                return (
+                  <FavoriteItem
+                    key={item.title}
+                    category={item.category}
+                    id={item.id}
+                    title={item.title}
+                    subtitle={item.subtitle}
+                    description={item.description}
+                    img={item.photo}
+                    timestamp={item.created_time.toDate()}
+                    deleteHandler={deleteHandler}
+                  />
+                );
+              }
+            })}
+        </BodyRight>
+      </BodyContainer>
 
       <Footer />
     </>

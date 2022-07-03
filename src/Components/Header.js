@@ -9,6 +9,8 @@ import mobileMemberLoginIcon from "../images/mobile-member-login.png";
 import mobileLogOutMemberIcon from "../images/mobile-member-logout.png";
 
 const HeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: space-between;
   background-color: #ffffff;

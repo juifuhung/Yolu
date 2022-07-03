@@ -20,10 +20,11 @@ const CategoryButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 50px;
   margin: 2px;
-  border-radius: 20%;
+  font-size: 1.1rem;
+  border-radius: 1rem;
   background-color: red;
   cursor: pointer;
   color: white;
