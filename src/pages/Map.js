@@ -38,6 +38,7 @@ initializeApp(firebaseConfig);
 const db = getFirestore();
 
 const LoadingDiv = styled.div`
+  top: 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;

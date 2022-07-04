@@ -9,8 +9,8 @@ import mobileMemberLoginIcon from "../images/mobile-member-login.png";
 import mobileLogOutMemberIcon from "../images/mobile-member-logout.png";
 
 const HeaderContainer = styled.div`
-  // position: sticky;
-  // top: 0;
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: space-between;
   background-color: #ffffff;
@@ -166,7 +166,7 @@ const MobileNav = styled.div`
   width: 100%;
   height: 70px;
   // position: sticky;
-  // top: 120px;
+  // top: 500px;
 
   @media (min-width: 1501px) {
     display: none;

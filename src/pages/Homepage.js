@@ -14,10 +14,6 @@ const slideImages = [
   "https://img.onl/yToflG",
 ];
 
-const HomepageContainer = styled.div`
-  width: 100%;
-`;
-
 const SlideShow = styled.div`
   width: 100%;
   overflow: hidden;
@@ -331,62 +327,60 @@ const Homepage = () => {
 
   return (
     <>
-      <HomepageContainer>
-        <Header />
-        <Font>
-          <SlideShow>
-            <SlideshowSlider index={index}>
-              {slideImages.map((img, index) => (
-                <Slide key={index} img={img} />
-              ))}
-            </SlideshowSlider>
+      <Header />
+      <Font>
+        <SlideShow>
+          <SlideshowSlider index={index}>
+            {slideImages.map((img, index) => (
+              <Slide key={index} img={img} />
+            ))}
+          </SlideshowSlider>
 
-            <Next onClick={nextSlide} />
-            <Previous onClick={previousSlide} />
+          <Next onClick={nextSlide} />
+          <Previous onClick={previousSlide} />
 
-            <SlideShowDots>
-              {slideImages.map((_, idx) => (
-                <Dot
-                  key={idx}
-                  active={index === idx}
-                  onClick={() => {
-                    setIndex(idx);
-                  }}
-                />
-              ))}
-            </SlideShowDots>
+          <SlideShowDots>
+            {slideImages.map((_, idx) => (
+              <Dot
+                key={idx}
+                active={index === idx}
+                onClick={() => {
+                  setIndex(idx);
+                }}
+              />
+            ))}
+          </SlideShowDots>
 
-            <CarouselTitle>
-              <CarouselYolu>Yolu</CarouselYolu>
-              <CarouselChinese>
-                最詳細的羅瓦涅米繁體中文旅遊資訊網
-              </CarouselChinese>
-            </CarouselTitle>
-          </SlideShow>
+          <CarouselTitle>
+            <CarouselYolu>Yolu</CarouselYolu>
+            <CarouselChinese>
+              最詳細的羅瓦涅米繁體中文旅遊資訊網
+            </CarouselChinese>
+          </CarouselTitle>
+        </SlideShow>
 
-          <MainTimer>
-            <Timer />
-          </MainTimer>
+        <MainTimer>
+          <Timer />
+        </MainTimer>
 
-          <Selection>
-            <MainCircleContainer>
-              <MainCircle img={`https://img.onl/PBCUmN`} to="/map">
-                <MainCircleTitle>互動地圖</MainCircleTitle>
-              </MainCircle>
-            </MainCircleContainer>
-            <MainCircleContainer>
-              <MainCircle
-                img={`https://img.onl/MyS2bP`}
-                to="/favorites"
-                onClick={displayMessage}
-              >
-                <MainCircleTitle>我的最愛</MainCircleTitle>
-              </MainCircle>
-            </MainCircleContainer>
-          </Selection>
-        </Font>
-        <Footer />
-      </HomepageContainer>
+        <Selection>
+          <MainCircleContainer>
+            <MainCircle img={`https://img.onl/PBCUmN`} to="/map">
+              <MainCircleTitle>互動地圖</MainCircleTitle>
+            </MainCircle>
+          </MainCircleContainer>
+          <MainCircleContainer>
+            <MainCircle
+              img={`https://img.onl/MyS2bP`}
+              to="/favorites"
+              onClick={displayMessage}
+            >
+              <MainCircleTitle>我的最愛</MainCircleTitle>
+            </MainCircle>
+          </MainCircleContainer>
+        </Selection>
+      </Font>
+      <Footer />
     </>
   );
 };

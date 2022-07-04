@@ -436,7 +436,7 @@ const Favorites = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
-    window.scroll({ top: 450, behavior: "smooth" });
+    window.scroll({ top: 390, behavior: "smooth" });
   };
 
   const sortFromNewToOld = () => {
@@ -444,7 +444,7 @@ const Favorites = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setFavorites(newToOldArray);
-    window.scroll({ top: 450, behavior: "smooth" });
+    window.scroll({ top: 390, behavior: "smooth" });
   };
 
   const selectionHandler = (i) => {
@@ -456,7 +456,7 @@ const Favorites = () => {
       }
     });
     setCategories(newCategoryArray);
-    window.scroll({ top: 450, behavior: "smooth" });
+    window.scroll({ top: 390, behavior: "smooth" });
   };
 
   return (
