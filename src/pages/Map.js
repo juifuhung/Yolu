@@ -20,6 +20,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { useAuth } from "../utils/Firebase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import MapCategoryItem from "../components/MapCategoryItem";
@@ -266,13 +267,20 @@ const categoryArray = [
   { title: "交通", icon: "https://img.onl/0S0gd6" },
 ];
 
-const localId = window.localStorage.getItem("localId");
+let localId;
 
 const Map = () => {
   const [allSpots, setAllSpots] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false);
   const [selected, setSelected] = useState(null);
+
+  const currentUser = useAuth();
+  if (currentUser === undefined) {
+    return;
+  } else {
+    localId = currentUser.uid;
+  }
 
   const center = { lat: 66.533688, lng: 25.75218 };
 
@@ -303,14 +311,16 @@ const Map = () => {
 
   const getFavorites = async () => {
     try {
-      let favoritesArray = [];
-      const querySnapshot = await getDocs(
-        query(collection(db, "Favorites"), where("localId", "==", localId))
-      );
-      querySnapshot.forEach((doc) => {
-        favoritesArray.push({ ...doc.data(), id: doc.id });
-      });
-      setFavorites(favoritesArray);
+      if (localId) {
+        let favoritesArray = [];
+        const querySnapshot = await getDocs(
+          query(collection(db, "Favorites"), where("localId", "==", localId))
+        );
+        querySnapshot.forEach((doc) => {
+          favoritesArray.push({ ...doc.data(), id: doc.id });
+        });
+        setFavorites(favoritesArray);
+      }
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
     }

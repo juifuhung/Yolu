@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { signUp, signIn, useAuth } from "../utils/Firebase";
+import { signUp, signIn } from "../utils/Firebase";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -117,12 +117,17 @@ const Button = styled.button`
 const db = getFirestore();
 
 const Member = () => {
-  const emailInputRef = useRef("");
-  const passwordInputRef = useRef("");
-  const nameInputRef = useRef("");
+  const [enteredName, setEnteredName] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
 
-  const currentUser = useAuth();
-  console.log(currentUser);
+  // const currentUser = useAuth();
+  // if (currentUser == undefined) {
+  //   console.log("loading");
+  // } else {
+  //   console.log("not loading");
+  //   console.log(currentUser);
+  // }
 
   const [isLogin, setIsLogin] = useState(true);
 
@@ -132,15 +137,15 @@ const Member = () => {
 
   const signUpHandler = async () => {
     try {
-      const result = await signUp(
-        emailInputRef.current.value,
-        passwordInputRef.current.value
-      );
+      const result = await signUp(enteredEmail, enteredPassword);
       await setDoc(doc(db, "User", `${result.user.uid}`), {
-        name: nameInputRef.current.value,
+        name: enteredName,
         uid: result.user.uid,
         email: result.user.email,
       });
+      setEnteredName("");
+      setEnteredEmail("");
+      setEnteredPassword("");
     } catch (e) {
       alert(e.message);
     }
@@ -148,31 +153,39 @@ const Member = () => {
 
   const signInHandler = async () => {
     try {
-      const result = await signIn(
-        emailInputRef.current.value,
-        passwordInputRef.current.value
-      );
+      const result = await signIn(enteredEmail, enteredPassword);
       console.log(result);
       console.log("signed in");
+      setEnteredEmail("");
+      setEnteredPassword("");
     } catch (e) {
       alert(e);
     }
   };
 
+  const nameInputChangeHandler = (e) => {
+    setEnteredName(e.target.value);
+  };
+
+  const emailInputChangeHandler = (e) => {
+    setEnteredEmail(e.target.value);
+  };
+
+  const passwordInputChangeHandler = (e) => {
+    setEnteredPassword(e.target.value);
+  };
+
   const submitHandler = async (event) => {
     event.preventDefault();
+    console.log(enteredName);
+    console.log(enteredEmail);
+    console.log(enteredPassword);
 
     if (isLogin) {
       await signInHandler();
     } else {
       await signUpHandler();
     }
-
-    if (nameInputRef.current !== "") {
-      nameInputRef.current.value = "";
-    }
-    emailInputRef.current.value = "";
-    passwordInputRef.current.value = "";
   };
 
   return (
@@ -194,8 +207,8 @@ const Member = () => {
                     type="string"
                     id="name"
                     required
-                    ref={nameInputRef}
                     isLogin={isLogin ? true : false}
+                    onChange={nameInputChangeHandler}
                   />
                 </InputContainer>
               )}
@@ -205,8 +218,8 @@ const Member = () => {
                   type="email"
                   id="email"
                   required
-                  ref={emailInputRef}
                   isLogin={isLogin ? true : false}
+                  onChange={emailInputChangeHandler}
                 />
               </InputContainer>
               <InputContainer isLogin={isLogin ? true : false}>
@@ -216,7 +229,7 @@ const Member = () => {
                   id="password"
                   required
                   isLogin={isLogin ? true : false}
-                  ref={passwordInputRef}
+                  onChange={passwordInputChangeHandler}
                 />
               </InputContainer>
               <Button>{isLogin ? "登入" : "註冊"}</Button>
