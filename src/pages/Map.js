@@ -325,7 +325,7 @@ const Map = () => {
   useEffect(() => {
     getData();
     getFavorites();
-  }, []);
+  }, [localId]);
 
   const deleteHandler = async (id) => {
     try {

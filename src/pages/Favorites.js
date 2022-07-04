@@ -142,7 +142,7 @@ const FavoritesCoverTitleWords = styled.h1`
 const BodyContainer = styled.div`
   display: flex;
   width: 100%;
-  min-height: 800px;
+  min-height: 400px;
   margin-bottom: 20px;
 
   @media (max-width: 1100px) {
@@ -169,6 +169,7 @@ const BodyRight = styled.div`
   align-items: center;
 
   @media (max-width: 1100px) {
+    height: 40vh;
     width: 100%;
   }
 `;
@@ -177,12 +178,16 @@ const NoItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80%;
-  width: 100%;
+  height: 800px;
+  width: 90%;
   background-image: url(${NoItemImage});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+
+  @media (max-width: 1350px) {
+    height: 40vh;
+  }
 `;
 
 const UserName = styled.div`
@@ -193,6 +198,7 @@ const UserName = styled.div`
   margin: 2rem 0;
 
   @media (max-width: 1100px) {
+    font-size: 1.8rem;
     margin: 1.5rem 0;
   }
 
@@ -350,14 +356,12 @@ const Favorites = () => {
   const getTotalFavorites = async (localId, category) => {
     let totalFavorites;
     if (localId) {
-      console.log("yes total favorites");
       if (!category || category === "undefined") {
         totalFavorites = query(
           collection(db, "Favorites"),
           where("localId", "==", localId)
         );
       } else {
-        console.log("no total favorites");
         totalFavorites = query(
           collection(db, "Favorites"),
           where("localId", "==", localId),
@@ -473,7 +477,7 @@ const Favorites = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
-    window.scroll({ top: 390, behavior: "smooth" });
+    window.scroll({ top: 420, behavior: "smooth" });
   };
 
   const sortFromNewToOld = () => {
@@ -481,7 +485,7 @@ const Favorites = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setFavorites(newToOldArray);
-    window.scroll({ top: 390, behavior: "smooth" });
+    window.scroll({ top: 250, behavior: "smooth" });
   };
 
   const selectionHandler = (i) => {
@@ -494,18 +498,17 @@ const Favorites = () => {
       }
     });
     setCategories(newCategoryArray);
-    window.scroll({ top: 390, behavior: "smooth" });
+    window.scroll({ top: 250, behavior: "smooth" });
   };
 
   const categorySelectionHandler = () => {
     setAllCategoriesSelected(true);
     setCategories(categoryArray);
-    window.scroll({ top: 390, behavior: "smooth" });
+    window.scroll({ top: 250, behavior: "smooth" });
   };
 
   return (
     <>
-      {console.log(localId)}
       <FavoritesHeaderContainer>
         <Header />
       </FavoritesHeaderContainer>
