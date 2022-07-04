@@ -309,6 +309,7 @@ const Favorites = () => {
   const [totalFavorites, setTotalFavorites] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState(categoryArray);
+  const [allCategoriesSelected, setAllCategoriesSelected] = useState(false);
 
   const observer = useRef();
   const lastFavoriteItem = useCallback((node) => {
@@ -468,6 +469,7 @@ const Favorites = () => {
   };
 
   const selectionHandler = (i) => {
+    setAllCategoriesSelected(false);
     const newCategoryArray = [...categoryArray].map((item, index) => {
       if (i === index) {
         return { ...item, selected: !item.selected };
@@ -476,6 +478,12 @@ const Favorites = () => {
       }
     });
     setCategories(newCategoryArray);
+    window.scroll({ top: 390, behavior: "smooth" });
+  };
+
+  const categorySelectionHandler = () => {
+    setAllCategoriesSelected(true);
+    setCategories(categoryArray);
     window.scroll({ top: 390, behavior: "smooth" });
   };
 
@@ -510,6 +518,8 @@ const Favorites = () => {
           <BodyRightLine />
           <ButtonArea>
             <FavoritesCategory
+              selected={allCategoriesSelected}
+              categorySelectionHandler={categorySelectionHandler}
               selectionHandler={selectionHandler}
               getTotalFavorites={getTotalFavorites}
               getFavoritesWithPagination={getFavoritesWithPagination}
