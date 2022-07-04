@@ -313,12 +313,10 @@ const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState(categoryArray);
   const [allCategoriesSelected, setAllCategoriesSelected] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
-    setLoading(false);
   }
 
   const observer = useRef();
@@ -347,17 +345,19 @@ const Favorites = () => {
   useEffect(() => {
     getTotalFavorites(localId);
     getFavoritesWithPagination(localId);
-  }, [loading]);
+  }, [localId]);
 
   const getTotalFavorites = async (localId, category) => {
     let totalFavorites;
     if (localId) {
+      console.log("yes total favorites");
       if (!category || category === "undefined") {
         totalFavorites = query(
           collection(db, "Favorites"),
           where("localId", "==", localId)
         );
       } else {
+        console.log("no total favorites");
         totalFavorites = query(
           collection(db, "Favorites"),
           where("localId", "==", localId),
@@ -505,6 +505,7 @@ const Favorites = () => {
 
   return (
     <>
+      {console.log(localId)}
       <FavoritesHeaderContainer>
         <Header />
       </FavoritesHeaderContainer>

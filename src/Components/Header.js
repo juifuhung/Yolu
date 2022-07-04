@@ -236,6 +236,8 @@ const Header = () => {
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
+    console.log("current user in header");
+    console.log(localId);
   }
 
   const displayMessage = () => {
