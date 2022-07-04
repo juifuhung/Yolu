@@ -4,6 +4,7 @@ import {
   doc,
   deleteDoc,
   collection,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -320,8 +321,12 @@ const Favorites = () => {
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
-    displayName = currentUser.displayName;
   }
+
+  const getDisplayName = async (localId) => {
+    const docSnap = await getDoc(doc(db, "User", `${localId}`));
+    displayName = docSnap.data().name;
+  };
 
   const observer = useRef();
   const lastFavoriteItem = useCallback((node) => {
@@ -347,25 +352,24 @@ const Favorites = () => {
   }, []);
 
   useEffect(() => {
+    getDisplayName(localId);
     getTotalFavorites(localId);
     getFavoritesWithPagination(localId);
   }, [localId]);
 
   const getTotalFavorites = async (localId, category) => {
     let totalFavorites;
-    if (localId) {
-      if (!category || category === "undefined") {
-        totalFavorites = query(
-          collection(db, "Favorites"),
-          where("localId", "==", localId)
-        );
-      } else {
-        totalFavorites = query(
-          collection(db, "Favorites"),
-          where("localId", "==", localId),
-          where("category", "==", `${category}`)
-        );
-      }
+    if (!category || category === "undefined") {
+      totalFavorites = query(
+        collection(db, "Favorites"),
+        where("localId", "==", localId)
+      );
+    } else {
+      totalFavorites = query(
+        collection(db, "Favorites"),
+        where("localId", "==", localId),
+        where("category", "==", `${category}`)
+      );
     }
 
     const querySnapshot = await getDocs(totalFavorites);
@@ -379,23 +383,21 @@ const Favorites = () => {
   const getFavoritesWithPagination = async (localId, category) => {
     let first;
     try {
-      if (localId) {
-        if (category) {
-          first = query(
-            collection(db, "Favorites"),
-            where("localId", "==", localId),
-            where("category", "==", `${category}`),
-            orderBy("created_time"),
-            limit(3)
-          );
-        } else {
-          first = query(
-            collection(db, "Favorites"),
-            where("localId", "==", localId),
-            orderBy("created_time"),
-            limit(3)
-          );
-        }
+      if (category) {
+        first = query(
+          collection(db, "Favorites"),
+          where("localId", "==", localId),
+          where("category", "==", `${category}`),
+          orderBy("created_time"),
+          limit(3)
+        );
+      } else {
+        first = query(
+          collection(db, "Favorites"),
+          where("localId", "==", localId),
+          orderBy("created_time"),
+          limit(3)
+        );
       }
 
       const documentSnapshots = await getDocs(first);
@@ -418,25 +420,23 @@ const Favorites = () => {
           previousDocumentSnapshots.docs.length - 1
         ];
       let next;
-      if (localId) {
-        if (category) {
-          next = query(
-            collection(db, "Favorites"),
-            where("localId", "==", localId),
-            where("category", "==", category),
-            orderBy("created_time"),
-            startAfter(lastVisible),
-            limit(3)
-          );
-        } else {
-          next = query(
-            collection(db, "Favorites"),
-            where("localId", "==", localId),
-            orderBy("created_time"),
-            startAfter(lastVisible),
-            limit(3)
-          );
-        }
+      if (category) {
+        next = query(
+          collection(db, "Favorites"),
+          where("localId", "==", localId),
+          where("category", "==", category),
+          orderBy("created_time"),
+          startAfter(lastVisible),
+          limit(3)
+        );
+      } else {
+        next = query(
+          collection(db, "Favorites"),
+          where("localId", "==", localId),
+          orderBy("created_time"),
+          startAfter(lastVisible),
+          limit(3)
+        );
       }
 
       const nextDocumentSnapshots = await getDocs(next);
