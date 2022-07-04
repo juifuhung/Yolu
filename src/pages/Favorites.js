@@ -18,6 +18,7 @@ import Footer from "../components/Footer";
 import FavoritesCover from "../images/favorites_cover.jpg";
 import TopIcon from "../images/top.png";
 import Loading from "../images/loading.gif";
+import NoItemImage from "../images/no_item_found.png";
 import FavoriteItem from "../components/FavoriteItem";
 import FavoritesCategory from "../components/FavoritesCategory";
 
@@ -140,6 +141,7 @@ const FavoritesCoverTitleWords = styled.h1`
 const BodyContainer = styled.div`
   display: flex;
   width: 100%;
+  min-height: 800px;
   margin-bottom: 20px;
 
   @media (max-width: 1100px) {
@@ -168,6 +170,18 @@ const BodyRight = styled.div`
   @media (max-width: 1100px) {
     width: 100%;
   }
+`;
+
+const NoItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  width: 100%;
+  background-image: url(${NoItemImage});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 const UserName = styled.div`
@@ -518,7 +532,8 @@ const Favorites = () => {
               <img src={Loading} />
             </LoadingSection>
           )}
-          {favorites &&
+          {favorites.length === 0 && <NoItem />}
+          {favorites.length > 0 &&
             favorites.map((item, index) => {
               if (favorites.length === index + 1) {
                 return (
