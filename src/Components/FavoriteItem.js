@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { FaStar } from "react-icons/fa";
+import loadingIcon from "../images/loading.gif";
+import { FaHeart } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -18,45 +19,207 @@ initializeApp(firebaseConfig);
 getFirestore();
 
 const FavoriteItemSection = styled.div`
+  width: 90%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `;
 
 const FavoriteItem = styled.div`
-  width: 90vw;
-  min-height: 320px;
-  border: solid black 1px;
-  margin-bottom: 25px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  width: 92%;
+  height: 250px;
+  border: solid black 4px;
+  border-radius: 1rem;
+  padding: 1.2rem;
+  margin: 10px 0;
+  position: relative;
+
+  &:hover {
+    margin-top: 9px;
+    margin-left: -5px;
+    box-shadow: 3px 3px 4px #333333;
+  }
+
+  @media (max-width: 880px) {
+    padding: 1.8rem 1.2rem;
+    margin: 6px 0;
+    height: 220px;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+    justify-content: start;
+    align-items: flex-start;
+  }
 `;
 
-const FavoriteItemTitle = styled.div`
+const FavoriteItemLeft = styled.div`
+  width: 790px;
+  height: 240px;
+  background-image: url(${(props) => (props.img ? props.img : loadingIcon)});
+  background-size: ${(props) => (props.img ? "cover" : "contain")};
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+
+  @media (max-width: 880px) {
+    width: 711px;
+    height: 216px;
+  }
+
+  @media (max-width: 600px) {
+    margin-top: 15px;
+    width: 240px;
+    height: 140px;
+  }
+`;
+
+const FavoriteItemRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 140%;
+  height: 240px;
+  align-items: start;
+  padding: 0 20px 0;
+
+  @media (max-width: 600px) {
+    padding: 0;
+    width: 100%;
+    height: 60px;
+  }
+`;
+
+const FavoriteItemTitle = styled.h2`
   margin: 0;
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 1.6rem;
+  font-weight: 600;
+
+  @media (max-width: 370px) {
+    font-size: 1.4rem;
+  }
+`;
+
+const FavoriteItemSubtitle = styled.h3`
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+
+  @media (max-width: 370px) {
+    font-size: 0.9rem;
+  }
+`;
+
+const FavoriteItemDescription = styled.p`
+  font-size: 1rem;
+  font-weight: 500;
+
+  @media (max-width: 1100px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 950px) {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 600px) {
+    display: none;
+  }
 `;
 
 const FavoriteItemCategory = styled.div`
-  margin-0;
-  background-color:aqua;
-  width:40%;
-  font-weight:600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1400ff;
+  border-radius: 1rem;
+  color: white;
+  width: 140px;
+  height: 50px;
+  font-size: 1.4rem;
+  font-weight: 100;
+  letter-spacing: 2px;
+  box-shadow: 1px 2px 4px black;
+  position: absolute;
+  right: -160px;
+  bottom: -10px;
+
+  @media (max-width: 880px) {
+    bottom: -16px;
+  }
+
+  @media (max-width: 510px) {
+    right: -100px;
+  }
+
+  @media (max-width: 430px) {
+    right: -70px;
+  }
+
+  @media (max-width: 410px) {
+    right: -50px;
+  }
+
+  @media (max-width: 370px) {
+    right: -30px;
+  }
+
+  @media (max-width: 350px) {
+    right: -10px;
+  }
 `;
 
 const FavoriteItemTimestamp = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
   margin: 0;
   backgorund-color: yellow;
   width: 45%;
-  font-weight: 600;
+  font-weight: 100;
+
+  @media (max-width: 1100px) {
+    display: none;
+  }
 `;
 
-const FavoriteItemDescription = styled.div`
-  font-size: 1.2rem;
-`;
+const Heart = styled(FaHeart)`
+  color: #ff0000;
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
 
-const FavoriteItemImage = styled.div`
-  width: 780px;
-  height: 500px;
-  background-image: url(${(props) => props.img});
+  &hover: {
+    cursor: pointer;
+  }
+
+  @media (max-width: 900px) {
+    height: 30px;
+    width: 30px;
+  }
+
+  @media (max-width: 600px) {
+    height: 40px;
+    width: 40px;
+    top: 30px;
+    right: 22px;
+  }
+
+  @media (max-width: 410px) {
+    height: 30px;
+    width: 30px;
+  }
+
+  @media (max-width: 350px) {
+    height: 25px;
+    width: 25px;
+  }
 `;
 
 const FavoriteItemDiv = (
@@ -67,21 +230,39 @@ const FavoriteItemDiv = (
     <>
       <FavoriteItemSection>
         <FavoriteItem ref={ref} id={id}>
-          <FavoriteItemTitle>{title}</FavoriteItemTitle>
-          <FavoriteItemTitle>{subtitle}</FavoriteItemTitle>
-          <FavoriteItemCategory>{category}</FavoriteItemCategory>
-          <FavoriteItemTimestamp>{`${timestamp.getFullYear()}年 ${
-            timestamp.getMonth() + 1
-          }月 ${timestamp.getDate()}日 ${timestamp.getHours()}:${
+          <FavoriteItemLeft img={img} alt="Loading...">
+            <FavoriteItemCategory>{category}</FavoriteItemCategory>
+          </FavoriteItemLeft>
+          <FavoriteItemRight>
+            <FavoriteItemTitle>{title}</FavoriteItemTitle>
+            <FavoriteItemSubtitle>{subtitle}</FavoriteItemSubtitle>
+            <FavoriteItemDescription>{description}</FavoriteItemDescription>
+          </FavoriteItemRight>
+
+          <FavoriteItemTimestamp>{`新增時間：${timestamp.getFullYear()}年 ${
+            timestamp.getMonth() + 1 < 10
+              ? "0" + timestamp.getMonth().toString()
+              : timestamp.getMonth().toString()
+          }月 ${
+            timestamp.getDate() < 10
+              ? "0" + timestamp.getDate().toString()
+              : timestamp.getDate().toString()
+          }日 ${
+            timestamp.getHours() === 0
+              ? "00"
+              : timestamp.getHours() < 10
+              ? "0" + timestamp.getHours().toString()
+              : timestamp.getHours().toString()
+          }:${
             timestamp.getMinutes() === 0
               ? "00"
               : timestamp.getMinutes() < 10
               ? "0" + timestamp.getMinutes().toString()
               : timestamp.getMinutes().toString()
           }`}</FavoriteItemTimestamp>
-          <FavoriteItemDescription>{description}</FavoriteItemDescription>
-          <FavoriteItemImage img={img} alt="image" />
-          <FaStar
+
+          <Heart
+            title={"移出最愛清單"}
             onClick={() => {
               deleteHandler(id, category);
               alert(`已將「${title}」移出最愛清單`);

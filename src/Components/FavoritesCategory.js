@@ -20,26 +20,52 @@ const CategoryButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 50px;
   margin: 2px;
-  border-radius: 20%;
-  background-color: red;
+  font-size: 1.1rem;
+  border-radius: 1rem;
+  background-color: ${(props) => (props.selected ? "#7f0000" : "#ff0000")};
   cursor: pointer;
   color: white;
+
+  @media (max-width: 510px) {
+    border-radius: 0.8rem;
+    width: 90px;
+    height: 40px;
+    margin: 1.5px;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 420px) {
+    border-radius: 0.5rem;
+    width: 80px;
+    height: 30px;
+    margin: 1px;
+    font-size: 0.8rem;
+  }
+
+  &:hover {
+    background-color: #7f0000;
+  }
 `;
 
 const localId = window.localStorage.getItem("localId");
 
 const FavoritesCategory = ({
   category,
+  selected,
+  selectionHandler,
   getFavoritesWithPagination,
   getTotalFavorites,
+  index,
 }) => {
   return (
     <>
       <CategoryButton
+        selected={selected}
         onClick={() => {
+          selectionHandler(index);
           getTotalFavorites(localId, `${category}`);
           category
             ? getFavoritesWithPagination(localId, `${category}`)

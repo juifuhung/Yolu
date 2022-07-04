@@ -15,6 +15,9 @@ import {
 import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import FavoritesCover from "../images/favorites_cover.jpg";
+import TopIcon from "../images/top.png";
+import Loading from "../images/loading.gif";
 import FavoriteItem from "../components/FavoriteItem";
 import FavoritesCategory from "../components/FavoritesCategory";
 
@@ -31,59 +34,255 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
-const WelcomeMessage = styled.div`
+const FavoritesHeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
+
+const TopButton = styled.div`
+  width: 150px;
+  height: 150px;
+  background-image: url(${TopIcon});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: fixed;
+  bottom: 50px;
+  left: 30px;
+  cursor: pointer;
+
+  @media (max-width: 1100px) {
+    width: 110px;
+    height: 110px;
+  }
+
+  @media (max-width: 850px) {
+    width: 100px;
+    height: 100px;
+    bottom: 30px;
+    left: 20px;
+  }
+
+  @media (max-width: 490px) {
+    width: 90px;
+    height: 90px;
+    bottom: 30px;
+    left: 15px;
+  }
+
+  &:hover {
+    animation: shake 0.82s cubic-bezier(0.30, 0.07, 0.19, 0.97) both;
+  }
+
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1.5px, 0px, 0);
+    }
+    20%, 80% {
+      transform: translate3d(0, 1.5px, 0);
+    }
+    
+    30%, 50%, 70% {
+      transform: translate3d(-1.5px, 0, 0);
+    }
+    40%, 60% {
+      transform: translate3d(0, 1.5px, 0);
+  }
+`;
+
+const FavoritesCoverSection = styled.div`
+  width: 100%;
+  height: 250px;
+  background-image: url(${FavoritesCover});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: -1;
+  position: relative;
+
+  @media (max-width: 880px) {
+    height: 200px;
+  }
+
+  @media (max-width: 420px) {
+    height: 160px;
+  }
+`;
+
+const FavoritesCoverTitle = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-attachment: fixed;
+  z-index: -1;
+`;
+
+const FavoritesCoverTitleWords = styled.h1`
+  margin: 0;
+  color: white;
+  text-shadow: 5px 5px 4px black;
+  font-weight: 800;
+  font-size: 4.5rem;
+
+  @media (max-width: 880px) {
+    font-size: 3.5rem;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 3rem;
+  }
+`;
+
+const BodyContainer = styled.div`
+  display: flex;
+  width: 100%;
+  margin-bottom: 20px;
+
+  @media (max-width: 1100px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const BodyLeft = styled.div`
+  width: 20%;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 1100px) {
+    justify-content: flex-start;
+    width: 90%;
+  }
+`;
+
+const BodyRight = styled.div`
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (max-width: 1100px) {
+    width: 100%;
+  }
+`;
+
+const UserName = styled.div`
   display: flex;
   justify-content: center;
   font-size: 2rem;
   font-weight: 600;
-  background-color: pink;
-  padding: 1rem;
+  margin: 2rem 0;
+
+  @media (max-width: 1100px) {
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 1.5rem;
+  }
+`;
+
+const SubtitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  width: 90%;
+  height: 35px;
+  margin-top: 2rem;
+
+  @media (max-width: 1100px) {
+    margin-top: 0;
+  }
+`;
+
+const Subtitle = styled.h3`
+  margin: 0;
+  font-weight: 500;
+  color: black;
+`;
+
+const TotalQuantity = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  width: auto;
+  font-size: 1.5rem;
+
+  @media (max-width: 420px) {
+    font-size: 1.3rem;
+  }
+`;
+
+const BodyRightLine = styled.div`
+  margin-top: 20px;
+  height: 5px;
+  width: 90%;
+  background-color: black;
 `;
 
 const ButtonArea = styled.div`
+  margin: 20px 0;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  width: 100vw;
-  height: 150px;
+  width: 90%;
+  flex-wrap: wrap;
 `;
 
-const ItemQuantity = styled.div`
+const SortOptionArea = styled.div`
+  height: 100%;
   display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  min-width: 60px;
+
+  @media (max-width: 570px) {
+    flex-direction: column;
+  }
+`;
+
+const SortOption = styled.div`
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-left: 15px;
+  color: #767676;
+
+  @media (max-width: 570px) {
+    margin-left: 0;
+    margin-bottom: 1px;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 0.9rem;
+  }
+
+  &:hover {
+    color: #111111;
+  }
+`;
+
+const LoadingSection = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  width: 100vw;
-  height: 100px;
+  align-items: center;
+`;
+
+const LoadingWords = styled.p`
   font-size: 1.5rem;
 `;
 
-const SortButtonArea = styled.div`
-  display: flex;
-  justify-content: center;
-  height: 100px;
-  width: 100vw;
-`;
-
-const SortButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 5px 0 0;
-  width: 100px;
-  height: 100px;
-  font-size: 1rem;
-  color: white;
-  background-color: black;
-  cursor: pointer;
-  border-radius: 20%;
-`;
-
 const categoryArray = [
-  "博物館",
-  "自然景觀",
-  "餐廳",
-  "聖誕主題",
-  "購物",
-  "交通",
+  { title: "博物館", selected: false },
+  { title: "自然景觀", selected: false },
+  { title: "餐廳", selected: false },
+  { title: "聖誕主題", selected: false },
+  { title: "購物", selected: false },
+  { title: "交通", selected: false },
 ];
 
 const localId = window.localStorage.getItem("localId");
@@ -95,6 +294,7 @@ let categorySelected;
 const Favorites = () => {
   const [totalFavorites, setTotalFavorites] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [categories, setCategories] = useState(categoryArray);
 
   const observer = useRef();
   const lastFavoriteItem = useCallback((node) => {
@@ -242,7 +442,7 @@ const Favorites = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
-    window.scroll({ top: 0, behavior: "smooth" });
+    window.scroll({ top: 390, behavior: "smooth" });
   };
 
   const sortFromNewToOld = () => {
@@ -250,75 +450,114 @@ const Favorites = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setFavorites(newToOldArray);
-    window.scroll({ top: 0, behavior: "smooth" });
+    window.scroll({ top: 390, behavior: "smooth" });
+  };
+
+  const selectionHandler = (i) => {
+    const newCategoryArray = [...categoryArray].map((item, index) => {
+      if (i === index) {
+        return { ...item, selected: !item.selected };
+      } else {
+        return item;
+      }
+    });
+    setCategories(newCategoryArray);
+    window.scroll({ top: 390, behavior: "smooth" });
   };
 
   return (
     <>
-      <Header />
-      <ButtonArea>
-        {categoryArray.map((category) => (
-          <FavoritesCategory
-            key={category}
-            category={category}
-            getTotalFavorites={getTotalFavorites}
-            getFavoritesWithPagination={getFavoritesWithPagination}
-          />
-        ))}
-        <FavoritesCategory
-          getTotalFavorites={getTotalFavorites}
-          getFavoritesWithPagination={getFavoritesWithPagination}
-        />
-      </ButtonArea>
-      <SortButtonArea>
-        <SortButton onClick={sortFromOldToNew}>Sort from old to new</SortButton>
-        <SortButton onClick={sortFromNewToOld}>Sort from new to old</SortButton>
-      </SortButtonArea>
-      <WelcomeMessage>{`hi ${displayName}`}</WelcomeMessage>
-      {totalFavorites.length > 0 ? (
-        categorySelected === undefined ? (
-          <ItemQuantity>{`全部共有${totalFavorites.length}個景點`}</ItemQuantity>
-        ) : (
-          <ItemQuantity>{`${categorySelected}共有${totalFavorites.length}個景點`}</ItemQuantity>
-        )
-      ) : (
-        <ItemQuantity>無景點</ItemQuantity>
-      )}
-
-      {favorites &&
-        favorites.map((item, index) => {
-          if (favorites.length === index + 1) {
-            return (
-              <FavoriteItem
-                ref={lastFavoriteItem}
-                key={item.title}
-                category={item.category}
-                id={item.id}
-                title={item.title}
-                subtitle={item.subtitle}
-                description={item.description}
-                img={item.photo}
-                timestamp={item.created_time.toDate()}
-                deleteHandler={deleteHandler}
+      <FavoritesHeaderContainer>
+        <Header />
+      </FavoritesHeaderContainer>
+      <FavoritesCoverSection>
+        <FavoritesCoverTitle>
+          <FavoritesCoverTitleWords>最愛清單</FavoritesCoverTitleWords>
+        </FavoritesCoverTitle>
+      </FavoritesCoverSection>
+      <BodyContainer>
+        <BodyLeft>
+          <UserName>{`你好，${displayName}`}</UserName>
+        </BodyLeft>
+        <BodyRight>
+          <SubtitleContainer>
+            <Subtitle>
+              {categorySelected === undefined ? (
+                <TotalQuantity>{`全部共有${totalFavorites.length}個景點`}</TotalQuantity>
+              ) : (
+                <TotalQuantity>{`${categorySelected}共有${totalFavorites.length}個景點`}</TotalQuantity>
+              )}
+            </Subtitle>
+            <SortOptionArea>
+              <SortOption onClick={sortFromOldToNew}>由舊到新</SortOption>
+              <SortOption onClick={sortFromNewToOld}>由新到舊</SortOption>
+            </SortOptionArea>
+          </SubtitleContainer>
+          <BodyRightLine />
+          <ButtonArea>
+            <FavoritesCategory
+              selectionHandler={selectionHandler}
+              getTotalFavorites={getTotalFavorites}
+              getFavoritesWithPagination={getFavoritesWithPagination}
+            />
+            {categories.map((category, index) => (
+              <FavoritesCategory
+                key={category.title}
+                category={category.title}
+                selected={category.selected}
+                index={index}
+                selectionHandler={selectionHandler}
+                getTotalFavorites={getTotalFavorites}
+                getFavoritesWithPagination={getFavoritesWithPagination}
               />
-            );
-          } else {
-            return (
-              <FavoriteItem
-                key={item.title}
-                category={item.category}
-                id={item.id}
-                title={item.title}
-                subtitle={item.subtitle}
-                description={item.description}
-                img={item.photo}
-                timestamp={item.created_time.toDate()}
-                deleteHandler={deleteHandler}
-              />
-            );
-          }
-        })}
-
+            ))}
+          </ButtonArea>
+          {!favorites && (
+            <LoadingSection>
+              <LoadingWords>Loading...</LoadingWords>
+              <img src={Loading} />
+            </LoadingSection>
+          )}
+          {favorites &&
+            favorites.map((item, index) => {
+              if (favorites.length === index + 1) {
+                return (
+                  <FavoriteItem
+                    ref={lastFavoriteItem}
+                    key={item.title}
+                    category={item.category}
+                    id={item.id}
+                    title={item.title}
+                    subtitle={item.subtitle}
+                    description={item.description}
+                    img={item.photo}
+                    timestamp={item.created_time.toDate()}
+                    deleteHandler={deleteHandler}
+                  />
+                );
+              } else {
+                return (
+                  <FavoriteItem
+                    key={item.title}
+                    category={item.category}
+                    id={item.id}
+                    title={item.title}
+                    subtitle={item.subtitle}
+                    description={item.description}
+                    img={item.photo}
+                    timestamp={item.created_time.toDate()}
+                    deleteHandler={deleteHandler}
+                  />
+                );
+              }
+            })}
+        </BodyRight>
+      </BodyContainer>
+      <TopButton
+        onClick={() => {
+          window.scroll({ top: 0, behavior: "smooth" });
+        }}
+      />
       <Footer />
     </>
   );

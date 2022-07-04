@@ -37,7 +37,14 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
+const MapHeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
+
 const LoadingDiv = styled.div`
+  top: 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -367,7 +374,9 @@ const Map = () => {
 
   return (
     <>
-      <Header />
+      <MapHeaderContainer>
+        <Header />
+      </MapHeaderContainer>
       <MapContainer>
         <GoogleMap
           zoom={12}
@@ -377,6 +386,7 @@ const Map = () => {
           {!showFavorites &&
             allSpots.map((location) => (
               <Marker
+                title={location.title}
                 key={location.title}
                 icon={location.icon}
                 position={{ lat: location.lat, lng: location.lng }}
@@ -414,6 +424,7 @@ const Map = () => {
                     (element) => element.title === selected.title
                   ) ? (
                     <FillHeart
+                      title={"加入最愛清單"}
                       onClick={() => {
                         const favoriteItem = favorites.find(
                           (item) => item.title === selected.title
@@ -425,6 +436,7 @@ const Map = () => {
                     />
                   ) : (
                     <EmptyHeart
+                      title={"移出最愛清單"}
                       onClick={() => {
                         addToFavorite({
                           category: selected.category,
@@ -442,14 +454,17 @@ const Map = () => {
                     />
                   )
                 ) : (
-                  <FillHeart
+                  <EmptyHeart
+                    title={"加入最愛清單"}
                     onClick={() => {
                       alert("請先登入");
                       navigate("/member");
                     }}
                   />
                 )}
-                <InfoWindowImage img={selected.image} />
+                <InfoWindowImage
+                  img={selected.image ? selected.image : Loading}
+                />
               </InfoWindowDiv>
             </InfoWindow>
           )}
