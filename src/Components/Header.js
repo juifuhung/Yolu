@@ -3,6 +3,7 @@ import HeaderTimer from "./HeaderTimer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
+import { useAuth, logOut } from "../utils/Firebase";
 import headerLogo from "../images/header-yolu.png";
 import webMemberIcon from "../images/web-member-icon.png";
 import mobileMemberLoginIcon from "../images/mobile-member-login.png";
@@ -224,7 +225,7 @@ const MobileMember = styled(Link)`
   }
 `;
 
-const localId = window.localStorage.getItem("localId");
+let localId;
 const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
 const Header = () => {
@@ -232,19 +233,32 @@ const Header = () => {
   const [icon, setIcon] = useState(undefined);
   const [weatherMain, setWeatherMain] = useState(undefined);
 
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
   const displayMessage = () => {
     if (!localId) {
       alert("please sign in");
     }
   };
 
-  const logoutHandler = () => {
-    const storedItems = ["localId", "displayName"];
-    storedItems.forEach((item) => {
-      window.localStorage.removeItem(item);
-    });
-    alert("logged out");
-    location.replace("./");
+  const logoutHandler = async () => {
+    console.log("log out");
+    try {
+      alert("logged out");
+      await logOut();
+      location.replace("./");
+    } catch (e) {
+      console.log(e);
+    }
+    // const storedItems = ["localId", "displayName"];
+    // storedItems.forEach((item) => {
+    //   window.localStorage.removeItem(item);
+    // });
+    // alert("logged out");
+    // location.replace("./");
   };
 
   useEffect(() => {

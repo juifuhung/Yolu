@@ -7,6 +7,7 @@ import {
   setPersistence,
   browserSessionPersistence,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -39,6 +40,10 @@ export const signIn = async (email, password) => {
   console.log("signin outside");
   await setPersistence(auth, browserSessionPersistence);
   return signInWithEmailAndPassword(auth, email, password);
+};
+
+export const logOut = async () => {
+  return signOut(auth);
 };
 
 export const useAuth = () => {

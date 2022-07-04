@@ -275,21 +275,14 @@ const Map = () => {
   const [showFavorites, setShowFavorites] = useState(false);
   const [selected, setSelected] = useState(null);
 
+  const navigate = useNavigate();
+
   const currentUser = useAuth();
-  if (currentUser === undefined) {
-    return;
-  } else {
+  if (currentUser) {
     localId = currentUser.uid;
   }
 
   const center = { lat: 66.533688, lng: 25.75218 };
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    getData();
-    getFavorites();
-  }, []);
 
   const showFavoriteHandler = () => {
     setShowFavorites(true);
@@ -312,6 +305,7 @@ const Map = () => {
   const getFavorites = async () => {
     try {
       if (localId) {
+        console.log("favorites");
         let favoritesArray = [];
         const querySnapshot = await getDocs(
           query(collection(db, "Favorites"), where("localId", "==", localId))
@@ -320,11 +314,18 @@ const Map = () => {
           favoritesArray.push({ ...doc.data(), id: doc.id });
         });
         setFavorites(favoritesArray);
+      } else {
+        console.log("no favorites");
       }
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
     }
   };
+
+  useEffect(() => {
+    getData();
+    getFavorites();
+  }, []);
 
   const deleteHandler = async (id) => {
     try {

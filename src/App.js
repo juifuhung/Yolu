@@ -5,11 +5,17 @@ import Homepage from "./pages/Homepage";
 import Favorites from "./pages/Favorites";
 import Map from "./pages/Map";
 import Member from "./pages/Member";
+import { useAuth } from "./utils/Firebase";
 import { Font, UniversalStyle } from "./styles/styles";
 
-const localId = window.localStorage.getItem("localId");
+let localId;
 
 const App = () => {
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
   return (
     <>
       <Font>
@@ -21,6 +27,7 @@ const App = () => {
             path="/favorites"
             element={localId ? <Favorites /> : <Navigate to="/member" />}
           />
+          <Route path="/favorites" element={<Favorites />} />
           <Route path="/map" element={<Map />} />
           <Route
             path={"/member"}
