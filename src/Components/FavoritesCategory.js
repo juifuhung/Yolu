@@ -55,6 +55,7 @@ const localId = window.localStorage.getItem("localId");
 const FavoritesCategory = ({
   category,
   selected,
+  categorySelectionHandler,
   selectionHandler,
   getFavoritesWithPagination,
   getTotalFavorites,
@@ -65,7 +66,7 @@ const FavoritesCategory = ({
       <CategoryButton
         selected={selected}
         onClick={() => {
-          selectionHandler(index);
+          category ? selectionHandler(index) : categorySelectionHandler();
           getTotalFavorites(localId, `${category}`);
           category
             ? getFavoritesWithPagination(localId, `${category}`)
