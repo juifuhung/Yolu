@@ -14,6 +14,12 @@ const slideImages = [
   "https://img.onl/yToflG",
 ];
 
+const HomepageHeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
+
 const SlideShow = styled.div`
   width: 100%;
   overflow: hidden;
@@ -327,7 +333,9 @@ const Homepage = () => {
 
   return (
     <>
-      <Header />
+      <HomepageHeaderContainer>
+        <Header />
+      </HomepageHeaderContainer>
       <Font>
         <SlideShow>
           <SlideshowSlider index={index}>

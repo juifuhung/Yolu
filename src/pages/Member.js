@@ -4,6 +4,12 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import memberBackground from "../images/aurora_gif.gif";
 
+const MemberHeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
+
 const MemberpageContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -162,7 +168,9 @@ const Member = () => {
 
   return (
     <>
-      <Header />
+      <MemberHeaderContainer>
+        <Header />
+      </MemberHeaderContainer>
       <MemberpageContainer>
         <LoginContainer>
           <Title isLogin={isLogin ? true : false}>

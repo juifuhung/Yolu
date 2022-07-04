@@ -5,6 +5,12 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import AuroraNotFound from "../images/aurora404.gif";
 
+const NotFoundHeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
+
 const NotFoundBackground = styled.div`
   display: flex;
   justify-content: center;
@@ -88,7 +94,9 @@ const HomepageButton = styled(Link)`
 const NotFound = () => {
   return (
     <>
-      <Header />
+      <NotFoundHeaderContainer>
+        <Header />
+      </NotFoundHeaderContainer>
       <NotFoundBackground>
         <ErrorMessages>
           <ErrorTitle>404 錯誤</ErrorTitle>

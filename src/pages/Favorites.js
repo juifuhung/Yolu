@@ -34,6 +34,12 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
+const FavoritesHeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
+
 const TopButton = styled.div`
   width: 150px;
   height: 150px;
@@ -461,7 +467,9 @@ const Favorites = () => {
 
   return (
     <>
-      <Header />
+      <FavoritesHeaderContainer>
+        <Header />
+      </FavoritesHeaderContainer>
       <FavoritesCoverSection>
         <FavoritesCoverTitle>
           <FavoritesCoverTitleWords>最愛清單</FavoritesCoverTitleWords>

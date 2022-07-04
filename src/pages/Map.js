@@ -37,6 +37,12 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
+const MapHeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
+
 const LoadingDiv = styled.div`
   top: 120px;
   display: flex;
@@ -368,7 +374,9 @@ const Map = () => {
 
   return (
     <>
-      <Header />
+      <MapHeaderContainer>
+        <Header />
+      </MapHeaderContainer>
       <MapContainer>
         <GoogleMap
           zoom={12}
