@@ -3,6 +3,7 @@ import HeaderTimer from "./HeaderTimer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
+import { useAuth, logOut } from "../utils/Firebase";
 import headerLogo from "../images/header-yolu.png";
 import webMemberIcon from "../images/web-member-icon.png";
 import mobileMemberLoginIcon from "../images/mobile-member-login.png";
@@ -14,7 +15,6 @@ const HeaderContainer = styled.div`
   background-color: #ffffff;
   width: 100%;
   height: 120px;
-  z-index: 5;
 
   @media (min-width: 1500px) {
     box-shadow: 0 2px 5px #c4c4c4;
@@ -224,7 +224,7 @@ const MobileMember = styled(Link)`
   }
 `;
 
-const localId = window.localStorage.getItem("localId");
+let localId;
 const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
 const Header = () => {
@@ -232,19 +232,25 @@ const Header = () => {
   const [icon, setIcon] = useState(undefined);
   const [weatherMain, setWeatherMain] = useState(undefined);
 
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
   const displayMessage = () => {
     if (!localId) {
-      alert("please sign in");
+      alert("請登入");
     }
   };
 
-  const logoutHandler = () => {
-    const storedItems = ["localId", "displayName"];
-    storedItems.forEach((item) => {
-      window.localStorage.removeItem(item);
-    });
-    alert("logged out");
-    location.replace("./");
+  const logoutHandler = async () => {
+    try {
+      alert("已登出");
+      await logOut();
+      location.replace("./");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {

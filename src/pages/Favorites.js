@@ -4,6 +4,7 @@ import {
   doc,
   deleteDoc,
   collection,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -12,6 +13,7 @@ import {
   limit,
   startAfter,
 } from "firebase/firestore";
+import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -38,12 +40,12 @@ const db = getFirestore();
 const FavoritesHeaderContainer = styled.div`
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 5;
 `;
 
 const TopButton = styled.div`
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   background-image: url(${TopIcon});
   background-size: contain;
   background-repeat: no-repeat;
@@ -54,22 +56,15 @@ const TopButton = styled.div`
   cursor: pointer;
 
   @media (max-width: 1100px) {
-    width: 110px;
-    height: 110px;
+    width: 80px;
+    height: 80px;
   }
 
   @media (max-width: 850px) {
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     bottom: 30px;
     left: 20px;
-  }
-
-  @media (max-width: 490px) {
-    width: 90px;
-    height: 90px;
-    bottom: 30px;
-    left: 15px;
   }
 
   &:hover {
@@ -99,7 +94,6 @@ const FavoritesCoverSection = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  z-index: -1;
   position: relative;
 
   @media (max-width: 880px) {
@@ -119,7 +113,6 @@ const FavoritesCoverTitle = styled.div`
   justify-content: center;
   align-items: center;
   background-attachment: fixed;
-  z-index: -1;
 `;
 
 const FavoritesCoverTitleWords = styled.h1`
@@ -141,7 +134,7 @@ const FavoritesCoverTitleWords = styled.h1`
 const BodyContainer = styled.div`
   display: flex;
   width: 100%;
-  min-height: 800px;
+  min-height: 400px;
   margin-bottom: 20px;
 
   @media (max-width: 1100px) {
@@ -168,6 +161,7 @@ const BodyRight = styled.div`
   align-items: center;
 
   @media (max-width: 1100px) {
+    min-height: 30vh;
     width: 100%;
   }
 `;
@@ -176,12 +170,16 @@ const NoItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80%;
-  width: 100%;
+  height: 800px;
+  width: 90%;
   background-image: url(${NoItemImage});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+
+  @media (max-width: 1350px) {
+    height: 40vh;
+  }
 `;
 
 const UserName = styled.div`
@@ -192,6 +190,7 @@ const UserName = styled.div`
   margin: 2rem 0;
 
   @media (max-width: 1100px) {
+    font-size: 1.8rem;
     margin: 1.5rem 0;
   }
 
@@ -299,9 +298,8 @@ const categoryArray = [
   { title: "交通", selected: false },
 ];
 
-const localId = window.localStorage.getItem("localId");
-const displayName = window.localStorage.getItem("displayName");
-
+let localId;
+let displayName;
 let previousDocumentSnapshots;
 let categorySelected;
 
@@ -310,6 +308,16 @@ const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState(categoryArray);
   const [allCategoriesSelected, setAllCategoriesSelected] = useState(false);
+
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
+  const getDisplayName = async (localId) => {
+    const docSnap = await getDoc(doc(db, "User", `${localId}`));
+    displayName = docSnap.data().name;
+  };
 
   const observer = useRef();
   const lastFavoriteItem = useCallback((node) => {
@@ -335,21 +343,22 @@ const Favorites = () => {
   }, []);
 
   useEffect(() => {
+    getDisplayName(localId);
     getTotalFavorites(localId);
     getFavoritesWithPagination(localId);
-  }, []);
+  }, [localId]);
 
   const getTotalFavorites = async (localId, category) => {
     let totalFavorites;
     if (!category || category === "undefined") {
       totalFavorites = query(
         collection(db, "Favorites"),
-        where("localId", "==", localId)
+        where("localId", "==", `${localId}`)
       );
     } else {
       totalFavorites = query(
         collection(db, "Favorites"),
-        where("localId", "==", localId),
+        where("localId", "==", `${localId}`),
         where("category", "==", `${category}`)
       );
     }
@@ -363,8 +372,8 @@ const Favorites = () => {
   };
 
   const getFavoritesWithPagination = async (localId, category) => {
+    let first;
     try {
-      let first;
       if (category) {
         first = query(
           collection(db, "Favorites"),
@@ -376,7 +385,7 @@ const Favorites = () => {
       } else {
         first = query(
           collection(db, "Favorites"),
-          where("localId", "==", localId),
+          where("localId", "==", `${localId}`),
           orderBy("created_time"),
           limit(3)
         );
@@ -457,7 +466,7 @@ const Favorites = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
-    window.scroll({ top: 390, behavior: "smooth" });
+    window.scroll({ top: 420, behavior: "smooth" });
   };
 
   const sortFromNewToOld = () => {
@@ -465,7 +474,7 @@ const Favorites = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setFavorites(newToOldArray);
-    window.scroll({ top: 390, behavior: "smooth" });
+    window.scroll({ top: 250, behavior: "smooth" });
   };
 
   const selectionHandler = (i) => {
@@ -478,13 +487,13 @@ const Favorites = () => {
       }
     });
     setCategories(newCategoryArray);
-    window.scroll({ top: 390, behavior: "smooth" });
+    window.scroll({ top: 250, behavior: "smooth" });
   };
 
   const categorySelectionHandler = () => {
     setAllCategoriesSelected(true);
     setCategories(categoryArray);
-    window.scroll({ top: 390, behavior: "smooth" });
+    window.scroll({ top: 250, behavior: "smooth" });
   };
 
   return (

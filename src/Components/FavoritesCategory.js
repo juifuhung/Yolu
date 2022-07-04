@@ -1,6 +1,7 @@
 import React from "react";
 import { initializeApp } from "firebase/app";
 import styled from "styled-components";
+import { useAuth } from "../utils/Firebase";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -50,7 +51,7 @@ const CategoryButton = styled.div`
   }
 `;
 
-const localId = window.localStorage.getItem("localId");
+let localId;
 
 const FavoritesCategory = ({
   category,
@@ -61,6 +62,11 @@ const FavoritesCategory = ({
   getTotalFavorites,
   index,
 }) => {
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
   return (
     <>
       <CategoryButton

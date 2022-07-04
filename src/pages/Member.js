@@ -1,5 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { signUp, signIn } from "../utils/Firebase";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import memberBackground from "../images/aurora_gif.gif";
@@ -112,10 +114,12 @@ const Button = styled.button`
     props.changeIsLogin ? " #003777" : " #006ee6"};
 `;
 
+const db = getFirestore();
+
 const Member = () => {
-  const emailInputRef = useRef("");
-  const passwordInputRef = useRef("");
-  const nameInputRef = useRef("");
+  const [enteredName, setEnteredName] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
 
   const [isLogin, setIsLogin] = useState(true);
 
@@ -123,47 +127,52 @@ const Member = () => {
     setIsLogin((prev) => !prev);
   };
 
+  const signUpHandler = async () => {
+    try {
+      const result = await signUp(enteredEmail, enteredPassword);
+      await setDoc(doc(db, "User", `${result.user.uid}`), {
+        name: enteredName,
+        uid: result.user.uid,
+        email: result.user.email,
+      });
+      setEnteredName("");
+      setEnteredEmail("");
+      setEnteredPassword("");
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const signInHandler = async () => {
+    try {
+      await signIn(enteredEmail, enteredPassword);
+      setEnteredEmail("");
+      setEnteredPassword("");
+    } catch (e) {
+      alert(e);
+    }
+  };
+
+  const nameInputChangeHandler = (e) => {
+    setEnteredName(e.target.value);
+  };
+
+  const emailInputChangeHandler = (e) => {
+    setEnteredEmail(e.target.value);
+  };
+
+  const passwordInputChangeHandler = (e) => {
+    setEnteredPassword(e.target.value);
+  };
+
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    const enteredName = nameInputRef.current.value;
-    const enteredEmail = emailInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value;
-
-    let url;
     if (isLogin) {
-      url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+      await signInHandler();
     } else {
-      url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+      await signUpHandler();
     }
-    try {
-      const result = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify({
-          displayName: enteredName,
-          email: enteredEmail,
-          password: enteredPassword,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const parsedResult = await result.json();
-      if (parsedResult.localId) {
-        window.localStorage.setItem("localId", parsedResult.localId);
-        window.localStorage.setItem("displayName", parsedResult.displayName);
-        location.replace("./");
-      } else {
-        alert(parsedResult.error.message);
-      }
-    } catch (error) {
-      return error;
-    }
-
-    nameInputRef.current.value = "";
-    emailInputRef.current.value = "";
-    passwordInputRef.current.value = "";
   };
 
   return (
@@ -185,8 +194,8 @@ const Member = () => {
                     type="string"
                     id="name"
                     required
-                    ref={nameInputRef}
                     isLogin={isLogin ? true : false}
+                    onChange={nameInputChangeHandler}
                   />
                 </InputContainer>
               )}
@@ -196,8 +205,8 @@ const Member = () => {
                   type="email"
                   id="email"
                   required
-                  ref={emailInputRef}
                   isLogin={isLogin ? true : false}
+                  onChange={emailInputChangeHandler}
                 />
               </InputContainer>
               <InputContainer isLogin={isLogin ? true : false}>
@@ -207,7 +216,7 @@ const Member = () => {
                   id="password"
                   required
                   isLogin={isLogin ? true : false}
-                  ref={passwordInputRef}
+                  onChange={passwordInputChangeHandler}
                 />
               </InputContainer>
               <Button>{isLogin ? "登入" : "註冊"}</Button>
