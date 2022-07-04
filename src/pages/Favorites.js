@@ -169,7 +169,7 @@ const BodyRight = styled.div`
   align-items: center;
 
   @media (max-width: 1100px) {
-    height: 40vh;
+    min-height: 30vh;
     width: 100%;
   }
 `;
@@ -306,9 +306,6 @@ const categoryArray = [
   { title: "交通", selected: false },
 ];
 
-// const localId = window.localStorage.getItem("localId");
-// const displayName = window.localStorage.getItem("displayName");
-
 let localId;
 let displayName;
 let previousDocumentSnapshots;
@@ -323,6 +320,7 @@ const Favorites = () => {
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
+    displayName = currentUser.displayName;
   }
 
   const observer = useRef();

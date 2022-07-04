@@ -13,13 +13,11 @@ let localId;
 const App = () => {
   const currentUser = useAuth();
   if (currentUser) {
-    console.log("current user in App");
     localId = currentUser.uid;
   }
 
   return (
     <>
-      {console.log(localId)}
       <Font>
         <UniversalStyle />
         <Routes>

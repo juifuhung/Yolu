@@ -121,14 +121,6 @@ const Member = () => {
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
 
-  // const currentUser = useAuth();
-  // if (currentUser == undefined) {
-  //   console.log("loading");
-  // } else {
-  //   console.log("not loading");
-  //   console.log(currentUser);
-  // }
-
   const [isLogin, setIsLogin] = useState(true);
 
   const isLoginHandler = () => {
@@ -153,9 +145,7 @@ const Member = () => {
 
   const signInHandler = async () => {
     try {
-      const result = await signIn(enteredEmail, enteredPassword);
-      console.log(result);
-      console.log("signed in");
+      await signIn(enteredEmail, enteredPassword);
       setEnteredEmail("");
       setEnteredPassword("");
     } catch (e) {
@@ -177,9 +167,6 @@ const Member = () => {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    console.log(enteredName);
-    console.log(enteredEmail);
-    console.log(enteredPassword);
 
     if (isLogin) {
       await signInHandler();

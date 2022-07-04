@@ -22,22 +22,12 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const auth = getAuth();
-const user = auth.currentUser;
-
-if (user) {
-  console.log("yes logged in");
-  console.log(user);
-  console.log(user.uid);
-} else {
-  console.log("logged out");
-}
 
 export const signUp = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
 };
 
 export const signIn = async (email, password) => {
-  console.log("signin outside");
   await setPersistence(auth, browserSessionPersistence);
   return signInWithEmailAndPassword(auth, email, password);
 };
@@ -52,10 +42,7 @@ export const useAuth = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("yes");
         setCurrentUser(user);
-      } else {
-        console.log("no");
       }
     });
   }, []);

@@ -236,31 +236,22 @@ const Header = () => {
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
-    console.log("current user in header");
-    console.log(localId);
   }
 
   const displayMessage = () => {
     if (!localId) {
-      alert("please sign in");
+      alert("請登入");
     }
   };
 
   const logoutHandler = async () => {
-    console.log("log out");
     try {
-      alert("logged out");
+      alert("已登出");
       await logOut();
       location.replace("./");
     } catch (e) {
       console.log(e);
     }
-    // const storedItems = ["localId", "displayName"];
-    // storedItems.forEach((item) => {
-    //   window.localStorage.removeItem(item);
-    // });
-    // alert("logged out");
-    // location.replace("./");
   };
 
   useEffect(() => {

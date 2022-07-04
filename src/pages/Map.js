@@ -305,7 +305,6 @@ const Map = () => {
   const getFavorites = async () => {
     try {
       if (localId) {
-        console.log("favorites exist in map");
         let favoritesArray = [];
         const querySnapshot = await getDocs(
           query(collection(db, "Favorites"), where("localId", "==", localId))
@@ -314,8 +313,6 @@ const Map = () => {
           favoritesArray.push({ ...doc.data(), id: doc.id });
         });
         setFavorites(favoritesArray);
-      } else {
-        console.log("no favorites in map");
       }
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
