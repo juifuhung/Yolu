@@ -40,7 +40,7 @@ const db = getFirestore();
 const FavoritesHeaderContainer = styled.div`
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 5;
 `;
 
 const TopButton = styled.div`
@@ -101,7 +101,6 @@ const FavoritesCoverSection = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  z-index: -1;
   position: relative;
 
   @media (max-width: 880px) {
@@ -121,7 +120,6 @@ const FavoritesCoverTitle = styled.div`
   justify-content: center;
   align-items: center;
   background-attachment: fixed;
-  z-index: -1;
 `;
 
 const FavoritesCoverTitleWords = styled.h1`
@@ -362,12 +360,12 @@ const Favorites = () => {
     if (!category || category === "undefined") {
       totalFavorites = query(
         collection(db, "Favorites"),
-        where("localId", "==", localId)
+        where("localId", "==", `${localId}`)
       );
     } else {
       totalFavorites = query(
         collection(db, "Favorites"),
-        where("localId", "==", localId),
+        where("localId", "==", `${localId}`),
         where("category", "==", `${category}`)
       );
     }
@@ -394,7 +392,7 @@ const Favorites = () => {
       } else {
         first = query(
           collection(db, "Favorites"),
-          where("localId", "==", localId),
+          where("localId", "==", `${localId}`),
           orderBy("created_time"),
           limit(3)
         );

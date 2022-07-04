@@ -15,7 +15,6 @@ const HeaderContainer = styled.div`
   background-color: #ffffff;
   width: 100%;
   height: 120px;
-  z-index: 5;
 
   @media (min-width: 1500px) {
     box-shadow: 0 2px 5px #c4c4c4;
