@@ -44,8 +44,8 @@ const FavoritesHeaderContainer = styled.div`
 `;
 
 const TopButton = styled.div`
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   background-image: url(${TopIcon});
   background-size: contain;
   background-repeat: no-repeat;
@@ -56,22 +56,15 @@ const TopButton = styled.div`
   cursor: pointer;
 
   @media (max-width: 1100px) {
-    width: 110px;
-    height: 110px;
+    width: 80px;
+    height: 80px;
   }
 
   @media (max-width: 850px) {
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     bottom: 30px;
     left: 20px;
-  }
-
-  @media (max-width: 490px) {
-    width: 90px;
-    height: 90px;
-    bottom: 30px;
-    left: 15px;
   }
 
   &:hover {
