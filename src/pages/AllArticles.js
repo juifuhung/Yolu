@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs, collection } from "firebase/firestore";
-import SpotItem from "../components/SpotItem";
+import AllArticlesItem from "../components/AllArticlesItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -60,7 +60,7 @@ const AllArticles = () => {
         {allSpots
           .filter((item) => item.category === "博物館")
           .map((item) => (
-            <SpotItem key={item.title} title={item.title} />
+            <AllArticlesItem key={item.title} title={item.title} />
           ))}
       </CategoryBlock>
       <CategoryBlock>
@@ -68,7 +68,7 @@ const AllArticles = () => {
         {allSpots
           .filter((item) => item.category === "自然景觀")
           .map((item) => (
-            <SpotItem key={item.title} title={item.title} />
+            <AllArticlesItem key={item.title} title={item.title} />
           ))}
       </CategoryBlock>
       <CategoryBlock>
@@ -76,7 +76,7 @@ const AllArticles = () => {
         {allSpots
           .filter((item) => item.category === "餐廳")
           .map((item) => (
-            <SpotItem key={item.title} title={item.title} />
+            <AllArticlesItem key={item.title} title={item.title} />
           ))}
       </CategoryBlock>
       <CategoryBlock>
@@ -84,7 +84,7 @@ const AllArticles = () => {
         {allSpots
           .filter((item) => item.category === "聖誕主題")
           .map((item) => (
-            <SpotItem key={item.title} title={item.title} />
+            <AllArticlesItem key={item.title} title={item.title} />
           ))}
       </CategoryBlock>
       <CategoryBlock>
@@ -92,7 +92,7 @@ const AllArticles = () => {
         {allSpots
           .filter((item) => item.category === "購物")
           .map((item) => (
-            <SpotItem key={item.title} title={item.title} />
+            <AllArticlesItem key={item.title} title={item.title} />
           ))}
       </CategoryBlock>
       <CategoryBlock>
@@ -100,7 +100,7 @@ const AllArticles = () => {
         {allSpots
           .filter((item) => item.category === "交通")
           .map((item) => (
-            <SpotItem key={item.title} title={item.title} />
+            <AllArticlesItem key={item.title} title={item.title} />
           ))}
       </CategoryBlock>
       <Footer />

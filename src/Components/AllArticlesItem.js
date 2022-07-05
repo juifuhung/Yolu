@@ -14,27 +14,15 @@ const Title = styled.div`
   height: 30px;
 `;
 
-const Content = styled.div`
-  width: 100%;
-  height: 40px;
-`;
-
-const CreatedTime = styled.div`
-  width: 100%;
-  height: 10px;
-`;
-
-const ArticleItem = (item) => {
+const AllArticlesItem = (item) => {
   console.log(item);
   return (
     <>
-      <Container to={`/articles/${item.id}`} target="_blank">
+      <Container to={`./${item.title}`} target="_blank">
         <Title>{item.title}</Title>
-        <Content>{item.content}</Content>
-        <CreatedTime>{item.created_time}</CreatedTime>
       </Container>
     </>
   );
 };
 
-export default ArticleItem;
+export default AllArticlesItem;

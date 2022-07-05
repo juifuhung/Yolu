@@ -8,10 +8,26 @@ const SpotItemLink = styled(Link)`
   border: solid blue 1px;
 `;
 
-const SpotItem = ({ id, title }) => {
+const SpotItemTitle = styled.h1`
+  background-color: yellow;
+`;
+
+const SpotItemContent = styled.p`
+  background-color: aqua;
+`;
+
+const SpotItemCreated_time = styled.p`
+  background-color: lightblue;
+`;
+
+const SpotItem = ({ title, content, created_time, id }) => {
   return (
     <>
-      <SpotItemLink to={`./${id}`}>{title}</SpotItemLink>
+      <SpotItemLink to={`./${id}`} target="_blank">
+        <SpotItemTitle>{title}</SpotItemTitle>
+        <SpotItemContent>{content}</SpotItemContent>
+        <SpotItemCreated_time>{created_time}</SpotItemCreated_time>
+      </SpotItemLink>
     </>
   );
 };
