@@ -32,22 +32,22 @@ const FavoritesHeaderContainer = styled.div`
   z-index: 5;
 `;
 
-const Category = () => {
-  const [articles, setArticles] = useState([]);
+const Spot = () => {
+  const [spot, setSpot] = useState([]);
   const params = useParams();
 
   const getArticles = async () => {
     const querySnapshot = await getDocs(
       query(
         collection(db, "Post"),
-        where("categories", "array-contains", `${params.category}`)
+        where("tags", "array-contains", `${params.spot}`)
       )
     );
-    const articlesArray = [];
+    const spotArray = [];
     querySnapshot.forEach((doc) => {
-      articlesArray.push({ ...doc.data(), id: doc.id });
+      spotArray.push({ ...doc.data(), id: doc.id });
     });
-    setArticles(articlesArray);
+    setSpot(spotArray);
   };
 
   useEffect(() => {
@@ -59,8 +59,8 @@ const Category = () => {
       <FavoritesHeaderContainer>
         <Header />
       </FavoritesHeaderContainer>
-      <h1>Category 123</h1>
-      {articles.map((item) => {
+      <h1>Spot 123</h1>
+      {spot.map((item) => {
         return (
           <ArticleItem
             key={item.title}
@@ -75,4 +75,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Spot;

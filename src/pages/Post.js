@@ -4,21 +4,21 @@ import { getFirestore, collection, addDoc } from "firebase/firestore";
 const db = getFirestore();
 
 const spots = [
-  { title: "奧納斯山", state: false },
-  { title: "聖誕老人的鮭魚餐廳", state: false },
-  { title: "聖誕老人辦公室", state: false },
-  { title: "北極圈", state: false },
-  { title: "聖誕屋", state: false },
-  { title: "哈士奇公園", state: false },
-  { title: "聖誕老人馴鹿", state: false },
-  { title: "馬勒蒂尼北極圈工廠店", state: false },
-  { title: "Curry Masala", state: false },
-  { title: "極光購物中心", state: false },
-  { title: "北極科學博物館", state: false },
-  { title: "皮爾凱科學中心", state: false },
-  { title: "羅瓦涅米機場", state: false },
-  { title: "羅瓦涅米中央巴士站", state: false },
-  { title: "羅瓦涅米火車站", state: false },
+  { title: "奧納斯山", category: "自然景觀", state: false },
+  { title: "聖誕老人的鮭魚餐廳", category: "餐廳", state: false },
+  { title: "聖誕老人辦公室", category: "聖誕主題", state: false },
+  { title: "北極圈", category: "聖誕主題", state: false },
+  { title: "聖誕屋", category: "聖誕主題", state: false },
+  { title: "哈士奇公園", category: "聖誕主題", state: false },
+  { title: "聖誕老人馴鹿", category: "聖誕主題", state: false },
+  { title: "馬勒蒂尼北極圈工廠店", category: "購物", state: false },
+  { title: "Curry Masala", category: "餐廳", state: false },
+  { title: "極光購物中心", category: "購物", state: false },
+  { title: "北極科學博物館", category: "博物館", state: false },
+  { title: "皮爾凱科學中心", category: "博物館", state: false },
+  { title: "羅瓦涅米機場", category: "交通", state: false },
+  { title: "羅瓦涅米中央巴士站", category: "交通", state: false },
+  { title: "羅瓦涅米火車站", category: "交通", state: false },
 ];
 
 const Tag = styled.div`
@@ -32,6 +32,8 @@ const Tag = styled.div`
 
 const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
+  let titleArray = [];
+  let categoryArray = [];
 
   const titleRef = useRef("");
   const contentRef = useRef("");
@@ -39,15 +41,21 @@ const Post = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    const tagsChosen = tagArray.filter((item) => {
-      return item.state === true;
+    tagArray.filter((item) => {
+      if (item.state === true) {
+        titleArray.push(item.title);
+        categoryArray.push(item.category);
+      }
     });
+
+    console.log(titleArray);
 
     try {
       await addDoc(collection(db, "Post"), {
         title: titleRef.current.value,
         content: contentRef.current.value,
-        tags: tagsChosen,
+        tags: titleArray,
+        categories: categoryArray,
         created_time: new Date(),
       });
 
