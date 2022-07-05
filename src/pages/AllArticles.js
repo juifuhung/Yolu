@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs, collection } from "firebase/firestore";
@@ -26,6 +27,12 @@ const CategoryBlock = styled.div`
 const Label = styled.h2`
   margin: 0;
   font-size: 1.5rem;
+`;
+
+const NewPostLink = styled(Link)`
+  width: 500px;
+  height: 200px;
+  background-color: blue;
 `;
 
 initializeApp(firebaseConfig);
@@ -103,6 +110,7 @@ const AllArticles = () => {
             <AllArticlesItem key={item.title} title={item.title} />
           ))}
       </CategoryBlock>
+      <NewPostLink to="/new-post">寫新遊記</NewPostLink>
       <Footer />
     </>
   );

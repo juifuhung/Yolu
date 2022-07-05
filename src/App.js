@@ -9,7 +9,7 @@ import { useAuth } from "./utils/Firebase";
 import Article from "./pages/Article";
 import AllArticles from "./pages/AllArticles";
 import Spot from "./pages/Spot";
-import Post from "./pages/Post";
+import NewPost from "./pages/NewPost";
 import { Font, UniversalStyle } from "./styles/styles";
 
 let localId;
@@ -19,6 +19,8 @@ const App = () => {
   if (currentUser) {
     localId = currentUser.uid;
   }
+
+  console.log(localId);
 
   return (
     <>
@@ -37,10 +39,13 @@ const App = () => {
             path={"/member"}
             element={localId ? <Navigate to="/" /> : <Member />}
           />
-          <Route path={"/post"} element={<Post />} />
           <Route path={"/articles"} element={<AllArticles />} />
           <Route path="/articles/:spot/" element={<Spot />} />
           <Route path="/articles/:spot/:articleId" element={<Article />} />
+          <Route
+            path="new-post"
+            element={localId ? <NewPost /> : <Navigate to="/" />}
+          />
         </Routes>
       </Font>
     </>

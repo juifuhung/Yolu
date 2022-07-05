@@ -1,6 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { useAuth } from "../utils/Firebase";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
 const db = getFirestore();
 
 const spots = [
@@ -30,42 +40,66 @@ const Tag = styled.div`
   background-color: ${(props) => (props.selected ? "aqua" : "pink")};
 `;
 
+let localId;
+let displayName;
+
 const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
+  const [enteredTitle, setEnteredTitle] = useState("");
+  const [enteredContent, setEnteredContent] = useState("");
+
   let titleArray = [];
   let categoryArray = [];
 
-  const titleRef = useRef("");
-  const contentRef = useRef("");
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
+  useEffect(() => {
+    getDisplayName(localId);
+  }, [localId]);
+
+  const getDisplayName = async (localId) => {
+    const docSnap = await getDoc(doc(db, "User", `${localId}`));
+    displayName = docSnap.data().name;
+  };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    tagArray.filter((item) => {
-      if (item.state === true) {
-        titleArray.push(item.title);
-        categoryArray.push(item.category);
-      }
-    });
-
-    console.log(titleArray);
-
     try {
       await addDoc(collection(db, "Post"), {
-        title: titleRef.current.value,
-        content: contentRef.current.value,
+        title: enteredTitle,
+        content: enteredContent,
         tags: titleArray,
         categories: categoryArray,
         created_time: new Date(),
+        localId: localId,
+        displayName: displayName,
       });
-
-      titleRef.current.value = "";
-      contentRef.current.value = "";
+      setEnteredTitle("");
+      setEnteredContent("");
       setTagArray(spots);
     } catch (e) {
       console.log("error", e);
     }
   };
+
+  const titleInputChangeHandler = (e) => {
+    setEnteredTitle(e.target.value);
+  };
+
+  const contentInputChangeHandler = (e) => {
+    setEnteredContent(e.target.value);
+  };
+
+  tagArray.filter((item) => {
+    if (item.state === true) {
+      titleArray.push(item.title);
+      categoryArray.push(item.category);
+    }
+  });
 
   const chooseTagHandler = (index) => {
     const newTagArray = [...tagArray].map((item, i) => {
@@ -80,12 +114,24 @@ const Post = () => {
 
   return (
     <>
+      <Header />
       Post
       <form action="" onSubmit={handleFormSubmit}>
         <h1>Title</h1>
-        <input type="text" ref={titleRef} />
+        <input
+          type="text"
+          onChange={titleInputChangeHandler}
+          value={enteredTitle}
+        />
         <h2>Content</h2>
-        <textarea name="" id="" cols="30" rows="10" ref={contentRef}></textarea>
+        <textarea
+          name=""
+          id=""
+          cols="30"
+          rows="10"
+          onChange={contentInputChangeHandler}
+          value={enteredContent}
+        ></textarea>
         {tagArray.map((item, index) => {
           return (
             <Tag
@@ -101,6 +147,7 @@ const Post = () => {
         })}
         <button>submit</button>
       </form>
+      <Footer />
     </>
   );
 };

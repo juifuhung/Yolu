@@ -314,6 +314,8 @@ const Favorites = () => {
     localId = currentUser.uid;
   }
 
+  console.log(localId);
+
   const getDisplayName = async (localId) => {
     const docSnap = await getDoc(doc(db, "User", `${localId}`));
     displayName = docSnap.data().name;
