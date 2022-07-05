@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import ArticleItem from "../components/ArticleItem";
+import SpotItem from "../components/SpotItem";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -62,7 +62,7 @@ const Spot = () => {
       <h1>Spot 123</h1>
       {spot.map((item) => {
         return (
-          <ArticleItem
+          <SpotItem
             key={item.title}
             title={item.title}
             content={item.content}

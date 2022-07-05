@@ -8,12 +8,10 @@ const SpotItemLink = styled(Link)`
   border: solid blue 1px;
 `;
 
-const SpotItem = ({ title }) => {
+const SpotItem = ({ id, title }) => {
   return (
     <>
-      <SpotItemLink to={`${title}`} target="_blank">
-        {title}
-      </SpotItemLink>
+      <SpotItemLink to={`./${id}`}>{title}</SpotItemLink>
     </>
   );
 };
