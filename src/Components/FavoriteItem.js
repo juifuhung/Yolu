@@ -235,8 +235,9 @@ const FavoriteItemDiv = (
         <FavoriteItem
           ref={ref}
           id={id}
-          to={`/${category}/${title}`}
+          to={`/articles/${title}`}
           target="_blank"
+          title={`瀏覽${title}相關遊記`}
         >
           <FavoriteItemLeft img={img} alt="Loading...">
             <FavoriteItemCategory>{category}</FavoriteItemCategory>
