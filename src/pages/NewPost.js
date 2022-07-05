@@ -73,6 +73,7 @@ const Post = () => {
         title: enteredTitle,
         content: enteredContent,
         tags: titleArray,
+        fullArray: tagArray,
         categories: categoryArray,
         created_time: new Date(),
         localId: localId,
@@ -96,7 +97,7 @@ const Post = () => {
 
   tagArray.filter((item) => {
     if (item.state === true) {
-      titleArray.push(item.title);
+      titleArray.push({ title: item.title, state: item.state });
       categoryArray.push(item.category);
     }
   });

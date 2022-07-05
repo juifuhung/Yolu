@@ -65,8 +65,12 @@ const Article = () => {
       {article.tags &&
         article.tags.map((item) => {
           return (
-            <Tag to={`/articles/${item}`} key={item} target="_blank">
-              {item}
+            <Tag
+              to={`/articles/${item.title}`}
+              key={item.title}
+              target="_blank"
+            >
+              {item.title}
             </Tag>
           );
         })}

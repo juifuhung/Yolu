@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
+import { useAuth } from "../utils/Firebase";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -288,11 +289,16 @@ const CategoryLink = styled(Link)`
   color: white;
 `;
 
-const localId = window.localStorage.getItem("localId");
+let localId;
 
 const Homepage = () => {
   const [index, setIndex] = useState(0);
   const timeoutRef = useRef(null);
+
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
 
   const resetTimeout = () => {
     if (timeoutRef.current) {
@@ -394,9 +400,7 @@ const Homepage = () => {
             </MainCircle>
           </MainCircleContainer>
         </Selection>
-        <CategoryLink to="/articles" target="_blank">
-          {"主題遊記區"}
-        </CategoryLink>
+        <CategoryLink to="/articles">{"主題遊記區"}</CategoryLink>
       </Font>
       <Footer />
     </>

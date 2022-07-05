@@ -21,8 +21,6 @@ const App = () => {
     localId = currentUser.uid;
   }
 
-  console.log(localId);
-
   return (
     <>
       <Font>

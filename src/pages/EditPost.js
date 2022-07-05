@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import styled from "styled-components";
+import styled from "styled-components";
 import { useAuth } from "../utils/Firebase";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import Header from "../components/Header";
@@ -8,43 +8,38 @@ import Footer from "../components/Footer";
 
 const db = getFirestore();
 
-// const spots = [
-//   { title: "奧納斯山", category: "自然景觀", state: false },
-//   { title: "聖誕老人的鮭魚餐廳", category: "餐廳", state: false },
-//   { title: "聖誕老人辦公室", category: "聖誕主題", state: false },
-//   { title: "北極圈", category: "聖誕主題", state: false },
-//   { title: "聖誕屋", category: "聖誕主題", state: false },
-//   { title: "哈士奇公園", category: "聖誕主題", state: false },
-//   { title: "聖誕老人馴鹿", category: "聖誕主題", state: false },
-//   { title: "馬勒蒂尼北極圈工廠店", category: "購物", state: false },
-//   { title: "Curry Masala", category: "餐廳", state: false },
-//   { title: "極光購物中心", category: "購物", state: false },
-//   { title: "北極科學博物館", category: "博物館", state: false },
-//   { title: "皮爾凱科學中心", category: "博物館", state: false },
-//   { title: "羅瓦涅米機場", category: "交通", state: false },
-//   { title: "羅瓦涅米中央巴士站", category: "交通", state: false },
-//   { title: "羅瓦涅米火車站", category: "交通", state: false },
-// ];
+const Tag = styled.div`
+  width: 200px;
+  height: 40px;
+  font-size: 1rem;
+  border: solid black 1px;
 
-let localId;
-let displayName;
+  background-color: ${(props) => (props.selected ? "aqua" : "pink")};
+`;
+
+// let localId;
+// let displayName;
 
 const EditPost = () => {
-  const [articleData, setArticleData] = useState({});
+  // const [tagArray, setTagArray] = useState(articleData.tags);
+  const [articleData, setArticleData] = useState([]);
+
+  // const currentUser = useAuth();
+  // if (currentUser) {
+  //   localId = currentUser.uid;
+  // }
+  // console.log(currentUser);
+  // console.log(localId);
+
+  // console.log(params.articleId);
+
+  // const getDisplayName = async (localId) => {
+  //   console.log("getDisplayName");
+  //   const docSnap = await getDoc(doc(db, "User", `${localId}`));
+  //   displayName = docSnap.data().name;
+  // };
 
   const params = useParams();
-  console.log(params.articleId);
-
-  const currentUser = useAuth();
-  if (currentUser) {
-    localId = currentUser.uid;
-  }
-
-  const getDisplayName = async (localId) => {
-    console.log("getDisplayName");
-    const docSnap = await getDoc(doc(db, "User", `${localId}`));
-    displayName = docSnap.data().name;
-  };
 
   const getArticle = async () => {
     console.log("getArticle");
@@ -53,23 +48,33 @@ const EditPost = () => {
     setArticleData(docSnap.data());
   };
 
-  //   const getCategoryArrayState = () => {
-  //     spots.map((item) => {
-  //         if(item)
-  //     })
-  //   }
+  //寫法一
+  // useEffect(() => {
+  //   getArticle();
+  // }, []);
 
-  useEffect(() => {
-    getDisplayName(localId);
-    getArticle();
-  }, [localId]);
+  // 寫法二
+  getArticle();
+
+  // const chooseTagHandler = (index) => {
+  //   const newTagArray = [...articleData.tags].map((item, i) => {
+  //     if (i === index) {
+  //       return { ...item, state: !item.state };
+  //     } else {
+  //       return item;
+  //     }
+  //   });
+  //   console.log(newTagArray);
+  //   // setTagArray(newTagArray);
+  // };
 
   return (
     <>
       {console.log(articleData)}
+      {console.log(articleData.tags)}
       <Header />
       <h1>Edit</h1>
-      <p>{displayName}</p>
+      {/* <p>{displayName}</p> */}
       <form>
         <input type="text" value={articleData.title} />
         <textarea
@@ -79,7 +84,26 @@ const EditPost = () => {
           rows="10"
           value={articleData.content}
         ></textarea>
-        {articleData.tags}
+        {articleData.tags.map((item) => {
+          return (
+            <Tag key={item.title} state={item.state}>
+              {item.title}
+            </Tag>
+          );
+        })}
+        {/* {articleData.tags.map((item, index) => {
+          return (
+            <Tag
+              key={item.title}
+              selected={item.state}
+              onClick={() => {
+                chooseTagHandler(index);
+              }}
+            >
+              {item.title}
+            </Tag>
+          );
+        })} */}
         <button>更改</button>
       </form>
       <Footer />
