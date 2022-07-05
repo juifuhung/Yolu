@@ -282,23 +282,13 @@ const Previous = styled(FaArrowLeft)`
 `;
 
 const CategoryLink = styled(Link)`
-  width: 1200px;
-  height: 200px;
-  margin: 0 10px;
+  width: 80%;
+  height: 400px;
   background-color: red;
   color: white;
 `;
 
 const localId = window.localStorage.getItem("localId");
-
-const categoryArray = [
-  "博物館",
-  "自然景觀",
-  "餐廳",
-  "聖誕主題",
-  "購物",
-  "交通",
-];
 
 const Homepage = () => {
   const [index, setIndex] = useState(0);
@@ -404,14 +394,9 @@ const Homepage = () => {
             </MainCircle>
           </MainCircleContainer>
         </Selection>
-        <div>
-          <p>主題遊記區</p>
-          {categoryArray.map((item) => (
-            <CategoryLink key={item} to={`/${item}`} target="blank">
-              {item}
-            </CategoryLink>
-          ))}
-        </div>
+        <CategoryLink to="/articles" target="_blank">
+          {"主題遊記區"}
+        </CategoryLink>
       </Font>
       <Footer />
     </>
