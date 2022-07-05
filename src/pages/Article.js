@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { initializeApp } from "firebase/app";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
-import ArticleItem from "../components/ArticleItem";
+import { doc, getFirestore, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -24,47 +17,30 @@ initializeApp(firebaseConfig);
 const db = getFirestore();
 
 const Article = () => {
-  const [article, setArticle] = useState([]);
+  const [article, setArticle] = useState({});
   const params = useParams();
-  console.log(params.articleId);
-  console.log(typeof params.articleId);
+  console.log(params);
 
-  console.log(article);
-
-  const getArticles = async () => {
-    const querySnapshot = await getDocs(
-      query(
-        collection(db, "Post"),
-        where("tags", "array-contains", {
-          state: true,
-          title: `${params.articleId}`,
-        })
-      )
-    );
-    const articleArray = [];
-    querySnapshot.forEach((doc) => {
-      articleArray.push({ ...doc.data(), id: doc.id });
-    });
-    setArticle(articleArray);
+  const getArticle = async () => {
+    const docRef = doc(db, "Post", `${params.articleId}`);
+    const docSnap = await getDoc(docRef);
+    console.log("Document data:", docSnap.data());
+    setArticle(docSnap.data());
   };
 
   useEffect(() => {
-    getArticles();
+    getArticle();
   }, []);
 
   return (
     <>
       <h1>Article</h1>
-      {article.map((item) => {
-        return (
-          <ArticleItem
-            key={item.title}
-            title={item.title}
-            content={item.content}
-            created_time={item.created_time.seconds}
-          />
-        );
+      <p>{article.title}</p>
+      <p>{article.content}</p>
+      {article.tags.map((item) => {
+        return <div>{item.title}</div>;
       })}
+      {console.log(params.articleId)}
     </>
   );
 };
