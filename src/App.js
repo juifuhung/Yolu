@@ -10,6 +10,7 @@ import Article from "./pages/Article";
 import AllArticles from "./pages/AllArticles";
 import Spot from "./pages/Spot";
 import NewPost from "./pages/NewPost";
+import EditPost from "./pages/EditPost";
 import { Font, UniversalStyle } from "./styles/styles";
 
 let localId;
@@ -45,6 +46,10 @@ const App = () => {
           <Route
             path="new-post"
             element={localId ? <NewPost /> : <Navigate to="/" />}
+          />
+          <Route
+            path="edit/:articleId"
+            element={localId ? <EditPost /> : <EditPost />}
           />
         </Routes>
       </Font>

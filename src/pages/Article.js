@@ -33,6 +33,13 @@ const Tag = styled(Link)`
   color: black;
 `;
 
+const EditButton = styled(Link)`
+  width: 200px;
+  height: 100px;
+  border: solid blue 2px;
+  color: red;
+`;
+
 const Article = () => {
   const [article, setArticle] = useState({});
   const params = useParams();
@@ -54,6 +61,7 @@ const Article = () => {
       </FavoritesHeaderContainer>
       <h1>{article.title}</h1>
       <p>{article.content}</p>
+      <EditButton to={`/edit/${params.articleId}`}>編輯</EditButton>
       {article.tags &&
         article.tags.map((item) => {
           return (
