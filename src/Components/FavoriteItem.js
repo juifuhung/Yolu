@@ -232,7 +232,12 @@ const FavoriteItemDiv = (
   return (
     <>
       <FavoriteItemSection>
-        <FavoriteItem ref={ref} id={id} to={`/${title}`} target="_blank">
+        <FavoriteItem
+          ref={ref}
+          id={id}
+          to={`/${category}/${title}`}
+          target="_blank"
+        >
           <FavoriteItemLeft img={img} alt="Loading...">
             <FavoriteItemCategory>{category}</FavoriteItemCategory>
           </FavoriteItemLeft>

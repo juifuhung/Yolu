@@ -1,7 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Container = styled.div`
+const Container = styled(Link)`
   width: 500px;
   height: 80px;
   border: solid green 1px;
@@ -23,14 +24,14 @@ const CreatedTime = styled.div`
   height: 10px;
 `;
 
-const ArticleItem = (title) => {
-  console.log(title);
+const ArticleItem = (item) => {
+  console.log(item);
   return (
     <>
-      <Container>
-        <Title>{title.title}</Title>
-        <Content>{title.content}</Content>
-        <CreatedTime>{title.created_time}</CreatedTime>
+      <Container to={`${item.title}`} target="_blank">
+        <Title>{item.title}</Title>
+        <Content>{item.content}</Content>
+        <CreatedTime>{item.created_time}</CreatedTime>
       </Container>
     </>
   );

@@ -67,6 +67,7 @@ const Spot = () => {
             title={item.title}
             content={item.content}
             created_time={item.created_time.seconds}
+            id={item.id}
           />
         );
       })}

@@ -46,12 +46,14 @@ const Article = () => {
       <FavoritesHeaderContainer>
         <Header />
       </FavoritesHeaderContainer>
+      {console.log(article)}
       <h1>{article.title}</h1>
       <p>{article.content}</p>
-      {article.tags.map((item) => {
-        return <div>{item.title}</div>;
-      })}
-      {console.log(params.articleId)}
+      {article.tags &&
+        article.tags.map((item) => {
+          return <div key={item.title}>{item.title}</div>;
+        })}
+      {console.log(article.tags)}
       <Footer />
     </>
   );

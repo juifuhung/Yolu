@@ -407,7 +407,9 @@ const Homepage = () => {
         <div>
           <p>主題遊記區</p>
           {categoryArray.map((item) => (
-            <CategoryLink to={`/${item}`}>{item}</CategoryLink>
+            <CategoryLink key={item} to={`/${item}`} target="blank">
+              {item}
+            </CategoryLink>
           ))}
         </div>
       </Font>

@@ -7,7 +7,7 @@ import Map from "./pages/Map";
 import Member from "./pages/Member";
 import { useAuth } from "./utils/Firebase";
 import Article from "./pages/Article";
-import Category from "./pages/Category";
+import AllArticles from "./pages/AllArticles";
 import Spot from "./pages/Spot";
 import Post from "./pages/Post";
 import { Font, UniversalStyle } from "./styles/styles";
@@ -38,9 +38,9 @@ const App = () => {
             element={localId ? <Navigate to="/" /> : <Member />}
           />
           <Route path={"/post"} element={<Post />} />
-          <Route path=":category/" element={<Category />} />
-          <Route path=":category/:spot/" element={<Spot />} />
-          <Route path=":category/:spot/:articleId" element={<Article />} />
+          <Route path={"/articles"} element={<AllArticles />} />
+          <Route path="/articles/:spot/" element={<Spot />} />
+          <Route path="/articles/:spot/:articleId" element={<Article />} />
         </Routes>
       </Font>
     </>
