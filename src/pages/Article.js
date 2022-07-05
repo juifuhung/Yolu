@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { initializeApp } from "firebase/app";
 import { doc, getFirestore, getDoc } from "firebase/firestore";
@@ -25,15 +25,21 @@ const FavoritesHeaderContainer = styled.div`
   z-index: 5;
 `;
 
+const Tag = styled(Link)`
+  width: 250px;
+  height: 100px;
+  margin: 0 2px;
+  border: solid black 1px;
+  color: black;
+`;
+
 const Article = () => {
   const [article, setArticle] = useState({});
   const params = useParams();
-  console.log(params);
 
   const getArticle = async () => {
     const docRef = doc(db, "Post", `${params.articleId}`);
     const docSnap = await getDoc(docRef);
-    console.log("Document data:", docSnap.data());
     setArticle(docSnap.data());
   };
 
@@ -46,14 +52,16 @@ const Article = () => {
       <FavoritesHeaderContainer>
         <Header />
       </FavoritesHeaderContainer>
-      {console.log(article)}
       <h1>{article.title}</h1>
       <p>{article.content}</p>
       {article.tags &&
         article.tags.map((item) => {
-          return <div key={item.title}>{item.title}</div>;
+          return (
+            <Tag to={`/articles/${item}`} key={item} target="_blank">
+              {item}
+            </Tag>
+          );
         })}
-      {console.log(article.tags)}
       <Footer />
     </>
   );

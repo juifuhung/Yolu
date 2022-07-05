@@ -28,7 +28,7 @@ const ArticleItem = (item) => {
   console.log(item);
   return (
     <>
-      <Container to={`${item.title}`} target="_blank">
+      <Container to={`${item.id}`} target="_blank">
         <Title>{item.title}</Title>
         <Content>{item.content}</Content>
         <CreatedTime>{item.created_time}</CreatedTime>
