@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import loadingIcon from "../images/loading.gif";
 import { FaHeart } from "react-icons/fa";
@@ -24,12 +25,14 @@ const FavoriteItemSection = styled.div`
   justify-content: flex-start;
 `;
 
-const FavoriteItem = styled.div`
+const FavoriteItem = styled(Link)`
   background-color: white;
   display: flex;
   align-items: center;
   width: 92%;
   height: 250px;
+  color: black;
+  text-decoration: none;
   border: solid black 4px;
   border-radius: 1rem;
   padding: 1.2rem;
@@ -229,7 +232,7 @@ const FavoriteItemDiv = (
   return (
     <>
       <FavoriteItemSection>
-        <FavoriteItem ref={ref} id={id}>
+        <FavoriteItem ref={ref} id={id} to={`/${title}`} target="_blank">
           <FavoriteItemLeft img={img} alt="Loading...">
             <FavoriteItemCategory>{category}</FavoriteItemCategory>
           </FavoriteItemLeft>

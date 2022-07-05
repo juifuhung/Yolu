@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
 import { initializeApp } from "firebase/app";
 import { doc, getFirestore, getDoc } from "firebase/firestore";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -15,6 +18,12 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const db = getFirestore();
+
+const FavoritesHeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 5;
+`;
 
 const Article = () => {
   const [article, setArticle] = useState({});
@@ -34,13 +43,16 @@ const Article = () => {
 
   return (
     <>
-      <h1>Article</h1>
-      <p>{article.title}</p>
+      <FavoritesHeaderContainer>
+        <Header />
+      </FavoritesHeaderContainer>
+      <h1>{article.title}</h1>
       <p>{article.content}</p>
       {article.tags.map((item) => {
         return <div>{item.title}</div>;
       })}
       {console.log(params.articleId)}
+      <Footer />
     </>
   );
 };

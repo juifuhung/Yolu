@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -8,6 +9,8 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import ArticleItem from "../components/ArticleItem";
 
 const firebaseConfig = {
@@ -22,6 +25,12 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const db = getFirestore();
+
+const FavoritesHeaderContainer = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 5;
+`;
 
 const Category = () => {
   const [article, setArticle] = useState([]);
@@ -50,6 +59,9 @@ const Category = () => {
 
   return (
     <>
+      <FavoritesHeaderContainer>
+        <Header />
+      </FavoritesHeaderContainer>
       <h1>Category 123</h1>
       {article.map((item) => {
         return (
@@ -61,6 +73,7 @@ const Category = () => {
           />
         );
       })}
+      <Footer />
     </>
   );
 };
