@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import Loading from "../images/loading.gif";
 import styled from "styled-components";
@@ -258,6 +258,64 @@ const Buttons = styled.div`
   height: 100%;
 `;
 
+const ArticleIcon = styled(Link)`
+  display: Flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 60px;
+  font-size: 1.1rem;
+  border-radius: 60%;
+  box-shadow: 1px 1px 2px #18191a;
+  background-color: #464646;
+  color: white;
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  text-decoration: none;
+
+  &:hover {
+    animation: shake 0.7s;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: translate(1px, 1px) rotate(0deg);
+    }
+    10% {
+      transform: translate(-1px, -2px) rotate(-1deg);
+    }
+    20% {
+      transform: translate(-3px, 0px) rotate(1deg);
+    }
+    30% {
+      transform: translate(3px, 2px) rotate(0deg);
+    }
+    40% {
+      transform: translate(1px, -1px) rotate(1deg);
+    }
+    50% {
+      transform: translate(-1px, 2px) rotate(-1deg);
+    }
+    60% {
+      transform: translate(-3px, 1px) rotate(0deg);
+    }
+    70% {
+      transform: translate(3px, 1px) rotate(-1deg);
+    }
+    80% {
+      transform: translate(-1px, -1px) rotate(1deg);
+    }
+    90% {
+      transform: translate(1px, 2px) rotate(0deg);
+    }
+    100% {
+      transform: translate(1px, -2px) rotate(-1deg);
+    }
+  }
+`;
+
 const categoryArray = [
   { title: "博物館", icon: "https://img.onl/on0zJn" },
   { title: "自然景觀", icon: "https://img.onl/djbguI" },
@@ -427,12 +485,15 @@ const Map = () => {
                 <InfoWindowDescription>
                   {selected.description}
                 </InfoWindowDescription>
+                <ArticleIcon to={`/articles/${selected.title}`} target="_blank">
+                  看遊記
+                </ArticleIcon>
                 {localId ? (
                   favorites.find(
                     (element) => element.title === selected.title
                   ) ? (
                     <FillHeart
-                      title={"加入最愛清單"}
+                      title={"移出最愛清單"}
                       onClick={() => {
                         const favoriteItem = favorites.find(
                           (item) => item.title === selected.title
@@ -444,7 +505,7 @@ const Map = () => {
                     />
                   ) : (
                     <EmptyHeart
-                      title={"移出最愛清單"}
+                      title={"加入最愛清單"}
                       onClick={() => {
                         addToFavorite({
                           category: selected.category,
