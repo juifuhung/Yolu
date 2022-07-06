@@ -180,7 +180,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Image = styled.div`
+const Image = styled(Link)`
   width: 75%;
   height: 90%;
   background-image: url(${(props) => props.img});
@@ -190,7 +190,7 @@ const Image = styled.div`
   position: absolute;
   animation-duration: 3s;
   animation-name: ${(props) =>
-    props.visible === true
+    props.visible
       ? props.align === "left"
         ? "image-slide-from-left"
         : "image-slide-from-right"
@@ -214,6 +214,42 @@ const Image = styled.div`
   }
 `;
 
+const GreyColorDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+  background-color: rgba(34, 34, 34, 0.7);
+  position: absolute;
+  ${Container}:hover & {
+    background-color: rgba(34, 34, 34, 1);
+  }
+  z-index: 2;
+  left: ${(props) => (props.align === "left" ? "0" : "")};
+  right: ${(props) => (props.align === "right" ? "0" : "")};
+`;
+
+const GreyColorWordsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 80%;
+  height: 80%;
+`;
+
+const GreyColorDivTitle = styled.h4`
+  margin: 0;
+  color: white;
+  font-size: 3rem;
+`;
+
+const GreyColorDivParagraph = styled.p`
+  margin: 0;
+  color: white;
+  font-size: 1.5rem;
+`;
+
 const CategoryTitle = styled(Link)`
   display: flex;
   justify-content: center;
@@ -227,11 +263,10 @@ const CategoryTitle = styled(Link)`
   color: white;
   position: absolute;
   bottom: 40px;
-  visibility: ${(props) => (props.visible ? "visible" : "hidden")};
   right: ${(props) => (props.align === "left" ? "12%" : "70%")};
   animation-duration: 3s;
   animation-name: ${(props) =>
-    props.visible === true
+    props.visible
       ? props.align === "left"
         ? "title-slide-from-right"
         : "title-slide-from-left"
@@ -426,13 +461,32 @@ const Homepage = () => {
 
         <Selection>
           <Container align={"left"} ref={mapRef}>
-            <Image img={Map} align={"left"} visible={mapVisible} />
+            <Image to={"/map"} img={Map} align={"left"} visible={mapVisible}>
+              <GreyColorDiv align={"left"}>
+                <GreyColorWordsContainer>
+                  <GreyColorDivTitle>地圖</GreyColorDivTitle>
+                  <GreyColorDivParagraph>來看地圖</GreyColorDivParagraph>
+                </GreyColorWordsContainer>
+              </GreyColorDiv>
+            </Image>
             <CategoryTitle to={"/map"} align={"left"} visible={mapVisible}>
               互動地圖
             </CategoryTitle>
           </Container>
           <Container align={"right"} ref={articleRef}>
-            <Image img={Aurora} align={"right"} visible={articleVisible} />
+            <Image
+              to={"/articles"}
+              img={Aurora}
+              align={"right"}
+              visible={articleVisible}
+            >
+              <GreyColorDiv align={"right"}>
+                <GreyColorWordsContainer>
+                  <GreyColorDivTitle>遊記</GreyColorDivTitle>
+                  <GreyColorDivParagraph>來看遊記</GreyColorDivParagraph>
+                </GreyColorWordsContainer>
+              </GreyColorDiv>
+            </Image>
             <CategoryTitle
               to={"/articles"}
               align={"right"}
@@ -443,7 +497,19 @@ const Homepage = () => {
             </CategoryTitle>
           </Container>
           <Container align={"left"} ref={favoritesRef}>
-            <Image img={River} align={"left"} visible={favortiesVisible} />
+            <Image
+              to={"/favorties"}
+              img={River}
+              align={"left"}
+              visible={favortiesVisible}
+            >
+              <GreyColorDiv align={"left"}>
+                <GreyColorWordsContainer>
+                  <GreyColorDivTitle>最愛</GreyColorDivTitle>
+                  <GreyColorDivParagraph>我的最愛在這</GreyColorDivParagraph>
+                </GreyColorWordsContainer>
+              </GreyColorDiv>
+            </Image>
             <CategoryTitle
               to={"/favorties"}
               align={"left"}
@@ -452,24 +518,7 @@ const Homepage = () => {
               我的最愛
             </CategoryTitle>
           </Container>
-          {/* <MainCircleContainer>
-            <MainCircle img={`https://img.onl/PBCUmN`} to="/map">
-              <MainCircleTitle>互動地圖</MainCircleTitle>
-            </MainCircle>
-          </MainCircleContainer>
-          <MainCircleContainer>
-            <MainCircle
-              img={`https://img.onl/MyS2bP`}
-              to="/favorites"
-              onClick={displayMessage}
-            >
-              <MainCircleTitle>我的最愛</MainCircleTitle>
-            </MainCircle>
-          </MainCircleContainer> */}
         </Selection>
-        {/* <CategoryLink to="/articles" target="_blank">
-          {"主題遊記區"}
-        </CategoryLink> */}
       </Font>
       <Footer />
     </>
