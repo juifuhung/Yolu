@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
-// import { useAuth } from "../utils/Firebase";
+import { useAuth } from "../utils/Firebase";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Map from "../images/homepage_map.png";
 import Aurora from "../images/homepage_aurora.png";
@@ -153,7 +153,6 @@ const MainTimer = styled.div`
 `;
 
 const Selection = styled.div`
-  background-color: yellow;
   margin-top: 50px;
   display: flex;
   flex-direction: column;
@@ -171,7 +170,7 @@ const Selection = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: lightgreen;
+  margin: 20px 0;
   display: flex;
   justify-content: ${(props) =>
     props.align === "left" ? "flex-start" : "flex-end"};
@@ -182,7 +181,6 @@ const Container = styled.div`
 `;
 
 const Image = styled.div`
-  border: solid red 1px;
   width: 75%;
   height: 90%;
   background-image: url(${(props) => props.img});
@@ -191,7 +189,6 @@ const Image = styled.div`
   background-position: center;
   position: absolute;
   animation-duration: 3s;
-  animation-delay: 2s;
   animation-name: ${(props) =>
     props.visible === true
       ? props.align === "left"
@@ -230,9 +227,9 @@ const CategoryTitle = styled(Link)`
   color: white;
   position: absolute;
   bottom: 40px;
+  visibility: ${(props) => (props.visible ? "visible" : "hidden")};
   right: ${(props) => (props.align === "left" ? "12%" : "70%")};
   animation-duration: 3s;
-  animation-delay: 2s;
   animation-name: ${(props) =>
     props.visible === true
       ? props.align === "left"
@@ -262,90 +259,6 @@ const CategoryTitle = styled(Link)`
     }
   }
 `;
-
-// const MainCircleContainer = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   border-radius: 50%;
-//   margin: 50px;
-//   width: 38vw;
-//   height: 38vw;
-//   overflow: hidden;
-
-//   @media (max-width: 820px) {
-//     margin: 20px;
-//   }
-
-//   @media (max-width: 800px) {
-//     width: 70vw;
-//     height: 70vw;
-//   }
-// `;
-
-// const MainCircle = styled(Link)`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   width: 100%;
-//   height: 100%;
-//   transition: all 0.3s ease-in-out;
-//   background-image: url(${(props) => props.img});
-//   background-size: 150%;
-//   background-position: center;
-//   text-decoration: none;
-//   color: white;
-
-//   &:hover {
-//     background-size: 180%;
-//   }
-// `;
-
-// const MainCircleTitle = styled.h2`
-//   margin: 0;
-//   font-size: 8rem;
-
-//   &:hover {
-//     transform: scale(1);
-//   }
-
-//   @media (max-width: 1600px) {
-//     font-size: 7rem;
-//   }
-
-//   @media (max-width: 1350px) {
-//     font-size: 6rem;
-//   }
-
-//   @media (max-width: 1160px) {
-//     font-size: 5rem;
-//   }
-
-//   @media (max-width: 960px) {
-//     font-size: 4rem;
-//   }
-
-//   @media (max-width: 820px) {
-//     font-size: 3rem;
-//   }
-
-//   @media (max-width: 800px) {
-//     font-size: 6rem;
-//   }
-
-//   @media (max-width: 660px) {
-//     font-size: 5rem;
-//   }
-
-//   @media (max-width: 550px) {
-//     font-size: 4rem;
-//   }
-
-//   @media (max-width: 410px) {
-//     font-size: 3rem;
-//   }
-// `;
-
 const Next = styled(FaArrowRight)`
   bottom: 45%;
   right: 0;
@@ -380,14 +293,7 @@ const Previous = styled(FaArrowLeft)`
   }
 `;
 
-// const CategoryLink = styled(Link)`
-//   width: 80%;
-//   height: 400px;
-//   background-color: red;
-//   color: white;
-// `;
-
-// let localId;
+let localId;
 
 const Homepage = () => {
   const [index, setIndex] = useState(0);
@@ -399,29 +305,35 @@ const Homepage = () => {
   const articleRef = useRef();
   const favoritesRef = useRef();
 
-  // const currentUser = useAuth();
-  // if (currentUser) {
-  //   localId = currentUser.uid;
-  // }
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
+  const options = {
+    root: null,
+    rootMargin: "200px",
+    threshold: 1.0,
+  };
 
   useEffect(() => {
     const mapObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         setMapVisible(true);
       }
-    });
+    }, options);
 
     const favoritesObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         setFavoritesVisible(true);
       }
-    });
+    }, options);
 
     const articleObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         setArticleVisible(true);
       }
-    });
+    }, options);
 
     mapObserver.observe(mapRef.current);
     favoritesObserver.observe(favoritesRef.current);
@@ -466,11 +378,11 @@ const Homepage = () => {
     };
   }, [index]);
 
-  // const displayMessage = () => {
-  //   if (!localId) {
-  //     alert("請先登入");
-  //   }
-  // };
+  const displayMessage = () => {
+    if (!localId) {
+      alert("請先登入");
+    }
+  };
 
   return (
     <>
@@ -525,6 +437,7 @@ const Homepage = () => {
               to={"/articles"}
               align={"right"}
               visible={articleVisible}
+              onClick={displayMessage}
             >
               遊記專區
             </CategoryTitle>
