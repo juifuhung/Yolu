@@ -170,22 +170,15 @@ const Selection = styled.div`
   }
 `;
 
-const LeftContainer = styled.div`
+const Container = styled.div`
   background-color: lightgreen;
   display: flex;
-  flex-direction: flex-start;
+  justify-content: ${(props) =>
+    props.align === "left" ? "flex-start" : "flex-end"};
   align-items: center;
-  width: 90%;
+  width: 80%;
   height: 400px;
-`;
-
-const RightContainer = styled.div`
-  background-color: aqua;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 90%;
-  height: 400px;
+  position: relative;
 `;
 
 const Image = styled.div`
@@ -196,41 +189,78 @@ const Image = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  position: relative;
+  position: absolute;
+  animation-duration: 3s;
+  animation-delay: 2s;
+  animation-name: ${(props) =>
+    props.visible === true
+      ? props.align === "left"
+        ? "image-slide-from-left"
+        : "image-slide-from-right"
+      : ""};
+  @keyframes image-slide-from-left {
+    from {
+      left: -100px;
+    }
+    to {
+      left: 0;
+    }
+  }
+
+  @keyframes image-slide-from-right {
+    from {
+      right: -100px;
+    }
+    to {
+      right: 0;
+    }
+  }
 `;
 
-const LeftTitle = styled(Link)`
+const CategoryTitle = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
   width: 270px;
   height: 100px;
-  background-color: #ff0000;
-  opacity: 0.8;
+  background-color: rgba(255, 0, 0, 0.8);
   font-size: 2.8rem;
   font-weight: 800;
   text-decoration: none;
   color: white;
   position: absolute;
   bottom: 40px;
-  right: -200px;
-`;
+  right: ${(props) => (props.align === "left" ? "12%" : "70%")};
+  animation-duration: 3s;
+  animation-delay: 2s;
+  animation-name: ${(props) =>
+    props.visible === true
+      ? props.align === "left"
+        ? "title-slide-from-right"
+        : "title-slide-from-left"
+      : ""};
 
-const RightTitle = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 270px;
-  height: 100px;
-  background-color: #ff0000;
-  opacity: 0.8;
-  font-size: 2.8rem;
-  font-weight: 800;
-  text-decoration: none;
-  color: white;
-  position: absolute;
-  bottom: 40px;
-  left: -200px;
+  @keyframes title-slide-from-right {
+    from {
+      opacity: 0;
+      right: -100px;
+    }
+    to {
+      opacity: 1;
+      right: 12%;
+    }
+  }
+
+  @keyframes title-slide-from-left {
+    from {
+      opacity: 0;
+      left: -100px;
+    }
+    to {
+      opacity: 1;
+      right: 70%;
+    }
+  }
 `;
 
 // const MainCircleContainer = styled.div`
@@ -361,12 +391,42 @@ const Previous = styled(FaArrowLeft)`
 
 const Homepage = () => {
   const [index, setIndex] = useState(0);
+  const [mapVisible, setMapVisible] = useState(false);
+  const [articleVisible, setArticleVisible] = useState(false);
+  const [favortiesVisible, setFavoritesVisible] = useState(false);
   const timeoutRef = useRef(null);
+  const mapRef = useRef();
+  const articleRef = useRef();
+  const favoritesRef = useRef();
 
   // const currentUser = useAuth();
   // if (currentUser) {
   //   localId = currentUser.uid;
   // }
+
+  useEffect(() => {
+    const mapObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setMapVisible(true);
+      }
+    });
+
+    const favoritesObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setFavoritesVisible(true);
+      }
+    });
+
+    const articleObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setArticleVisible(true);
+      }
+    });
+
+    mapObserver.observe(mapRef.current);
+    favoritesObserver.observe(favoritesRef.current);
+    articleObserver.observe(articleRef.current);
+  }, []);
 
   const resetTimeout = () => {
     if (timeoutRef.current) {
@@ -453,21 +513,32 @@ const Homepage = () => {
         </MainTimer>
 
         <Selection>
-          <LeftContainer>
-            <Image img={Map}>
-              <LeftTitle to={"/map"}>互動地圖</LeftTitle>
-            </Image>
-          </LeftContainer>
-          <RightContainer>
-            <Image img={Aurora}>
-              <RightTitle to={"/articles"}>遊記專區</RightTitle>
-            </Image>
-          </RightContainer>
-          <LeftContainer>
-            <Image img={River}>
-              <LeftTitle to={"/favorties"}>我的最愛</LeftTitle>
-            </Image>
-          </LeftContainer>
+          <Container align={"left"} ref={mapRef}>
+            <Image img={Map} align={"left"} visible={mapVisible} />
+            <CategoryTitle to={"/map"} align={"left"} visible={mapVisible}>
+              互動地圖
+            </CategoryTitle>
+          </Container>
+          <Container align={"right"} ref={articleRef}>
+            <Image img={Aurora} align={"right"} visible={articleVisible} />
+            <CategoryTitle
+              to={"/articles"}
+              align={"right"}
+              visible={articleVisible}
+            >
+              遊記專區
+            </CategoryTitle>
+          </Container>
+          <Container align={"left"} ref={favoritesRef}>
+            <Image img={River} align={"left"} visible={favortiesVisible} />
+            <CategoryTitle
+              to={"/favorties"}
+              align={"left"}
+              visible={favortiesVisible}
+            >
+              我的最愛
+            </CategoryTitle>
+          </Container>
           {/* <MainCircleContainer>
             <MainCircle img={`https://img.onl/PBCUmN`} to="/map">
               <MainCircleTitle>互動地圖</MainCircleTitle>
