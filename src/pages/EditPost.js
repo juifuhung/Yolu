@@ -2,10 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../utils/Firebase";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+};
+
+initializeApp(firebaseConfig);
 const db = getFirestore();
 
 const Tag = styled.div`
@@ -14,30 +26,28 @@ const Tag = styled.div`
   font-size: 1rem;
   border: solid black 1px;
 
-  background-color: ${(props) => (props.selected ? "aqua" : "pink")};
+  background-color: ${(props) => (props.state ? "aqua" : "pink")};
 `;
 
-// let localId;
-// let displayName;
+let localId;
+let displayName;
 
 const EditPost = () => {
-  // const [tagArray, setTagArray] = useState(articleData.tags);
+  const [tagArray, setTagArray] = useState([]);
   const [articleData, setArticleData] = useState([]);
+  const [enteredTitle, setEnteredTitle] = useState("");
+  const [enteredContent, setEnteredContent] = useState("");
 
-  // const currentUser = useAuth();
-  // if (currentUser) {
-  //   localId = currentUser.uid;
-  // }
-  // console.log(currentUser);
-  // console.log(localId);
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
 
-  // console.log(params.articleId);
-
-  // const getDisplayName = async (localId) => {
-  //   console.log("getDisplayName");
-  //   const docSnap = await getDoc(doc(db, "User", `${localId}`));
-  //   displayName = docSnap.data().name;
-  // };
+  const getDisplayName = async (localId) => {
+    console.log("getDisplayName");
+    const docSnap = await getDoc(doc(db, "User", `${localId}`));
+    displayName = docSnap.data().name;
+  };
 
   const params = useParams();
 
@@ -46,56 +56,84 @@ const EditPost = () => {
     const docSnap = await getDoc(doc(db, "Post", params.articleId));
     console.log("Document data:", docSnap.data());
     setArticleData(docSnap.data());
+    setTagArray(docSnap.data().fullTagArray);
   };
 
-  //寫法一
-  // useEffect(() => {
-  //   getArticle();
-  // }, []);
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
 
-  // 寫法二
-  getArticle();
+    try {
+      await updateDoc(doc(db, "Post", params.articleId), {
+        title: enteredTitle,
+        content: enteredContent,
+        fullTagArray: tagArray,
+        created_time: new Date(),
+        localId: localId,
+        displayName: displayName,
+      });
+      setEnteredTitle("");
+      setEnteredContent("");
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
 
-  // const chooseTagHandler = (index) => {
-  //   const newTagArray = [...articleData.tags].map((item, i) => {
-  //     if (i === index) {
-  //       return { ...item, state: !item.state };
-  //     } else {
-  //       return item;
-  //     }
-  //   });
-  //   console.log(newTagArray);
-  //   // setTagArray(newTagArray);
-  // };
+  const titleInputChangeHandler = (e) => {
+    setEnteredTitle(e.target.value);
+  };
+
+  const contentInputChangeHandler = (e) => {
+    setEnteredContent(e.target.value);
+  };
+
+  useEffect(() => {
+    console.log("useEffect running");
+    getArticle();
+  }, []);
+
+  useEffect(() => {
+    getDisplayName(localId);
+  }, [localId]);
+
+  const chooseTagHandler = (index) => {
+    console.log(index);
+    const newTagArray = [...tagArray].map((item, i) => {
+      if (i === index) {
+        return { ...item, state: !item.state };
+      } else {
+        return item;
+      }
+    });
+    console.log(newTagArray);
+    setTagArray(newTagArray);
+  };
 
   return (
     <>
       {console.log(articleData)}
-      {console.log(articleData.tags)}
+      {console.log(articleData.fullTagArray)}
       <Header />
       <h1>Edit</h1>
-      {/* <p>{displayName}</p> */}
-      <form>
-        <input type="text" value={articleData.title} />
+      <p>{displayName}</p>
+      <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          value={articleData.title}
+          onChange={titleInputChangeHandler}
+        />
         <textarea
           name=""
           id=""
           cols="30"
           rows="10"
           value={articleData.content}
+          onChange={contentInputChangeHandler}
         ></textarea>
-        {articleData.tags.map((item) => {
-          return (
-            <Tag key={item.title} state={item.state}>
-              {item.title}
-            </Tag>
-          );
-        })}
-        {/* {articleData.tags.map((item, index) => {
+        {tagArray.map((item, index) => {
           return (
             <Tag
               key={item.title}
-              selected={item.state}
+              state={item.state}
               onClick={() => {
                 chooseTagHandler(index);
               }}
@@ -103,7 +141,7 @@ const EditPost = () => {
               {item.title}
             </Tag>
           );
-        })} */}
+        })}
         <button>更改</button>
       </form>
       <Footer />

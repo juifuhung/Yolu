@@ -48,9 +48,6 @@ const Post = () => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredContent, setEnteredContent] = useState("");
 
-  let titleArray = [];
-  let categoryArray = [];
-
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
@@ -72,9 +69,7 @@ const Post = () => {
       await addDoc(collection(db, "Post"), {
         title: enteredTitle,
         content: enteredContent,
-        tags: titleArray,
-        fullArray: tagArray,
-        categories: categoryArray,
+        fullTagArray: tagArray,
         created_time: new Date(),
         localId: localId,
         displayName: displayName,
@@ -94,13 +89,6 @@ const Post = () => {
   const contentInputChangeHandler = (e) => {
     setEnteredContent(e.target.value);
   };
-
-  tagArray.filter((item) => {
-    if (item.state === true) {
-      titleArray.push({ title: item.title, state: item.state });
-      categoryArray.push(item.category);
-    }
-  });
 
   const chooseTagHandler = (index) => {
     const newTagArray = [...tagArray].map((item, i) => {
