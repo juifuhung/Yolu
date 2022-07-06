@@ -10,7 +10,6 @@ import Article from "./pages/Article";
 import AllArticles from "./pages/AllArticles";
 import Spot from "./pages/Spot";
 import NewPost from "./pages/NewPost";
-import PostComplete from "./pages/PostComplete";
 import EditPost from "./pages/EditPost";
 import { Font, UniversalStyle } from "./styles/styles";
 
@@ -46,11 +45,7 @@ const App = () => {
             path="new-post"
             element={localId ? <NewPost /> : <Navigate to="/" />}
           />
-          <Route path="post-complete" element={<PostComplete />} />
-          <Route
-            path="edit/:articleId"
-            element={localId ? <EditPost /> : <EditPost />}
-          />
+          <Route path="edit/:articleId" element={<EditPost />} />
         </Routes>
       </Font>
     </>
