@@ -2,8 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
-import { useAuth } from "../utils/Firebase";
+// import { useAuth } from "../utils/Firebase";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import Map from "../images/homepage_map.png";
+import Aurora from "../images/homepage_aurora.png";
+import River from "../images/homepage_river.png";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Timer from "../components/Timer";
@@ -150,9 +153,11 @@ const MainTimer = styled.div`
 `;
 
 const Selection = styled.div`
+  background-color: yellow;
   margin-top: 50px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
 
   @media (max-width: 1300px) {
@@ -165,88 +170,151 @@ const Selection = styled.div`
   }
 `;
 
-const MainCircleContainer = styled.div`
+const LeftContainer = styled.div`
+  background-color: lightgreen;
   display: flex;
-  justify-content: center;
+  flex-direction: flex-start;
   align-items: center;
-  border-radius: 50%;
-  margin: 50px;
-  width: 38vw;
-  height: 38vw;
-  overflow: hidden;
-
-  @media (max-width: 820px) {
-    margin: 20px;
-  }
-
-  @media (max-width: 800px) {
-    width: 70vw;
-    height: 70vw;
-  }
+  width: 90%;
+  height: 400px;
 `;
 
-const MainCircle = styled(Link)`
+const RightContainer = styled.div`
+  background-color: aqua;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 90%;
+  height: 400px;
+`;
+
+const Image = styled.div`
+  border: solid red 1px;
+  width: 75%;
+  height: 90%;
+  background-image: url(${(props) => props.img});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+`;
+
+const LeftTitle = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  transition: all 0.3s ease-in-out;
-  background-image: url(${(props) => props.img});
-  background-size: 150%;
-  background-position: center;
+  width: 270px;
+  height: 100px;
+  background-color: #ff0000;
+  opacity: 0.8;
+  font-size: 2.8rem;
+  font-weight: 800;
   text-decoration: none;
   color: white;
-
-  &:hover {
-    background-size: 180%;
-  }
+  position: absolute;
+  bottom: 40px;
+  right: -200px;
 `;
 
-const MainCircleTitle = styled.h2`
-  margin: 0;
-  font-size: 8rem;
-
-  &:hover {
-    transform: scale(1);
-  }
-
-  @media (max-width: 1600px) {
-    font-size: 7rem;
-  }
-
-  @media (max-width: 1350px) {
-    font-size: 6rem;
-  }
-
-  @media (max-width: 1160px) {
-    font-size: 5rem;
-  }
-
-  @media (max-width: 960px) {
-    font-size: 4rem;
-  }
-
-  @media (max-width: 820px) {
-    font-size: 3rem;
-  }
-
-  @media (max-width: 800px) {
-    font-size: 6rem;
-  }
-
-  @media (max-width: 660px) {
-    font-size: 5rem;
-  }
-
-  @media (max-width: 550px) {
-    font-size: 4rem;
-  }
-
-  @media (max-width: 410px) {
-    font-size: 3rem;
-  }
+const RightTitle = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 270px;
+  height: 100px;
+  background-color: #ff0000;
+  opacity: 0.8;
+  font-size: 2.8rem;
+  font-weight: 800;
+  text-decoration: none;
+  color: white;
+  position: absolute;
+  bottom: 40px;
+  left: -200px;
 `;
+
+// const MainCircleContainer = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   border-radius: 50%;
+//   margin: 50px;
+//   width: 38vw;
+//   height: 38vw;
+//   overflow: hidden;
+
+//   @media (max-width: 820px) {
+//     margin: 20px;
+//   }
+
+//   @media (max-width: 800px) {
+//     width: 70vw;
+//     height: 70vw;
+//   }
+// `;
+
+// const MainCircle = styled(Link)`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 100%;
+//   height: 100%;
+//   transition: all 0.3s ease-in-out;
+//   background-image: url(${(props) => props.img});
+//   background-size: 150%;
+//   background-position: center;
+//   text-decoration: none;
+//   color: white;
+
+//   &:hover {
+//     background-size: 180%;
+//   }
+// `;
+
+// const MainCircleTitle = styled.h2`
+//   margin: 0;
+//   font-size: 8rem;
+
+//   &:hover {
+//     transform: scale(1);
+//   }
+
+//   @media (max-width: 1600px) {
+//     font-size: 7rem;
+//   }
+
+//   @media (max-width: 1350px) {
+//     font-size: 6rem;
+//   }
+
+//   @media (max-width: 1160px) {
+//     font-size: 5rem;
+//   }
+
+//   @media (max-width: 960px) {
+//     font-size: 4rem;
+//   }
+
+//   @media (max-width: 820px) {
+//     font-size: 3rem;
+//   }
+
+//   @media (max-width: 800px) {
+//     font-size: 6rem;
+//   }
+
+//   @media (max-width: 660px) {
+//     font-size: 5rem;
+//   }
+
+//   @media (max-width: 550px) {
+//     font-size: 4rem;
+//   }
+
+//   @media (max-width: 410px) {
+//     font-size: 3rem;
+//   }
+// `;
 
 const Next = styled(FaArrowRight)`
   bottom: 45%;
@@ -282,23 +350,23 @@ const Previous = styled(FaArrowLeft)`
   }
 `;
 
-const CategoryLink = styled(Link)`
-  width: 80%;
-  height: 400px;
-  background-color: red;
-  color: white;
-`;
+// const CategoryLink = styled(Link)`
+//   width: 80%;
+//   height: 400px;
+//   background-color: red;
+//   color: white;
+// `;
 
-let localId;
+// let localId;
 
 const Homepage = () => {
   const [index, setIndex] = useState(0);
   const timeoutRef = useRef(null);
 
-  const currentUser = useAuth();
-  if (currentUser) {
-    localId = currentUser.uid;
-  }
+  // const currentUser = useAuth();
+  // if (currentUser) {
+  //   localId = currentUser.uid;
+  // }
 
   const resetTimeout = () => {
     if (timeoutRef.current) {
@@ -338,11 +406,11 @@ const Homepage = () => {
     };
   }, [index]);
 
-  const displayMessage = () => {
-    if (!localId) {
-      alert("please sign in");
-    }
-  };
+  // const displayMessage = () => {
+  //   if (!localId) {
+  //     alert("請先登入");
+  //   }
+  // };
 
   return (
     <>
@@ -385,7 +453,22 @@ const Homepage = () => {
         </MainTimer>
 
         <Selection>
-          <MainCircleContainer>
+          <LeftContainer>
+            <Image img={Map}>
+              <LeftTitle to={"/map"}>互動地圖</LeftTitle>
+            </Image>
+          </LeftContainer>
+          <RightContainer>
+            <Image img={Aurora}>
+              <RightTitle to={"/articles"}>遊記專區</RightTitle>
+            </Image>
+          </RightContainer>
+          <LeftContainer>
+            <Image img={River}>
+              <LeftTitle to={"/favorties"}>我的最愛</LeftTitle>
+            </Image>
+          </LeftContainer>
+          {/* <MainCircleContainer>
             <MainCircle img={`https://img.onl/PBCUmN`} to="/map">
               <MainCircleTitle>互動地圖</MainCircleTitle>
             </MainCircle>
@@ -398,11 +481,11 @@ const Homepage = () => {
             >
               <MainCircleTitle>我的最愛</MainCircleTitle>
             </MainCircle>
-          </MainCircleContainer>
+          </MainCircleContainer> */}
         </Selection>
-        <CategoryLink to="/articles" target="_blank">
+        {/* <CategoryLink to="/articles" target="_blank">
           {"主題遊記區"}
-        </CategoryLink>
+        </CategoryLink> */}
       </Font>
       <Footer />
     </>

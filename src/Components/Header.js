@@ -120,7 +120,7 @@ const Nav = styled.div`
 `;
 
 const WebNavLink = styled(Link)`
-  font-size: 2rem;
+  font-size: 1.8rem;
   text-decoration: none;
   color: #000000;
 
@@ -133,7 +133,7 @@ const SignInLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   text-decoration: none;
   color: #000000;
 
@@ -146,7 +146,7 @@ const LogOut = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   text-decoration: none;
   color: #000000;
   cursor: pointer;
@@ -313,7 +313,8 @@ const Header = () => {
             )}
           </HeaderContainerLeft>
           <Nav>
-            <WebNavLink to="/map">羅瓦涅米地圖</WebNavLink>
+            <WebNavLink to="/map">互動地圖</WebNavLink>
+            <WebNavLink to="/articles">遊記專區</WebNavLink>
             <WebNavLink to="/favorites" onClick={displayMessage}>
               我的最愛
             </WebNavLink>
@@ -325,7 +326,7 @@ const Header = () => {
             ) : null}
             {!localId ? (
               <SignInLink to="/member">
-                會員登入
+                登入
                 <img src={webMemberIcon} />
               </SignInLink>
             ) : null}
