@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { initializeApp } from "firebase/app";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore";
 import HeaderTimer from "./HeaderTimer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -9,6 +17,19 @@ import headerLogo from "../images/header-yolu.png";
 import webMemberIcon from "../images/web-member-icon.png";
 import mobileMemberLoginIcon from "../images/mobile-member-login.png";
 import mobileLogOutMemberIcon from "../images/mobile-member-logout.png";
+
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+};
+
+initializeApp(firebaseConfig);
+const db = getFirestore();
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -55,7 +76,6 @@ const HomepageLink = styled(Link)`
   width: 200px;
   height: 100%;
   margin: 0 20px 0 20px;
-  position: relative;
 
   @media (max-width: 800px) {
     margin-bottom: 5px;
@@ -67,26 +87,32 @@ const HeartLink = styled(Link)`
   width: 50px;
   height: 50px;
   position: absolute;
-  top: 16px;
-  left: -7%;
+  top: 45px;
+  left: 10%;
 
   @media (min-width: 800px) {
     display: none;
   }
 
   @media (max-width: 550px) {
-    top: 15px;
-    left: 0;
     width: 40px;
     height: 40px;
   }
 
   @media (max-width: 400px) {
-    top: 18px;
-    left: 4%;
     width: 35px;
     height: 35px;
   }
+`;
+
+const HeartNumber = styled.p`
+  position: absolute;
+  top: 5px;
+  left: 29%;
+  width: 20px;
+  color: white;
+  margin: 0;
+  font-size: 1.6rem;
 `;
 
 const Heart = styled(FaHeart)`
@@ -304,6 +330,7 @@ let localId;
 const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
 const Header = () => {
+  const [totalFavorites, setTotalFavorites] = useState([]);
   const [temperature, setTemperature] = useState(0);
   const [icon, setIcon] = useState(undefined);
   const [weatherMain, setWeatherMain] = useState(undefined);
@@ -312,6 +339,25 @@ const Header = () => {
   if (currentUser) {
     localId = currentUser.uid;
   }
+
+  useEffect(() => {
+    getTotalFavorites(localId);
+  }, [localId]);
+
+  const getTotalFavorites = async (localId) => {
+    let totalFavorites;
+    totalFavorites = query(
+      collection(db, "Favorites"),
+      where("localId", "==", `${localId}`)
+    );
+
+    const querySnapshot = await getDocs(totalFavorites);
+    let totalFavoriteArray = [];
+    querySnapshot.forEach((doc) => {
+      totalFavoriteArray.push({ ...doc.data(), id: doc.id });
+    });
+    setTotalFavorites(totalFavoriteArray);
+  };
 
   const displayMessage = () => {
     if (!localId) {
@@ -352,11 +398,12 @@ const Header = () => {
 
         <HeaderContainer>
           <HeaderContainerLeft>
+            <HeartLink to={"/favorites"}>
+              <Heart />
+              <HeartNumber>{totalFavorites.length}</HeartNumber>
+            </HeartLink>
             <HomepageLink to="/">
               <img src={headerLogo} />
-              <HeartLink to={"/favorites"}>
-                <Heart />
-              </HeartLink>
             </HomepageLink>
             {window.screen.width > 1500 ? (
               <WeatherLink
