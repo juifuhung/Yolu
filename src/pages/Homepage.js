@@ -7,6 +7,9 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Map from "../images/homepage_map.png";
 import Aurora from "../images/homepage_aurora.png";
 import River from "../images/homepage_river.png";
+import MapGrey from "../images/map_div.png";
+import ArticleGrey from "../images/article_div.png";
+import FavoriteGrey from "../images/favorite_div.png";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Timer from "../components/Timer";
@@ -218,12 +221,13 @@ const GreyColorDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40%;
+  width: 0;
   height: 100%;
   background-color: rgba(34, 34, 34, 0.7);
   position: absolute;
-  ${Container}:hover & {
-    background-color: rgba(34, 34, 34, 1);
+  transition: 0.5s;
+  ${Image}:hover & {
+    width: 40%;
   }
   z-index: 2;
   left: ${(props) => (props.align === "left" ? "0" : "")};
@@ -236,18 +240,10 @@ const GreyColorWordsContainer = styled.div`
   justify-content: flex-start;
   width: 80%;
   height: 80%;
-`;
-
-const GreyColorDivTitle = styled.h4`
-  margin: 0;
-  color: white;
-  font-size: 3rem;
-`;
-
-const GreyColorDivParagraph = styled.p`
-  margin: 0;
-  color: white;
-  font-size: 1.5rem;
+  background-image: url(${(props) => props.img});
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
 
 const CategoryTitle = styled(Link)`
@@ -263,7 +259,14 @@ const CategoryTitle = styled(Link)`
   color: white;
   position: absolute;
   bottom: 40px;
-  right: ${(props) => (props.align === "left" ? "12%" : "70%")};
+  right: ${(props) => (props.align === "left" ? "10%" : "")};
+  left: ${(props) => (props.align === "right" ? "10%" : "")};
+  &:hover {
+    width: 297px;
+    height: 110px;
+    font-size: 3.08rem;
+  }
+
   animation-duration: 3s;
   animation-name: ${(props) =>
     props.visible
@@ -279,7 +282,7 @@ const CategoryTitle = styled(Link)`
     }
     to {
       opacity: 1;
-      right: 12%;
+      right: 10%;
     }
   }
 
@@ -463,10 +466,7 @@ const Homepage = () => {
           <Container align={"left"} ref={mapRef}>
             <Image to={"/map"} img={Map} align={"left"} visible={mapVisible}>
               <GreyColorDiv align={"left"}>
-                <GreyColorWordsContainer>
-                  <GreyColorDivTitle>地圖</GreyColorDivTitle>
-                  <GreyColorDivParagraph>來看地圖</GreyColorDivParagraph>
-                </GreyColorWordsContainer>
+                <GreyColorWordsContainer img={MapGrey} />
               </GreyColorDiv>
             </Image>
             <CategoryTitle to={"/map"} align={"left"} visible={mapVisible}>
@@ -481,10 +481,7 @@ const Homepage = () => {
               visible={articleVisible}
             >
               <GreyColorDiv align={"right"}>
-                <GreyColorWordsContainer>
-                  <GreyColorDivTitle>遊記</GreyColorDivTitle>
-                  <GreyColorDivParagraph>來看遊記</GreyColorDivParagraph>
-                </GreyColorWordsContainer>
+                <GreyColorWordsContainer img={ArticleGrey} />
               </GreyColorDiv>
             </Image>
             <CategoryTitle
@@ -504,10 +501,7 @@ const Homepage = () => {
               visible={favortiesVisible}
             >
               <GreyColorDiv align={"left"}>
-                <GreyColorWordsContainer>
-                  <GreyColorDivTitle>最愛</GreyColorDivTitle>
-                  <GreyColorDivParagraph>我的最愛在這</GreyColorDivParagraph>
-                </GreyColorWordsContainer>
+                <GreyColorWordsContainer img={FavoriteGrey} />
               </GreyColorDiv>
             </Image>
             <CategoryTitle
