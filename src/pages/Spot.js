@@ -40,7 +40,7 @@ const Spot = () => {
     const querySnapshot = await getDocs(
       query(
         collection(db, "Post"),
-        where("tags", "array-contains", {
+        where("fullTagArray", "array-contains", {
           state: true,
           title: `${params.spot}`,
         })

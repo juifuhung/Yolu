@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../utils/Firebase";
 import {
@@ -7,6 +8,9 @@ import {
   addDoc,
   doc,
   getDoc,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -14,21 +18,21 @@ import Footer from "../components/Footer";
 const db = getFirestore();
 
 const spots = [
-  { title: "奧納斯山", category: "自然景觀", state: false },
-  { title: "聖誕老人的鮭魚餐廳", category: "餐廳", state: false },
-  { title: "聖誕老人辦公室", category: "聖誕主題", state: false },
-  { title: "北極圈", category: "聖誕主題", state: false },
-  { title: "聖誕屋", category: "聖誕主題", state: false },
-  { title: "哈士奇公園", category: "聖誕主題", state: false },
-  { title: "聖誕老人馴鹿", category: "聖誕主題", state: false },
-  { title: "馬勒蒂尼北極圈工廠店", category: "購物", state: false },
-  { title: "Curry Masala", category: "餐廳", state: false },
-  { title: "極光購物中心", category: "購物", state: false },
-  { title: "北極科學博物館", category: "博物館", state: false },
-  { title: "皮爾凱科學中心", category: "博物館", state: false },
-  { title: "羅瓦涅米機場", category: "交通", state: false },
-  { title: "羅瓦涅米中央巴士站", category: "交通", state: false },
-  { title: "羅瓦涅米火車站", category: "交通", state: false },
+  { title: "奧納斯山", state: false },
+  { title: "聖誕老人的鮭魚餐廳", state: false },
+  { title: "聖誕老人辦公室", state: false },
+  { title: "北極圈", state: false },
+  { title: "聖誕屋", state: false },
+  { title: "哈士奇公園", state: false },
+  { title: "聖誕老人馴鹿", state: false },
+  { title: "馬勒蒂尼北極圈工廠店", state: false },
+  { title: "Curry Masala", state: false },
+  { title: "極光購物中心", state: false },
+  { title: "北極科學博物館", state: false },
+  { title: "皮爾凱科學中心", state: false },
+  { title: "羅瓦涅米機場", state: false },
+  { title: "羅瓦涅米中央巴士站", state: false },
+  { title: "羅瓦涅米火車站", state: false },
 ];
 
 const Tag = styled.div`
@@ -42,6 +46,7 @@ const Tag = styled.div`
 
 let localId;
 let displayName;
+let articleId;
 
 const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
@@ -52,6 +57,8 @@ const Post = () => {
   if (currentUser) {
     localId = currentUser.uid;
   }
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getDisplayName(localId);
@@ -77,6 +84,20 @@ const Post = () => {
       setEnteredTitle("");
       setEnteredContent("");
       setTagArray(spots);
+
+      const q = query(
+        collection(db, "Post"),
+        where("title", "==", enteredTitle),
+        where("content", "==", enteredContent)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        articleId = doc.id;
+      });
+
+      if (articleId) {
+        navigate(`/article/${articleId}`);
+      }
     } catch (e) {
       console.log("error", e);
     }

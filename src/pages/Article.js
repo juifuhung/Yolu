@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import { initializeApp } from "firebase/app";
 import { doc, getFirestore, getDoc } from "firebase/firestore";
@@ -40,13 +41,29 @@ const EditButton = styled(Link)`
   color: red;
 `;
 
+const ViewAllCategoryButton = styled(Link)`
+  width: 300px;
+  height: 100px;
+  font-size: 1.2rem;
+  border: solid red 1px;
+  color: black;
+`;
+
+let localId;
+
 const Article = () => {
   const [article, setArticle] = useState({});
   const params = useParams();
 
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
   const getArticle = async () => {
     const docRef = doc(db, "Post", `${params.articleId}`);
     const docSnap = await getDoc(docRef);
+    console.log(docSnap.data());
     setArticle(docSnap.data());
   };
 
@@ -61,19 +78,22 @@ const Article = () => {
       </FavoritesHeaderContainer>
       <h1>{article.title}</h1>
       <p>{article.content}</p>
-      <EditButton to={`/edit/${params.articleId}`}>編輯</EditButton>
-      {article.tags &&
-        article.tags.map((item) => {
-          return (
-            <Tag
-              to={`/articles/${item.title}`}
-              key={item.title}
-              target="_blank"
-            >
-              {item.title}
-            </Tag>
-          );
+      {article.localId === localId ? (
+        <EditButton to={`/edit/${params.articleId}`}>編輯</EditButton>
+      ) : null}
+      {article.fullTagArray &&
+        article.fullTagArray.map((item) => {
+          if (item.state === true) {
+            return (
+              <Tag to={`/articles/${item.title}`} key={item.title}>
+                {item.title}
+              </Tag>
+            );
+          }
         })}
+      <ViewAllCategoryButton to={"/articles"}>
+        瀏覽所有文章
+      </ViewAllCategoryButton>
       <Footer />
     </>
   );

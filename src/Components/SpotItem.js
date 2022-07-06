@@ -23,7 +23,7 @@ const SpotItemCreated_time = styled.p`
 const SpotItem = ({ title, content, created_time, id }) => {
   return (
     <>
-      <SpotItemLink to={`./${id}`} target="_blank">
+      <SpotItemLink to={`/article/${id}`}>
         <SpotItemTitle>{title}</SpotItemTitle>
         <SpotItemContent>{content}</SpotItemContent>
         <SpotItemCreated_time>{created_time}</SpotItemCreated_time>

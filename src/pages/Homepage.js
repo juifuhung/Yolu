@@ -400,7 +400,9 @@ const Homepage = () => {
             </MainCircle>
           </MainCircleContainer>
         </Selection>
-        <CategoryLink to="/articles">{"主題遊記區"}</CategoryLink>
+        <CategoryLink to="/articles" target="_blank">
+          {"主題遊記區"}
+        </CategoryLink>
       </Font>
       <Footer />
     </>

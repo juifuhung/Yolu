@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../utils/Firebase";
 import { initializeApp } from "firebase/app";
@@ -38,6 +38,8 @@ const EditPost = () => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredContent, setEnteredContent] = useState("");
 
+  const navigate = useNavigate();
+
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
@@ -75,6 +77,8 @@ const EditPost = () => {
       });
       setEnteredTitle("");
       setEnteredContent("");
+
+      navigate(`/article/${params.articleId}`);
     } catch (e) {
       console.log("error", e);
     }
