@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import HeaderTimer from "./HeaderTimer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { FaHeart } from "react-icons/fa";
 import { Font } from "../styles/styles";
 import { useAuth, logOut } from "../utils/Firebase";
 import headerLogo from "../images/header-yolu.png";
@@ -54,10 +55,85 @@ const HomepageLink = styled(Link)`
   width: 200px;
   height: 100%;
   margin: 0 20px 0 20px;
+  position: relative;
 
   @media (max-width: 800px) {
     margin-bottom: 5px;
     height: 40%;
+  }
+`;
+
+const HeartLink = styled(Link)`
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 16px;
+  left: -7%;
+
+  @media (min-width: 800px) {
+    display: none;
+  }
+
+  @media (max-width: 550px) {
+    top: 15px;
+    left: 0;
+    width: 40px;
+    height: 40px;
+  }
+
+  @media (max-width: 400px) {
+    top: 18px;
+    left: 4%;
+    width: 35px;
+    height: 35px;
+  }
+`;
+
+const Heart = styled(FaHeart)`
+  transform: rotate(-35deg);
+  width: 100%;
+  height: 100%;
+  color: #ff0000;
+
+  &:hover {
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: rotate(-39deg);
+    }
+    10% {
+      transform: rotate(-31deg);
+    }
+    20% {
+      transform: rotate(-39deg);
+    }
+    30% {
+      transform: rotate(-31deg);
+    }
+    40% {
+      transform: rotate(-39deg);
+    }
+    50% {
+      transform: rotate(-31deg);
+    }
+    60% {
+      transform: rotate(-39deg);
+    }
+    70% {
+      transform: rotate(-31deg);
+    }
+    80% {
+      transform: rotate(-39deg);
+    }
+    90% {
+      transform: rotate(-31deg);
+    }
+    100% {
+      transform: rotate(-39deg);
+    }
   }
 `;
 
@@ -278,6 +354,9 @@ const Header = () => {
           <HeaderContainerLeft>
             <HomepageLink to="/">
               <img src={headerLogo} />
+              <HeartLink to={"/favorites"}>
+                <Heart />
+              </HeartLink>
             </HomepageLink>
             {window.screen.width > 1500 ? (
               <WeatherLink

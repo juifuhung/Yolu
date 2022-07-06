@@ -156,7 +156,7 @@ const MainTimer = styled.div`
 `;
 
 const Selection = styled.div`
-  margin-top: 50px;
+  margin: 50px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -181,6 +181,14 @@ const Container = styled.div`
   width: 80%;
   height: 400px;
   position: relative;
+
+  @media (max-width: 1100px) {
+    height: 340px;
+  }
+
+  @media (max-width: 900px) {
+    height: 300px;
+  }
 `;
 
 const Image = styled(Link)`
@@ -262,9 +270,62 @@ const CategoryTitle = styled(Link)`
   right: ${(props) => (props.align === "left" ? "10%" : "")};
   left: ${(props) => (props.align === "right" ? "10%" : "")};
   &:hover {
-    width: 297px;
-    height: 110px;
+    transform: scale(1.05, 1.05);
     font-size: 3.08rem;
+  }
+
+  @media (max-width: 1200px) {
+    right: ${(props) => (props.align === "left" ? "8%" : "")};
+    left: ${(props) => (props.align === "right" ? "8%" : "")};
+
+    @keyframes title-slide-from-right {
+      from {
+        opacity: 0;
+        right: -100px;
+      }
+      to {
+        opacity: 1;
+        right: 8%;
+      }
+    }
+
+    @keyframes title-slide-from-left {
+      from {
+        opacity: 0;
+        left: -100px;
+      }
+      to {
+        opacity: 1;
+        left: 8%;
+      }
+    }
+  }
+
+  @media (max-width: 1000px) {
+    right: ${(props) => (props.align === "left" ? "7%" : "")};
+    left: ${(props) => (props.align === "right" ? "7%" : "")};
+
+    @keyframes title-slide-from-right {
+      from {
+        opacity: 0;
+        right: -100px;
+      }
+      to {
+        opacity: 1;
+        right: 7%;
+      }
+    }
+
+    @keyframes title-slide-from-left {
+      from {
+        opacity: 0;
+        left: -100px;
+      }
+      to {
+        opacity: 1;
+        left: 7%;
+      }
+    }
   }
 
   animation-duration: 3s;
@@ -293,7 +354,7 @@ const CategoryTitle = styled(Link)`
     }
     to {
       opacity: 1;
-      right: 70%;
+      left: 10%;
     }
   }
 `;
@@ -495,7 +556,7 @@ const Homepage = () => {
           </Container>
           <Container align={"left"} ref={favoritesRef}>
             <Image
-              to={"/favorties"}
+              to={"/favorites"}
               img={River}
               align={"left"}
               visible={favortiesVisible}
@@ -505,7 +566,7 @@ const Homepage = () => {
               </GreyColorDiv>
             </Image>
             <CategoryTitle
-              to={"/favorties"}
+              to={"/favorites"}
               align={"left"}
               visible={favortiesVisible}
             >
