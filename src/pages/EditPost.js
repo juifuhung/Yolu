@@ -57,6 +57,8 @@ const EditPost = () => {
     console.log("Document data:", docSnap.data());
     setArticleData(docSnap.data());
     setTagArray(docSnap.data().fullTagArray);
+    setEnteredTitle(docSnap.data().title);
+    setEnteredContent(docSnap.data().content);
   };
 
   const handleFormSubmit = async (event) => {
@@ -118,7 +120,7 @@ const EditPost = () => {
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
-          value={articleData.title}
+          value={enteredTitle}
           onChange={titleInputChangeHandler}
         />
         <textarea
@@ -126,7 +128,7 @@ const EditPost = () => {
           id=""
           cols="30"
           rows="10"
-          value={articleData.content}
+          value={enteredContent}
           onChange={contentInputChangeHandler}
         ></textarea>
         {tagArray.map((item, index) => {
