@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import { initializeApp } from "firebase/app";
-import { doc, getFirestore, getDoc } from "firebase/firestore";
+import { doc, getFirestore, getDoc, deleteDoc } from "firebase/firestore";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -54,6 +54,7 @@ let localId;
 const Article = () => {
   const [article, setArticle] = useState({});
   const params = useParams();
+  const navigate = useNavigate();
 
   const currentUser = useAuth();
   if (currentUser) {
@@ -71,6 +72,12 @@ const Article = () => {
     getArticle();
   }, []);
 
+  const deleteHandler = async () => {
+    await deleteDoc(doc(db, "Post", `${params.articleId}`));
+    alert("文章已刪除");
+    navigate(`/articles`);
+  };
+
   return (
     <>
       <FavoritesHeaderContainer>
@@ -80,6 +87,9 @@ const Article = () => {
       <p>{article.content}</p>
       {article.localId === localId ? (
         <EditButton to={`/edit/${params.articleId}`}>編輯</EditButton>
+      ) : null}
+      {article.localId === localId ? (
+        <div onClick={deleteHandler}>刪除</div>
       ) : null}
       {article.fullTagArray &&
         article.fullTagArray.map((item) => {
