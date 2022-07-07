@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { doc, getFirestore, getDoc, deleteDoc } from "firebase/firestore";
 import Header from "../components/Header";
@@ -26,27 +27,205 @@ const FavoritesHeaderContainer = styled.div`
   z-index: 5;
 `;
 
-const Tag = styled(Link)`
-  width: 250px;
-  height: 100px;
-  margin: 0 2px;
-  border: solid black 1px;
-  color: black;
+const BodyContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-const EditButton = styled(Link)`
-  width: 200px;
-  height: 100px;
-  border: solid blue 2px;
+const Title = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 3rem 0 0 0;
+
+  @media (max-width: 570px) {
+    font-size: 2.5rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 2.2rem;
+  }
+`;
+
+const EditAndDeleteSection = styled.div`
+  display: flex;
+`;
+
+const EditOrDeleteEditSection = styled(Link)`
+  display: flex;
+  align-items: end;
+  text-decoration: none;
+  font-size: 2rem;
+  color: #616161;
   color: red;
+  margin-left: 1.5rem;
+
+  @media (max-width: 570px) {
+    margin-left: 0.2rem;
+  }
+`;
+
+const EditIcon = styled(FaEdit)`
+  width: 50px;
+  height: 50px;
+  color: #616161;
+  margin-bottom: -2px;
+
+  @media (max-width: 1300px) {
+    width: 40px;
+    height: 40px;
+  }
+  @media (max-width: 450px) {
+    width: 35px;
+    height: 35px;
+  }
+
+  @media (max-width: 400px) {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+const DeleteIcon = styled(FaTrash)`
+  width: 40px;
+  height: 40px;
+  color: #616161;
+
+  @media (max-width: 1300px) {
+    width: 30px;
+    height: 30px;
+  }
+  @media (max-width: 450px) {
+    width: 30px;
+    height: 30px;
+  }
+
+  @media (max-width: 400px) {
+    width: 20px;
+    height: 20px;
+  }
+`;
+
+const EditOrDeleteWords = styled.h3`
+  margin: 0 0 0 0.5rem;
+  font-size: 1.5rem;
+  color: #616161;
+
+  @media (max-width: 1300px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 570px) {
+    display: none;
+  }
+`;
+
+const SpotItemAuthorAndTime = styled.div`
+  width: 80%;
+  display: flex;
+  justify-content: start;
+  margin-bottom: 1rem;
+
+  @media (max-width: 570px) {
+    flex-direction: column;
+  }
+`;
+
+const SpotItemSubtitle = styled.p`
+  font-size: 1.1rem;
+  color: #3a3b3c;
+  margin-left: ${(props) => (props.time ? "1.5rem" : "0")};
+
+  @media (max-width: 1300px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 570px) {
+    font-size: 0.9rem;
+    margin: 0.1rem 0;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 0.7rem;
+    display: ${(props) => (props.time ? "none" : "block")};
+  }
+`;
+
+const Content = styled.div`
+  width: 80%;
+  min-height: 50vh;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 570px) {
+    font-size: 1rem;
+  }
+`;
+
+const TagContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  margin-bottom: 3rem;
+
+  @media (max-width: 570px) {
+    margin-bottom: 2rem;
+  }
+`;
+
+const Tag = styled(Link)`
+  margin: 0.5rem 0;
+  text-decoration: none;
+  background-color: #ececec;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 40px;
+  margin-right: 15px;
+  color: black;
+
+  &:hover {
+    background-color: #949494;
+    color: white;
+  }
+
+  @media (max-width: 355px) {
+    width: 100px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
 `;
 
 const ViewAllCategoryButton = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 2rem;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 2rem;
   width: 300px;
-  height: 100px;
-  font-size: 1.2rem;
-  border: solid red 1px;
-  color: black;
+  height: 80px;
+  margin-bottom: 2rem;
+  box-shadow: 5px 5px 10px #808080;
+
+  @media (max-width: 570px) {
+    border-radius: 1.2rem;
+    width: 220px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  &:hover {
+    margin-bottom: 2.5rem;
+    margin-top: -10px;
+  }
 `;
 
 let localId;
@@ -64,7 +243,6 @@ const Article = () => {
   const getArticle = async () => {
     const docRef = doc(db, "Post", `${params.articleId}`);
     const docSnap = await getDoc(docRef);
-    console.log(docSnap.data());
     setArticle(docSnap.data());
   };
 
@@ -83,27 +261,70 @@ const Article = () => {
       <FavoritesHeaderContainer>
         <Header />
       </FavoritesHeaderContainer>
-      <h1>{article.title}</h1>
-      <p>{article.content}</p>
-      {article.localId === localId ? (
-        <EditButton to={`/edit/${params.articleId}`}>編輯</EditButton>
-      ) : null}
-      {article.localId === localId ? (
-        <div onClick={deleteHandler}>刪除</div>
-      ) : null}
-      {article.fullTagArray &&
-        article.fullTagArray.map((item) => {
-          if (item.state === true) {
-            return (
-              <Tag to={`/articles/${item.title}`} key={item.title}>
-                {item.title}
-              </Tag>
-            );
-          }
-        })}
-      <ViewAllCategoryButton to={"/articles"}>
-        瀏覽所有文章
-      </ViewAllCategoryButton>
+      <BodyContainer>
+        <Title>
+          {article.title}
+          <EditAndDeleteSection>
+            {article.localId === localId ? (
+              <EditOrDeleteEditSection to={`/edit/${params.articleId}`}>
+                <EditIcon title={"編輯文章"} />
+                <EditOrDeleteWords>編輯</EditOrDeleteWords>
+              </EditOrDeleteEditSection>
+            ) : null}
+            {article.localId === localId ? (
+              <EditOrDeleteEditSection
+                to={`/edit/${params.articleId}`}
+                onClick={deleteHandler}
+              >
+                <DeleteIcon title={"刪除文章"} />
+                <EditOrDeleteWords>刪除</EditOrDeleteWords>
+              </EditOrDeleteEditSection>
+            ) : null}
+          </EditAndDeleteSection>
+        </Title>
+        <SpotItemAuthorAndTime>
+          <SpotItemSubtitle>{`作者：${article.displayName}`}</SpotItemSubtitle>
+          <SpotItemSubtitle time={true}>{`最近更新：${article.created_time
+            .toDate()
+            .getFullYear()}年${
+            article.created_time.toDate().getMonth() + 1 < 10
+              ? "0" + (article.created_time.toDate().getMonth() + 1).toString()
+              : (article.created_time.toDate().getMonth() + 1).toString()
+          }月${
+            article.created_time.toDate().getDate() < 10
+              ? "0" + article.created_time.toDate().getDate().toString()
+              : article.created_time.toDate().getDate().toString()
+          }日 ${
+            article.created_time.toDate().getHours() === 0
+              ? "00"
+              : article.created_time.toDate().getHours() < 10
+              ? "0" + article.created_time.toDate().getHours().toString()
+              : article.created_time.toDate().getHours().toString()
+          }:${
+            article.created_time.toDate().getMinutes() === 0
+              ? "00"
+              : article.created_time.toDate().getMinutes() < 10
+              ? "0" + article.created_time.toDate().getMinutes().toString()
+              : article.created_time.toDate().getMinutes().toString()
+          }`}</SpotItemSubtitle>
+        </SpotItemAuthorAndTime>
+        <Content>{article.content}</Content>
+        <TagContainer>
+          {article.fullTagArray &&
+            article.fullTagArray.map((item) => {
+              if (item.state === true) {
+                return (
+                  <Tag to={`/articles/${item.title}`} key={item.title}>
+                    {item.title}
+                  </Tag>
+                );
+              }
+            })}
+        </TagContainer>
+        <ViewAllCategoryButton to={"/articles"}>
+          瀏覽所有文章
+        </ViewAllCategoryButton>
+      </BodyContainer>
       <Footer />
     </>
   );

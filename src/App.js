@@ -43,7 +43,7 @@ const App = () => {
           <Route path="/article/:articleId" element={<Article />} />
           <Route
             path="new-post"
-            element={localId ? <NewPost /> : <Navigate to="/" />}
+            element={localId ? <NewPost /> : <Navigate to="/member" />}
           />
           <Route path="edit/:articleId" element={<EditPost />} />
         </Routes>

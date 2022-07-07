@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import { FaEdit } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
@@ -150,8 +151,14 @@ const Loading = styled.p`
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
+let localId;
+
 const AllArticles = () => {
   const [allSpots, setAllSpots] = useState([]);
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
 
   const getData = async () => {
     try {
@@ -170,13 +177,19 @@ const AllArticles = () => {
     getData();
   }, []);
 
+  const newPostHandler = async () => {
+    if (!localId) {
+      alert("請先登入");
+    }
+  };
+
   return (
     <>
       <Header />
       <BodyContainer>
         <TitleContainer>
           <Title>所有文章</Title>
-          <EditSection to={"/new-post"}>
+          <EditSection onClick={newPostHandler} to={"/new-post"}>
             <EditIcon title={"發表文章"} />
             <EditWords>發表文章</EditWords>
           </EditSection>
