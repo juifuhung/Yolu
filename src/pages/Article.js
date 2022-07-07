@@ -223,8 +223,7 @@ const ViewAllCategoryButton = styled(Link)`
   }
 
   &:hover {
-    margin-bottom: 2.5rem;
-    margin-top: -10px;
+    box-shadow: 8px 8px 10px #808080;
   }
 `;
 
