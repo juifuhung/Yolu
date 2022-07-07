@@ -82,8 +82,12 @@ const SpotsCoverTitleWords = styled.h1`
     font-size: 3.5rem;
   }
 
-  @media (max-width: 420px) {
-    font-size: 3rem;
+  @media (max-width: 460px) {
+    font-size: 2.5rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 2rem;
   }
 `;
 

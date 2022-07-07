@@ -10,26 +10,61 @@ const SpotItemLink = styled(Link)`
   height: 200px;
   padding: 2rem;
   border: solid #000000 3px;
+
+  @media (max-width: 360px) {
+    padding: 1.5rem;
+    height: 180px;
+  }
 `;
 
 const SpotItemTitle = styled.h1`
   margin: 0;
+
+  @media (max-width: 570px) {
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 460px) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 350px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const SpotItemAuthorAndTime = styled.div`
   width: 100%;
   display: flex;
   justify-content: start;
+
+  @media (max-width: 570px) {
+    flex-direction: column;
+  }
 `;
 
 const SpotItemSubtitle = styled.p`
   font-size: 0.8rem;
   color: #3a3b3c;
   margin-left: ${(props) => (props.time ? "1.5rem" : "0")};
+
+  @media (max-width: 570px) {
+    margin: 0.1rem 0;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 0.7rem;
+
+    display: ${(props) => (props.time ? "none" : "block")};
+  }
 `;
 
 const SpotItemContent = styled.p`
   font-size: 1rem;
+
+  @media (max-width: 360px) {
+    font-size: 0.9rem;
+  }
 `;
 
 const SpotItem = ({ title, content, displayName, created_time, id }) => {
