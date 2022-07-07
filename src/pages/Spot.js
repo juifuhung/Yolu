@@ -5,6 +5,8 @@ import { initializeApp } from "firebase/app";
 import {
   getFirestore,
   collection,
+  doc,
+  getDoc,
   getDocs,
   query,
   where,
@@ -32,8 +34,73 @@ const FavoritesHeaderContainer = styled.div`
   z-index: 5;
 `;
 
+const BodyContainer = styled.div`
+  width: 100%;
+  min-height: 58vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const SpotsCover = styled.div`
+  width: 100%;
+  height: 250px;
+  margin-bottom: 2rem;
+  background-image: url(${(props) => props.image});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top;
+  position: relative;
+
+  @media (max-width: 880px) {
+    height: 200px;
+  }
+
+  @media (max-width: 420px) {
+    height: 160px;
+  }
+`;
+
+const SpotsCoverTitle = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SpotsCoverTitleWords = styled.h1`
+  margin: 0;
+  color: white;
+  text-shadow: 5px 5px 4px black;
+  font-weight: 800;
+  font-size: 4.5rem;
+
+  @media (max-width: 880px) {
+    font-size: 3.5rem;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 3rem;
+  }
+`;
+
+const ArticleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+
+const NoArticle = styled.div`
+  font-size: 5rem;
+`;
+
 const Spot = () => {
   const [spot, setSpot] = useState([]);
+  const [coverPhoto, setCoverPhoto] = useState("");
   const params = useParams();
 
   const getArticles = async () => {
@@ -53,8 +120,14 @@ const Spot = () => {
     setSpot(spotArray);
   };
 
+  const getCoverPhoto = async () => {
+    const docSnap = await getDoc(doc(db, "SpotsCoverPhoto", `${params.spot}`));
+    setCoverPhoto(docSnap.data().image);
+  };
+
   useEffect(() => {
     getArticles();
+    getCoverPhoto();
   }, []);
 
   return (
@@ -62,18 +135,31 @@ const Spot = () => {
       <FavoritesHeaderContainer>
         <Header />
       </FavoritesHeaderContainer>
-      <h1>Spot 123</h1>
-      {spot.map((item) => {
-        return (
-          <SpotItem
-            key={item.title}
-            title={item.title}
-            content={item.content}
-            created_time={item.created_time.seconds}
-            id={item.id}
-          />
-        );
-      })}
+      <BodyContainer>
+        <SpotsCover image={coverPhoto}>
+          <SpotsCoverTitle>
+            <SpotsCoverTitleWords>{params.spot}</SpotsCoverTitleWords>
+          </SpotsCoverTitle>
+        </SpotsCover>
+        <ArticleContainer>
+          {spot.length === 0 ? (
+            <NoArticle>無文章</NoArticle>
+          ) : (
+            spot.map((item) => {
+              return (
+                <SpotItem
+                  key={item.title}
+                  title={item.title}
+                  content={item.content}
+                  displayName={item.displayName}
+                  created_time={item.created_time.toDate()}
+                  id={item.id}
+                />
+              );
+            })
+          )}
+        </ArticleContainer>
+      </BodyContainer>
       <Footer />
     </>
   );

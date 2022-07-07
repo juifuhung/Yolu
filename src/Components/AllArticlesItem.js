@@ -40,10 +40,9 @@ const Title = styled.p`
 `;
 
 const AllArticlesItem = (item) => {
-  console.log(item.image);
   return (
     <>
-      <Container to={`./${item.title}`} target="_blank">
+      <Container to={`./${item.title}`}>
         <ImageContainer image={item.image} />
         <Title>{item.title}</Title>
       </Container>
