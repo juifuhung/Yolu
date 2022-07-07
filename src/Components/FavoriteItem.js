@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import loadingIcon from "../images/loading.gif";
-import { FaHeart } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -189,11 +189,11 @@ const FavoriteItemTimestamp = styled.div`
   }
 `;
 
-const Heart = styled(FaHeart)`
-  color: #ff0000;
+const Heart = styled(FaTrash)`
+  color: #8e8e8e;
   position: absolute;
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   top: 20px;
   right: 20px;
   cursor: pointer;
@@ -236,7 +236,6 @@ const FavoriteItemDiv = (
           ref={ref}
           id={id}
           to={`/articles/${title}`}
-          target="_blank"
           title={`瀏覽${title}相關遊記`}
         >
           <FavoriteItemLeft img={img} alt="Loading...">
