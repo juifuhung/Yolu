@@ -12,11 +12,9 @@ const Container = styled(Link)`
   width: 170px;
   height: 212px;
   margin: 0.5rem 1.5rem 0.5rem 0;
-  border: solid red 1px;
 `;
 
 const ImageContainer = styled.div`
-  border: solid yellow 1px;
   width: 100%;
   height: 170px;
   border-radius: 2rem;
@@ -25,6 +23,7 @@ const ImageContainer = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   transition: all 0.3s ease-in-out;
+  box-shadow: -8px 8px 25px #aaaaaa;
 
   &:hover {
     background-size: 250%;
@@ -34,10 +33,10 @@ const ImageContainer = styled.div`
 const Title = styled.p`
   margin: 0;
   font-size: 1.1rem;
-  font-weight: 600;
-  border: solid blue 1px;
+  font-weight: 500;
   width: auto;
   height: 30px;
+  text-shadow: -5px 5px 20px #aaaaaa;
 `;
 
 const AllArticlesItem = (item) => {

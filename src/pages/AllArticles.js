@@ -23,31 +23,48 @@ const BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: solid red 0.5px;
 `;
 
 const TitleContainer = styled.div`
-  height: 100px;
   width: 85%;
-  background-color: pink;
   display: flex;
   margin: 2rem 0;
   justify-content: space-between;
   align-items: end;
-  border: solid blue 1px;
+
+  @media (max-width: 1300px) {
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 480px) {
+    margin: 1rem 0;
+  }
+
+  @media (max-width: 450px) {
+    margin: 0.6rem 0;
+  }
 `;
 
 const Title = styled.div`
-  width: 80%;
-  border: solid green 1px;
   font-size: 3.5rem;
   font-weight: 800;
+
+  @media (max-width: 1300px) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 2.5rem;
+  }
+
+  @media (max-width: 370px) {
+    font-size: 2.3rem;
+  }
 `;
 
 const EditSection = styled(Link)`
   display: flex;
   align-items: end;
-  border: solid 1px brown;
   height: auto;
   width: auto;
   text-decoration: none;
@@ -57,19 +74,38 @@ const EditIcon = styled(FaEdit)`
   width: 50px;
   height: 50px;
   color: #616161;
+
+  @media (max-width: 1300px) {
+    width: 40px;
+    height: 40px;
+  }
+  @media (max-width: 450px) {
+    width: 35px;
+    height: 35px;
+  }
 `;
 
 const EditWords = styled.h3`
   margin: 0 0 0 0.5rem;
   font-size: 2rem;
   color: #616161;
+
+  @media (max-width: 1300px) {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: 650px) {
+    display: none;
+  }
 `;
 
 const CategoryBlock = styled.div`
   width: 85%;
-  height: 350px;
-  border: solid black 1px;
-  margin: 1rem;
+  margin: 1.5rem;
+
+  @media (max-width: 450px) {
+    margin: 0.5rem;
+  }
 `;
 
 const CategoryRedLine = styled.div`
@@ -77,17 +113,37 @@ const CategoryRedLine = styled.div`
   height: 18px;
   margin: 0.7rem 0;
   background-color: #ff0000;
+
+  @media (max-width: 480px) {
+    height: 12px;
+  }
 `;
 
 const ItemSection = styled.div`
   width: 100%;
   height: 70%;
   display: flex;
-  border: solid green 1px;
+  flex-wrap: wrap;
+
+  @media (max-width: 702px) {
+    justify-content: center;
+  }
 `;
 
 const Label = styled.h2`
   margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+
+  @media (max-width: 480px) {
+    font-size: 1.7rem;
+  }
+`;
+
+const Loading = styled.p`
+  display: flex;
+  justify-content: center;
+  color: black;
   font-size: 2rem;
 `;
 
@@ -121,13 +177,14 @@ const AllArticles = () => {
         <TitleContainer>
           <Title>所有文章</Title>
           <EditSection to={"/new-post"}>
-            <EditIcon />
+            <EditIcon title={"發表文章"} />
             <EditWords>發表文章</EditWords>
           </EditSection>
         </TitleContainer>
         <CategoryBlock>
           <Label>博物館</Label>
           <CategoryRedLine />
+          {!allSpots && <Loading>Loading...</Loading>}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "博物館")
@@ -143,6 +200,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>自然景觀</Label>
           <CategoryRedLine />
+          {!allSpots && <Loading>Loading...</Loading>}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "自然景觀")
@@ -158,6 +216,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>餐廳</Label>
           <CategoryRedLine />
+          {!allSpots && <Loading>Loading...</Loading>}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "餐廳")
@@ -173,6 +232,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>聖誕主題</Label>
           <CategoryRedLine />
+          {!allSpots && <Loading>Loading...</Loading>}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "聖誕主題")
@@ -188,6 +248,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>購物</Label>
           <CategoryRedLine />
+          {!allSpots && <Loading>Loading...</Loading>}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "購物")
@@ -203,6 +264,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>交通</Label>
           <CategoryRedLine />
+          {!allSpots && <Loading>Loading...</Loading>}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "交通")
