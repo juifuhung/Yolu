@@ -231,6 +231,7 @@ let localId;
 
 const Article = () => {
   const [article, setArticle] = useState({});
+  const [timestamp, setTimestamp] = useState();
   const params = useParams();
   const navigate = useNavigate();
 
@@ -243,6 +244,7 @@ const Article = () => {
     const docRef = doc(db, "Post", `${params.articleId}`);
     const docSnap = await getDoc(docRef);
     setArticle(docSnap.data());
+    setTimestamp(docSnap.data().created_time.toDate());
   };
 
   useEffect(() => {
@@ -283,29 +285,31 @@ const Article = () => {
         </Title>
         <SpotItemAuthorAndTime>
           <SpotItemSubtitle>{`作者：${article.displayName}`}</SpotItemSubtitle>
-          <SpotItemSubtitle time={true}>{`最近更新：${article.created_time
-            .toDate()
-            .getFullYear()}年${
-            article.created_time.toDate().getMonth() + 1 < 10
-              ? "0" + (article.created_time.toDate().getMonth() + 1).toString()
-              : (article.created_time.toDate().getMonth() + 1).toString()
-          }月${
-            article.created_time.toDate().getDate() < 10
-              ? "0" + article.created_time.toDate().getDate().toString()
-              : article.created_time.toDate().getDate().toString()
-          }日 ${
-            article.created_time.toDate().getHours() === 0
-              ? "00"
-              : article.created_time.toDate().getHours() < 10
-              ? "0" + article.created_time.toDate().getHours().toString()
-              : article.created_time.toDate().getHours().toString()
-          }:${
-            article.created_time.toDate().getMinutes() === 0
-              ? "00"
-              : article.created_time.toDate().getMinutes() < 10
-              ? "0" + article.created_time.toDate().getMinutes().toString()
-              : article.created_time.toDate().getMinutes().toString()
-          }`}</SpotItemSubtitle>
+          {timestamp && (
+            <SpotItemSubtitle
+              time={true}
+            >{`最近更新：${timestamp.getFullYear()}年${
+              timestamp.getMonth() + 1 < 10
+                ? "0" + (timestamp.getMonth() + 1).toString()
+                : (timestamp.getMonth() + 1).toString()
+            }月${
+              timestamp.getDate() < 10
+                ? "0" + timestamp.getDate().toString()
+                : timestamp.getDate().toString()
+            }日 ${
+              timestamp.getHours() === 0
+                ? "00"
+                : timestamp.getHours() < 10
+                ? "0" + timestamp.getHours().toString()
+                : timestamp.getHours().toString()
+            }:${
+              timestamp.getMinutes() === 0
+                ? "00"
+                : timestamp.getMinutes() < 10
+                ? "0" + timestamp.getMinutes().toString()
+                : timestamp.getMinutes().toString()
+            }`}</SpotItemSubtitle>
+          )}
         </SpotItemAuthorAndTime>
         <Content>{article.content}</Content>
         <TagContainer>

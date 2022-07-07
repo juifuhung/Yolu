@@ -55,7 +55,7 @@ const HeaderContainerLeft = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 50%;
+  width: 55%;
   height: 100%;
 
   @media (max-width: 1500px) {
@@ -166,7 +166,7 @@ const Heart = styled(FaHeart)`
 const WeatherLink = styled(Link)`
   display: flex;
   height: 100%;
-  width: 195px;
+  width: 280px;
   text-decoration: none;
   color: #000000;
 
@@ -186,7 +186,7 @@ const WeatherSectionLeft = styled.section`
 const WeatherInformationMain = styled.section`
   display: flex;
   align-items: end;
-  font-size: 35px;
+  font-size: 25px;
   height: 60%;
 `;
 
@@ -461,9 +461,7 @@ const Header = () => {
         <MobileNav>
           <MobileNavLink to="/map">互動地圖</MobileNavLink>
           <MobileNavCenterLine />
-          <MobileNavLink to="/favorites" onClick={displayMessage}>
-            我的最愛
-          </MobileNavLink>
+          <MobileNavLink to="/articles">遊記專區</MobileNavLink>
         </MobileNav>
       </Font>
     </>

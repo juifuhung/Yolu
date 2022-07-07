@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { initializeApp } from "firebase/app";
 import {
@@ -98,8 +98,36 @@ const ArticleContainer = styled.div`
   width: 100%;
 `;
 
+const ViewAllCategoryButton = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 2rem;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 2rem;
+  width: 300px;
+  height: 80px;
+  margin-bottom: 2rem;
+  box-shadow: 5px 5px 10px #808080;
+
+  @media (max-width: 570px) {
+    border-radius: 1.2rem;
+    width: 220px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  &:hover {
+    box-shadow: 8px 8px 10px #808080;
+  }
+`;
+
 const NoArticle = styled.div`
-  font-size: 5rem;
+  margin-bottom: 2rem;
+  font-size: 4rem;
+  font-weight: 800;
 `;
 
 const Spot = () => {
@@ -163,6 +191,9 @@ const Spot = () => {
             })
           )}
         </ArticleContainer>
+        <ViewAllCategoryButton to={"/articles"}>
+          瀏覽所有文章
+        </ViewAllCategoryButton>
       </BodyContainer>
       <Footer />
     </>
