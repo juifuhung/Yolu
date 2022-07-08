@@ -204,8 +204,6 @@ const Post = () => {
     localId = currentUser.uid;
   }
 
-  console.log(localId);
-
   const navigate = useNavigate();
 
   useEffect(() => {

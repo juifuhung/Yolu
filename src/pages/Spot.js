@@ -145,7 +145,6 @@ const SortSection = styled.div`
   position: absolute;
   bottom: 18%;
   width: 100%;
-  z-index: 100;
 
   @media (max-width: 460px) {
     bottom: 26%;
@@ -219,6 +218,7 @@ const Spot = () => {
   const [newToOldSelected, setNewToOldSelected] = useState(false);
   const [oldToNewSelected, setOldToNewSelected] = useState(false);
   const [coverPhoto, setCoverPhoto] = useState("");
+
   const params = useParams();
 
   const observer = useRef();
@@ -239,7 +239,7 @@ const Spot = () => {
     }
   }, []);
 
-  const getFavoritesWithPagination = async () => {
+  const getSpotsWithPagination = async () => {
     let first;
     try {
       first = query(
@@ -249,7 +249,7 @@ const Spot = () => {
           title: `${params.spot}`,
         }),
         orderBy("created_time", "desc"),
-        limit(5)
+        limit(3)
       );
 
       const documentSnapshots = await getDocs(first);
@@ -279,7 +279,7 @@ const Spot = () => {
         }),
         orderBy("created_time", "desc"),
         startAfter(lastVisible),
-        limit(5)
+        limit(3)
       );
 
       const nextDocumentSnapshots = await getDocs(next);
@@ -303,7 +303,7 @@ const Spot = () => {
 
   useEffect(() => {
     window.scroll({ top: 0, behavior: "smooth" });
-    getFavoritesWithPagination();
+    getSpotsWithPagination();
     getCoverPhoto();
   }, []);
 

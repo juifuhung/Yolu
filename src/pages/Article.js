@@ -217,7 +217,7 @@ const Tag = styled(Link)`
   }
 `;
 
-const ViewAllCategoryButton = styled(Link)`
+const Button = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -230,6 +230,29 @@ const ViewAllCategoryButton = styled(Link)`
   height: 80px;
   margin-bottom: 2rem;
   box-shadow: 5px 5px 10px #808080;
+
+  @media (max-width: 570px) {
+    border-radius: 1.2rem;
+    width: 220px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+`;
+
+const Button2 = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 2rem;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 2rem;
+  width: 300px;
+  height: 80px;
+  margin-bottom: 2rem;
+  box-shadow: 5px 5px 10px #808080;
+  cursor: pointer;
 
   @media (max-width: 570px) {
     border-radius: 1.2rem;
@@ -353,9 +376,14 @@ const Article = () => {
               }
             })}
         </TagContainer>
-        <ViewAllCategoryButton to={"/articles"}>
-          瀏覽所有文章
-        </ViewAllCategoryButton>
+        <Button to={"/articles"}>瀏覽所有文章</Button>
+        <Button2
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          回上頁
+        </Button2>
       </BodyContainer>
       <Footer />
     </>

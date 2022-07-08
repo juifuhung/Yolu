@@ -201,7 +201,7 @@ const Image = styled(Link)`
   position: absolute;
   animation-duration: 3s;
   animation-name: ${(props) =>
-    props.visible
+    props.visible === "true"
       ? props.align === "left"
         ? "image-slide-from-left"
         : "image-slide-from-right"
@@ -396,9 +396,9 @@ let localId;
 
 const Homepage = () => {
   const [index, setIndex] = useState(0);
-  const [mapVisible, setMapVisible] = useState(false);
-  const [articleVisible, setArticleVisible] = useState(false);
-  const [favortiesVisible, setFavoritesVisible] = useState(false);
+  const [mapVisible, setMapVisible] = useState("false");
+  const [articleVisible, setArticleVisible] = useState("false");
+  const [favortiesVisible, setFavoritesVisible] = useState("false");
   const timeoutRef = useRef(null);
   const mapRef = useRef();
   const articleRef = useRef();
@@ -418,19 +418,19 @@ const Homepage = () => {
   useEffect(() => {
     const mapObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        setMapVisible(true);
+        setMapVisible("true");
       }
     }, options);
 
     const favoritesObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        setFavoritesVisible(true);
+        setFavoritesVisible("true");
       }
     }, options);
 
     const articleObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        setArticleVisible(true);
+        setArticleVisible("true");
       }
     }, options);
 

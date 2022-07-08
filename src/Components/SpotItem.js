@@ -10,9 +10,14 @@ const SpotItemLink = styled(Link)`
   min-height: 160px;
   padding: 2rem;
   border: solid #000000 3px;
+  background-color: white;
 
   @media (max-width: 360px) {
     padding: 1.5rem;
+  }
+
+  &:hover {
+    background-color: #ebecf0;
   }
 `;
 
