@@ -7,13 +7,12 @@ const SpotItemLink = styled(Link)`
   text-decoration: none;
   margin-bottom: 2rem;
   width: 60%;
-  height: 200px;
+  min-height: 200px;
   padding: 2rem;
   border: solid #000000 3px;
 
   @media (max-width: 360px) {
     padding: 1.5rem;
-    height: 180px;
   }
 `;
 
@@ -60,6 +59,7 @@ const SpotItemSubtitle = styled.p`
 `;
 
 const SpotItemContent = styled.p`
+  margin-bottom: 0;
   font-size: 1rem;
 
   @media (max-width: 360px) {
@@ -99,7 +99,7 @@ const SpotItem = ({ title, content, displayName, created_time, id }) => {
           }`}</SpotItemSubtitle>
         </SpotItemAuthorAndTime>
         <SpotItemContent>
-          {content.length <= 200 ? content : `${content.substring(0, 200)}...`}
+          {content.length <= 120 ? content : `${content.substring(0, 120)}...`}
         </SpotItemContent>
       </SpotItemLink>
     </>

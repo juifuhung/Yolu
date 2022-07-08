@@ -34,13 +34,23 @@ const BodyContainer = styled.div`
   align-items: center;
 `;
 
-const Title = styled.div`
+const TitleSection = styled.div`
   display: flex;
   justify-content: space-between;
   width: 80%;
   font-size: 3rem;
   font-weight: 800;
   margin: 3rem 0 0 0;
+`;
+
+const Title = styled.div`
+  max-width: 75%;
+  font-size: 3rem;
+  font-weight: 800;
+
+  @media (max-width: 1110px) {
+    max-width: 85%;
+  }
 
   @media (max-width: 570px) {
     font-size: 2.5rem;
@@ -64,7 +74,7 @@ const EditOrDeleteEditSection = styled(Link)`
   color: red;
   margin-left: 1.5rem;
 
-  @media (max-width: 570px) {
+  @media (max-width: 1110px) {
     margin-left: 0.2rem;
   }
 `;
@@ -79,6 +89,12 @@ const EditIcon = styled(FaEdit)`
     width: 40px;
     height: 40px;
   }
+
+  @media (max-width: 720px) {
+    width: 38px;
+    height: 38px;
+  }
+
   @media (max-width: 450px) {
     width: 35px;
     height: 35px;
@@ -99,9 +115,10 @@ const DeleteIcon = styled(FaTrash)`
     width: 30px;
     height: 30px;
   }
+
   @media (max-width: 450px) {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
   }
 
   @media (max-width: 400px) {
@@ -119,7 +136,7 @@ const EditOrDeleteWords = styled.h3`
     font-size: 1rem;
   }
 
-  @media (max-width: 570px) {
+  @media (max-width: 1110px) {
     display: none;
   }
 `;
@@ -151,7 +168,6 @@ const SpotItemSubtitle = styled.p`
 
   @media (max-width: 360px) {
     font-size: 0.7rem;
-    display: ${(props) => (props.time ? "none" : "block")};
   }
 `;
 
@@ -196,7 +212,6 @@ const Tag = styled(Link)`
   }
 
   @media (max-width: 355px) {
-    width: 100px;
     height: 35px;
     font-size: 0.8rem;
   }
@@ -260,13 +275,20 @@ const Article = () => {
         <Header />
       </FavoritesHeaderContainer>
       <BodyContainer>
-        {!article.title && <Title>Loading...</Title>}
-        <Title>
-          {article.title}
+        <TitleSection>
+          {article.title ? (
+            <Title>{article.title}</Title>
+          ) : (
+            <Title>Loading...</Title>
+          )}
+
           <EditAndDeleteSection>
             {article.localId === localId ? (
-              <EditOrDeleteEditSection to={`/edit/${params.articleId}`}>
-                <EditIcon title={"編輯文章"} />
+              <EditOrDeleteEditSection
+                to={`/edit/${params.articleId}`}
+                title={"編輯文章"}
+              >
+                <EditIcon />
                 <EditOrDeleteWords>編輯</EditOrDeleteWords>
               </EditOrDeleteEditSection>
             ) : null}
@@ -274,13 +296,14 @@ const Article = () => {
               <EditOrDeleteEditSection
                 to={`/edit/${params.articleId}`}
                 onClick={deleteHandler}
+                title={"刪除文章"}
               >
-                <DeleteIcon title={"刪除文章"} />
+                <DeleteIcon />
                 <EditOrDeleteWords>刪除</EditOrDeleteWords>
               </EditOrDeleteEditSection>
             ) : null}
           </EditAndDeleteSection>
-        </Title>
+        </TitleSection>
         <SpotItemAuthorAndTime>
           {article.displayName ? (
             <SpotItemSubtitle>{`作者：${article.displayName}`}</SpotItemSubtitle>

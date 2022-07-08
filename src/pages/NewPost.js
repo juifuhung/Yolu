@@ -35,21 +35,167 @@ const spots = [
   { title: "羅瓦涅米火車站", state: false },
 ];
 
-const Tag = styled.div`
-  width: 200px;
-  height: 40px;
-  font-size: 1rem;
-  border: solid black 1px;
+const BodyContainer = styled.div`
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-  background-color: ${(props) => (props.selected ? "aqua" : "pink")};
+const MainForm = styled.form`
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 970px) {
+    width: 75%;
+  }
+
+  @media (max-width: 750px) {
+    width: 80%;
+  }
+`;
+
+const TitleInput = styled.input`
+  width: 100%;
+  font-size: 2.5rem;
+  font-weight: 600;
+  border: none;
+  outline: none;
+
+  ::placeholder {
+    color: #e0e0e0;
+  }
+
+  @media (max-width: 570px) {
+    font-size: 2.2rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 2rem;
+  }
+`;
+
+const DisplayName = styled.p`
+  margin: 2rem 0 1rem 0.5rem;
+  font-size: 1rem;
+
+  @media (max-width: 1300px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 570px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 0.7rem;
+  }
+`;
+
+const Content = styled.textarea`
+  margin: 2rem 0;
+  width: 100%;
+  min-height: 40vh;
+  font-size: 1.5rem;
+  border: none;
+  outline: none;
+  resize: none;
+  ::placeholder {
+    color: #e0e0e0;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 570px) {
+    font-size: 1rem;
+  }
+`;
+
+const TagTitle = styled.p`
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1rem 0;
+  color: #464646;
+`;
+
+const TagContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+`;
+
+const Tag = styled.div`
+  margin: 0.5rem 0;
+  padding: 0 15px;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 40px;
+  margin-right: 15px;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: #949494;
+    color: white;
+  }
+
+  @media (max-width: 355px) {
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  background-color: ${(props) => (props.state ? "#949494" : "#ececec")};
+  color: ${(props) => (props.state ? "white" : "black")};
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+`;
+
+const SubmitButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 2rem;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 2rem;
+  width: 300px;
+  height: 80px;
+  border: none;
+  cursor: pointer;
+
+  @media (max-width: 570px) {
+    border-radius: 1.2rem;
+    width: 220px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
 `;
 
 let localId;
-let displayName;
 let articleId;
 
 const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
+  const [displayName, setDisplayName] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredContent, setEnteredContent] = useState("");
 
@@ -57,6 +203,8 @@ const Post = () => {
   if (currentUser) {
     localId = currentUser.uid;
   }
+
+  console.log(localId);
 
   const navigate = useNavigate();
 
@@ -66,7 +214,7 @@ const Post = () => {
 
   const getDisplayName = async (localId) => {
     const docSnap = await getDoc(doc(db, "User", `${localId}`));
-    displayName = docSnap.data().name;
+    setDisplayName(docSnap.data().name);
   };
 
   const handleFormSubmit = async (event) => {
@@ -88,7 +236,7 @@ const Post = () => {
       const q = query(
         collection(db, "Post"),
         where("title", "==", enteredTitle),
-        where("content", "==", enteredContent)
+        where("localId", "==", localId)
       );
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
@@ -125,38 +273,50 @@ const Post = () => {
   return (
     <>
       <Header />
-      Post
-      <form action="" onSubmit={handleFormSubmit}>
-        <h1>Title</h1>
-        <input
-          type="text"
-          onChange={titleInputChangeHandler}
-          value={enteredTitle}
-        />
-        <h2>Content</h2>
-        <textarea
-          name=""
-          id=""
-          cols="30"
-          rows="10"
-          onChange={contentInputChangeHandler}
-          value={enteredContent}
-        ></textarea>
-        {tagArray.map((item, index) => {
-          return (
-            <Tag
-              key={item.title}
-              selected={item.state}
-              onClick={() => {
-                chooseTagHandler(index);
-              }}
-            >
-              {item.title}
-            </Tag>
-          );
-        })}
-        <button>submit</button>
-      </form>
+      <BodyContainer>
+        <MainForm action="" onSubmit={handleFormSubmit}>
+          {displayName ? (
+            <DisplayName>{displayName}</DisplayName>
+          ) : (
+            <DisplayName>Loading...</DisplayName>
+          )}
+          <TitleInput
+            type="text"
+            onChange={titleInputChangeHandler}
+            value={enteredTitle}
+            maxlength="20"
+            required
+            placeholder="標題"
+          />
+
+          <Content
+            onChange={contentInputChangeHandler}
+            value={enteredContent}
+            placeholder="內容"
+            required
+            maxlength="5000"
+          />
+          <TagTitle>選擇標籤</TagTitle>
+          <TagContainer>
+            {tagArray.map((item, index) => {
+              return (
+                <Tag
+                  key={item.title}
+                  state={item.state}
+                  onClick={() => {
+                    chooseTagHandler(index);
+                  }}
+                >
+                  {item.title}
+                </Tag>
+              );
+            })}
+          </TagContainer>
+          <ButtonContainer>
+            <SubmitButton>發表</SubmitButton>
+          </ButtonContainer>
+        </MainForm>
+      </BodyContainer>
       <Footer />
     </>
   );

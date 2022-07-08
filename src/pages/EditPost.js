@@ -32,36 +32,80 @@ const MainForm = styled.form`
   width: 65%;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 970px) {
+    width: 75%;
+  }
+
+  @media (max-width: 750px) {
+    width: 80%;
+  }
 `;
 
 const TitleInput = styled.input`
   width: 100%;
-  height: 65px;
   font-size: 2.5rem;
   font-weight: 600;
   border: none;
   outline: none;
   margin-top: 2rem;
+
+  @media (max-width: 570px) {
+    font-size: 2.2rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 2rem;
+  }
 `;
 
 const NameAndTime = styled.div`
   width: 100%;
   display: flex;
   color: #aaaaaa;
+
+  @media (max-width: 570px) {
+    flex-direction: column;
+  }
 `;
 
 const DisplayNameAndDate = styled.p`
   margin: 0 1rem 0 0;
   font-size: 1rem;
+
+  @media (max-width: 1300px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 570px) {
+    font-size: 0.9rem;
+    margin: 0.1rem 0;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 0.7rem;
+  }
 `;
 
-const ContentContainer = styled.textarea`
-  margin-top: 1rem;
+const Content = styled.textarea`
+  margin: 2rem 0;
   width: 100%;
   min-height: 40vh;
   font-size: 1.5rem;
   border: none;
   outline: none;
+  resize: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 570px) {
+    font-size: 1rem;
+  }
 `;
 
 const TagTitle = styled.p`
@@ -98,7 +142,6 @@ const Tag = styled.div`
   }
 
   @media (max-width: 355px) {
-    width: 100px;
     height: 35px;
     font-size: 0.8rem;
   }
@@ -138,10 +181,10 @@ const SubmitButton = styled.button`
 `;
 
 let localId;
-let displayName;
 
 const EditPost = () => {
   const [tagArray, setTagArray] = useState([]);
+  const [displayName, setDisplayName] = useState("");
   const [timestamp, setTimestamp] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredContent, setEnteredContent] = useState("");
@@ -155,7 +198,7 @@ const EditPost = () => {
 
   const getDisplayName = async (localId) => {
     const docSnap = await getDoc(doc(db, "User", `${localId}`));
-    displayName = docSnap.data().name;
+    setDisplayName(docSnap.data().name);
   };
 
   const params = useParams();
@@ -223,9 +266,9 @@ const EditPost = () => {
         <MainForm onSubmit={handleFormSubmit}>
           <TitleInput
             type="text"
-            value={enteredTitle ? enteredTitle : "Loading..."}
+            value={enteredTitle}
             onChange={titleInputChangeHandler}
-            maxlength="25"
+            maxlength="20"
             required
           />
           <NameAndTime>
@@ -234,7 +277,9 @@ const EditPost = () => {
             )}
             <DisplayNameAndDate>{displayName}</DisplayNameAndDate>
             {timestamp && (
-              <DisplayNameAndDate>{`最近更新：${timestamp.getFullYear()}年${
+              <DisplayNameAndDate
+                time={true}
+              >{`最近更新：${timestamp.getFullYear()}年${
                 timestamp.getMonth() + 1 < 10
                   ? "0" + (timestamp.getMonth() + 1).toString()
                   : (timestamp.getMonth() + 1).toString()
@@ -257,12 +302,12 @@ const EditPost = () => {
               }`}</DisplayNameAndDate>
             )}
           </NameAndTime>
-          <ContentContainer
-            value={enteredContent ? enteredContent : "Loading..."}
+          <Content
+            value={enteredContent}
             onChange={contentInputChangeHandler}
             required
             maxlength="5000"
-          ></ContentContainer>
+          ></Content>
           <TagTitle>選擇標籤</TagTitle>
           <TagContainer>
             {tagArray.map((item, index) => {

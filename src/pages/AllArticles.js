@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { FaEdit } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs, collection } from "firebase/firestore";
+import LoadingImage from "../images/loading.gif";
 import AllArticlesItem from "../components/AllArticlesItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -141,13 +142,6 @@ const Label = styled.h2`
   }
 `;
 
-const Loading = styled.p`
-  display: flex;
-  justify-content: center;
-  color: black;
-  font-size: 2rem;
-`;
-
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
@@ -189,15 +183,19 @@ const AllArticles = () => {
       <BodyContainer>
         <TitleContainer>
           <Title>所有文章</Title>
-          <EditSection onClick={newPostHandler} to={"/new-post"}>
-            <EditIcon title={"發表文章"} />
+          <EditSection
+            onClick={newPostHandler}
+            to={"/new-post"}
+            title={"發表文章"}
+          >
+            <EditIcon />
             <EditWords>發表文章</EditWords>
           </EditSection>
         </TitleContainer>
         <CategoryBlock>
           <Label>博物館</Label>
           <CategoryRedLine />
-          {!allSpots && <Loading>Loading...</Loading>}
+          {!allSpots && <img src={LoadingImage} />}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "博物館")
@@ -213,7 +211,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>自然景觀</Label>
           <CategoryRedLine />
-          {!allSpots && <Loading>Loading...</Loading>}
+          {!allSpots && <img src={LoadingImage} />}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "自然景觀")
@@ -229,7 +227,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>餐廳</Label>
           <CategoryRedLine />
-          {!allSpots && <Loading>Loading...</Loading>}
+          {!allSpots && <img src={LoadingImage} />}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "餐廳")
@@ -245,7 +243,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>聖誕主題</Label>
           <CategoryRedLine />
-          {!allSpots && <Loading>Loading...</Loading>}
+          {!allSpots && <img src={LoadingImage} />}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "聖誕主題")
@@ -261,7 +259,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>購物</Label>
           <CategoryRedLine />
-          {!allSpots && <Loading>Loading...</Loading>}
+          {!allSpots && <img src={LoadingImage} />}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "購物")
@@ -277,7 +275,7 @@ const AllArticles = () => {
         <CategoryBlock>
           <Label>交通</Label>
           <CategoryRedLine />
-          {!allSpots && <Loading>Loading...</Loading>}
+          {!allSpots && <img src={LoadingImage} />}
           <ItemSection>
             {allSpots
               .filter((item) => item.category === "交通")
