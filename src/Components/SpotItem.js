@@ -7,7 +7,7 @@ const SpotItemLink = styled(Link)`
   text-decoration: none;
   margin-bottom: 2rem;
   width: 60%;
-  min-height: 200px;
+  min-height: 160px;
   padding: 2rem;
   border: solid #000000 3px;
 
@@ -99,7 +99,7 @@ const SpotItem = ({ title, content, displayName, created_time, id }) => {
           }`}</SpotItemSubtitle>
         </SpotItemAuthorAndTime>
         <SpotItemContent>
-          {content.length <= 120 ? content : `${content.substring(0, 120)}...`}
+          {content.length <= 100 ? content : `${content.substring(0, 100)}...`}
         </SpotItemContent>
       </SpotItemLink>
     </>

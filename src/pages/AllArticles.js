@@ -9,6 +9,7 @@ import LoadingImage from "../images/loading.gif";
 import AllArticlesItem from "../components/AllArticlesItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import TopIcon from "../images/top.png";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -19,6 +20,50 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_APP_ID,
 };
+
+const TopButton = styled.div`
+  width: 100px;
+  height: 100px;
+  background-image: url(${TopIcon});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
+  cursor: pointer;
+
+  @media (max-width: 1100px) {
+    width: 80px;
+    height: 80px;
+  }
+
+  @media (max-width: 850px) {
+    width: 60px;
+    height: 60px;
+    bottom: 30px;
+    left: 20px;
+  }
+
+  &:hover {
+    animation: shake 0.82s cubic-bezier(0.30, 0.07, 0.19, 0.97) both;
+  }
+
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1.5px, 0px, 0);
+    }
+    20%, 80% {
+      transform: translate3d(0, 1.5px, 0);
+    }
+    
+    30%, 50%, 70% {
+      transform: translate3d(-1.5px, 0, 0);
+    }
+    40%, 60% {
+      transform: translate3d(0, 1.5px, 0);
+  }
+`;
 
 const BodyContainer = styled.div`
   width: 100%;
@@ -289,6 +334,11 @@ const AllArticles = () => {
           </ItemSection>
         </CategoryBlock>
       </BodyContainer>
+      <TopButton
+        onClick={() => {
+          window.scroll({ top: 0, behavior: "smooth" });
+        }}
+      />
       <Footer />
     </>
   );
