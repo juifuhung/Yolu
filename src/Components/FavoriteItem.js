@@ -192,8 +192,8 @@ const FavoriteItemTimestamp = styled.div`
 const Trash = styled(FaTrash)`
   color: #8e8e8e;
   position: absolute;
-  height: 40px;
-  width: 40px;
+  height: 32px;
+  width: 32px;
   top: 20px;
   right: 20px;
   cursor: pointer;
@@ -244,7 +244,11 @@ const FavoriteItemDiv = (
           <FavoriteItemRight>
             <FavoriteItemTitle>{title}</FavoriteItemTitle>
             <FavoriteItemSubtitle>{subtitle}</FavoriteItemSubtitle>
-            <FavoriteItemDescription>{description}</FavoriteItemDescription>
+            <FavoriteItemDescription>
+              {description.length <= 100
+                ? description
+                : `${description.substring(0, 100)}...`}
+            </FavoriteItemDescription>
           </FavoriteItemRight>
 
           <FavoriteItemTimestamp>{`新增時間：${timestamp.getFullYear()}年 ${

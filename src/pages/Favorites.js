@@ -348,6 +348,10 @@ const Favorites = () => {
     getFavoritesWithPagination(localId);
   }, [localId]);
 
+  useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  });
+
   const getTotalFavorites = async (localId, category) => {
     let totalFavorites;
     if (!category || category === "undefined") {

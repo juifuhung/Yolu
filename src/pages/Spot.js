@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { initializeApp } from "firebase/app";
 import {
@@ -211,6 +211,29 @@ const NoArticle = styled.div`
   font-weight: 800;
 `;
 
+const PreviousPageButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 2rem;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 2rem;
+  width: 300px;
+  height: 80px;
+  margin-bottom: 2rem;
+  box-shadow: 5px 5px 10px #808080;
+  cursor: pointer;
+
+  @media (max-width: 570px) {
+    border-radius: 1.2rem;
+    width: 220px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+`;
+
 let previousDocumentSnapshots;
 
 const Spot = () => {
@@ -218,8 +241,8 @@ const Spot = () => {
   const [newToOldSelected, setNewToOldSelected] = useState(false);
   const [oldToNewSelected, setOldToNewSelected] = useState(false);
   const [coverPhoto, setCoverPhoto] = useState("");
-
   const params = useParams();
+  const navigate = useNavigate();
 
   const observer = useRef();
   const lastSpotItem = useCallback((node) => {
@@ -380,6 +403,13 @@ const Spot = () => {
             })
           )}
         </ArticleContainer>
+        <PreviousPageButton
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          回上頁
+        </PreviousPageButton>
       </BodyContainer>
       <TopButton
         onClick={() => {

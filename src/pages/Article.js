@@ -217,7 +217,7 @@ const Tag = styled(Link)`
   }
 `;
 
-const Button = styled(Link)`
+const ViewAllCategoriesButton = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -239,7 +239,7 @@ const Button = styled(Link)`
   }
 `;
 
-const Button2 = styled.div`
+const PreviousPageButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -376,14 +376,16 @@ const Article = () => {
               }
             })}
         </TagContainer>
-        <Button to={"/articles"}>瀏覽所有文章</Button>
-        <Button2
+        <ViewAllCategoriesButton to={"/articles"}>
+          瀏覽所有文章
+        </ViewAllCategoriesButton>
+        <PreviousPageButton
           onClick={() => {
             navigate(-1);
           }}
         >
           回上頁
-        </Button2>
+        </PreviousPageButton>
       </BodyContainer>
       <Footer />
     </>
