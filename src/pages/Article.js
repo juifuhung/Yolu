@@ -179,12 +179,13 @@ const TagContainer = styled.div`
 
 const Tag = styled(Link)`
   margin: 0.5rem 0;
+  padding: 0 15px;
   text-decoration: none;
   background-color: #ececec;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 120px;
+  width: auto;
   height: 40px;
   margin-right: 15px;
   color: black;
@@ -220,10 +221,6 @@ const ViewAllCategoryButton = styled(Link)`
     width: 220px;
     height: 60px;
     font-size: 1.5rem;
-  }
-
-  &:hover {
-    box-shadow: 8px 8px 10px #808080;
   }
 `;
 
@@ -263,6 +260,7 @@ const Article = () => {
         <Header />
       </FavoritesHeaderContainer>
       <BodyContainer>
+        {!article.title && <Title>Loading...</Title>}
         <Title>
           {article.title}
           <EditAndDeleteSection>
@@ -284,7 +282,13 @@ const Article = () => {
           </EditAndDeleteSection>
         </Title>
         <SpotItemAuthorAndTime>
-          <SpotItemSubtitle>{`作者：${article.displayName}`}</SpotItemSubtitle>
+          {article.displayName ? (
+            <SpotItemSubtitle>{`作者：${article.displayName}`}</SpotItemSubtitle>
+          ) : (
+            <SpotItemSubtitle>Loading...</SpotItemSubtitle>
+          )}
+          {}
+
           {timestamp && (
             <SpotItemSubtitle
               time={true}
@@ -311,6 +315,7 @@ const Article = () => {
             }`}</SpotItemSubtitle>
           )}
         </SpotItemAuthorAndTime>
+        {!article.content && <Content>Loading...</Content>}
         <Content>{article.content}</Content>
         <TagContainer>
           {article.fullTagArray &&

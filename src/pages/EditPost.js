@@ -20,13 +20,121 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
-const Tag = styled.div`
-  width: 200px;
-  height: 40px;
-  font-size: 1rem;
-  border: solid black 1px;
+const BodyContainer = styled.div`
+  width: 100%;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-  background-color: ${(props) => (props.state ? "aqua" : "pink")};
+const MainForm = styled.form`
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const TitleInput = styled.input`
+  width: 100%;
+  height: 65px;
+  font-size: 2.5rem;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  margin-top: 2rem;
+`;
+
+const NameAndTime = styled.div`
+  width: 100%;
+  display: flex;
+  color: #aaaaaa;
+`;
+
+const DisplayNameAndDate = styled.p`
+  margin: 0 1rem 0 0;
+  font-size: 1rem;
+`;
+
+const ContentContainer = styled.textarea`
+  margin-top: 1rem;
+  width: 100%;
+  min-height: 40vh;
+  font-size: 1.5rem;
+  border: none;
+  outline: none;
+`;
+
+const TagTitle = styled.p`
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1rem 0;
+  color: #464646;
+`;
+
+const TagContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  height: auto;
+`;
+
+const Tag = styled.div`
+  margin: 0.5rem 0;
+  padding: 0 15px;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  height: 40px;
+  margin-right: 15px;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: #949494;
+    color: white;
+  }
+
+  @media (max-width: 355px) {
+    width: 100px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  background-color: ${(props) => (props.state ? "#949494" : "#ececec")};
+  color: ${(props) => (props.state ? "white" : "black")};
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+`;
+
+const SubmitButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 2rem;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 2rem;
+  width: 300px;
+  height: 80px;
+  border: none;
+  cursor: pointer;
+
+  @media (max-width: 570px) {
+    border-radius: 1.2rem;
+    width: 220px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
 `;
 
 let localId;
@@ -34,7 +142,7 @@ let displayName;
 
 const EditPost = () => {
   const [tagArray, setTagArray] = useState([]);
-  const [articleData, setArticleData] = useState([]);
+  const [timestamp, setTimestamp] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredContent, setEnteredContent] = useState("");
 
@@ -46,7 +154,6 @@ const EditPost = () => {
   }
 
   const getDisplayName = async (localId) => {
-    console.log("getDisplayName");
     const docSnap = await getDoc(doc(db, "User", `${localId}`));
     displayName = docSnap.data().name;
   };
@@ -54,13 +161,11 @@ const EditPost = () => {
   const params = useParams();
 
   const getArticle = async () => {
-    console.log("getArticle");
     const docSnap = await getDoc(doc(db, "Post", params.articleId));
-    console.log("Document data:", docSnap.data());
-    setArticleData(docSnap.data());
     setTagArray(docSnap.data().fullTagArray);
     setEnteredTitle(docSnap.data().title);
     setEnteredContent(docSnap.data().content);
+    setTimestamp(docSnap.data().created_time.toDate());
   };
 
   const handleFormSubmit = async (event) => {
@@ -93,7 +198,6 @@ const EditPost = () => {
   };
 
   useEffect(() => {
-    console.log("useEffect running");
     getArticle();
   }, []);
 
@@ -102,7 +206,6 @@ const EditPost = () => {
   }, [localId]);
 
   const chooseTagHandler = (index) => {
-    console.log(index);
     const newTagArray = [...tagArray].map((item, i) => {
       if (i === index) {
         return { ...item, state: !item.state };
@@ -110,46 +213,77 @@ const EditPost = () => {
         return item;
       }
     });
-    console.log(newTagArray);
     setTagArray(newTagArray);
   };
 
   return (
     <>
-      {console.log(articleData)}
-      {console.log(articleData.fullTagArray)}
       <Header />
-      <h1>Edit</h1>
-      <p>{displayName}</p>
-      <form onSubmit={handleFormSubmit}>
-        <input
-          type="text"
-          value={enteredTitle}
-          onChange={titleInputChangeHandler}
-        />
-        <textarea
-          name=""
-          id=""
-          cols="30"
-          rows="10"
-          value={enteredContent}
-          onChange={contentInputChangeHandler}
-        ></textarea>
-        {tagArray.map((item, index) => {
-          return (
-            <Tag
-              key={item.title}
-              state={item.state}
-              onClick={() => {
-                chooseTagHandler(index);
-              }}
-            >
-              {item.title}
-            </Tag>
-          );
-        })}
-        <button>更改</button>
-      </form>
+      <BodyContainer>
+        <MainForm onSubmit={handleFormSubmit}>
+          <TitleInput
+            type="text"
+            value={enteredTitle ? enteredTitle : "Loading..."}
+            onChange={titleInputChangeHandler}
+            maxlength="25"
+            required
+          />
+          <NameAndTime>
+            {!displayName && (
+              <DisplayNameAndDate>Loading...</DisplayNameAndDate>
+            )}
+            <DisplayNameAndDate>{displayName}</DisplayNameAndDate>
+            {timestamp && (
+              <DisplayNameAndDate>{`最近更新：${timestamp.getFullYear()}年${
+                timestamp.getMonth() + 1 < 10
+                  ? "0" + (timestamp.getMonth() + 1).toString()
+                  : (timestamp.getMonth() + 1).toString()
+              }月${
+                timestamp.getDate() < 10
+                  ? "0" + timestamp.getDate().toString()
+                  : timestamp.getDate().toString()
+              }日 ${
+                timestamp.getHours() === 0
+                  ? "00"
+                  : timestamp.getHours() < 10
+                  ? "0" + timestamp.getHours().toString()
+                  : timestamp.getHours().toString()
+              }:${
+                timestamp.getMinutes() === 0
+                  ? "00"
+                  : timestamp.getMinutes() < 10
+                  ? "0" + timestamp.getMinutes().toString()
+                  : timestamp.getMinutes().toString()
+              }`}</DisplayNameAndDate>
+            )}
+          </NameAndTime>
+          <ContentContainer
+            value={enteredContent ? enteredContent : "Loading..."}
+            onChange={contentInputChangeHandler}
+            required
+            maxlength="5000"
+          ></ContentContainer>
+          <TagTitle>選擇標籤</TagTitle>
+          <TagContainer>
+            {tagArray.map((item, index) => {
+              return (
+                <Tag
+                  key={item.title}
+                  state={item.state}
+                  onClick={() => {
+                    chooseTagHandler(index);
+                  }}
+                >
+                  {item.title}
+                </Tag>
+              );
+            })}
+          </TagContainer>
+          <ButtonContainer>
+            <SubmitButton>提交更改</SubmitButton>
+          </ButtonContainer>
+        </MainForm>
+      </BodyContainer>
       <Footer />
     </>
   );
