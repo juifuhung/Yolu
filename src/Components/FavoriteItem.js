@@ -189,7 +189,7 @@ const FavoriteItemTimestamp = styled.div`
   }
 `;
 
-const Heart = styled(FaTrash)`
+const Trash = styled(FaTrash)`
   color: #8e8e8e;
   position: absolute;
   height: 40px;
@@ -269,7 +269,7 @@ const FavoriteItemDiv = (
               : timestamp.getMinutes().toString()
           }`}</FavoriteItemTimestamp>
 
-          <Heart
+          <Trash
             title={"移出最愛清單"}
             onClick={() => {
               deleteHandler(id, category);

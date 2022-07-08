@@ -187,14 +187,14 @@ const WeatherInformationMain = styled.section`
   display: flex;
   align-items: end;
   font-size: 25px;
-  height: 60%;
+  height: 52%;
 `;
 
 const Temperature = styled.section`
   display: flex;
   align-items: start;
   font-size: 20px;
-  height: 40%;
+  height: 48%;
 `;
 
 const WeatherIcon = styled.div`
