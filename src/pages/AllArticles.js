@@ -213,6 +213,7 @@ const AllArticles = () => {
   };
 
   useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
     getData();
   }, []);
 

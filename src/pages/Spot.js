@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { initializeApp } from "firebase/app";
@@ -11,6 +11,8 @@ import {
   query,
   orderBy,
   where,
+  limit,
+  startAfter,
 } from "firebase/firestore";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -210,29 +212,88 @@ const NoArticle = styled.div`
   font-weight: 800;
 `;
 
+let previousDocumentSnapshots;
+
 const Spot = () => {
-  const [spot, setSpot] = useState([]);
+  const [spots, setSpots] = useState([]);
   const [newToOldSelected, setNewToOldSelected] = useState(false);
   const [oldToNewSelected, setOldToNewSelected] = useState(false);
   const [coverPhoto, setCoverPhoto] = useState("");
   const params = useParams();
 
-  const getArticles = async () => {
-    const querySnapshot = await getDocs(
-      query(
+  const observer = useRef();
+  const lastSpotItem = useCallback((node) => {
+    if (observer.current) {
+      observer.current.disconnect();
+    }
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        if (previousDocumentSnapshots) {
+          loadMoreItems();
+        }
+        return;
+      }
+    });
+    if (node) {
+      observer.current.observe(node);
+    }
+  }, []);
+
+  const getFavoritesWithPagination = async () => {
+    let first;
+    try {
+      first = query(
         collection(db, "Post"),
         where("fullTagArray", "array-contains", {
           state: true,
           title: `${params.spot}`,
         }),
-        orderBy("created_time", "desc")
-      )
-    );
-    const spotArray = [];
-    querySnapshot.forEach((doc) => {
-      spotArray.push({ ...doc.data(), id: doc.id });
-    });
-    setSpot(spotArray);
+        orderBy("created_time", "desc"),
+        limit(5)
+      );
+
+      const documentSnapshots = await getDocs(first);
+      let spotsArray = [];
+      documentSnapshots.forEach((doc) => {
+        spotsArray.push({ ...doc.data(), id: doc.id });
+      });
+      setSpots(spotsArray);
+      previousDocumentSnapshots = documentSnapshots;
+    } catch (e) {
+      console.error("Error getting article documents: ", e);
+    }
+  };
+
+  const loadMoreItems = async () => {
+    try {
+      const lastVisible =
+        previousDocumentSnapshots.docs[
+          previousDocumentSnapshots.docs.length - 1
+        ];
+      let next;
+      next = query(
+        collection(db, "Post"),
+        where("fullTagArray", "array-contains", {
+          state: true,
+          title: `${params.spot}`,
+        }),
+        orderBy("created_time", "desc"),
+        startAfter(lastVisible),
+        limit(5)
+      );
+
+      const nextDocumentSnapshots = await getDocs(next);
+      let newSpotsArray = [];
+      nextDocumentSnapshots.forEach((doc) => {
+        newSpotsArray.push({ ...doc.data(), id: doc.id });
+      });
+      setSpots((prevSpots) => {
+        return [...prevSpots, ...newSpotsArray];
+      });
+      previousDocumentSnapshots = nextDocumentSnapshots;
+    } catch (e) {
+      console.error("Error getting more article documents: ", e);
+    }
   };
 
   const getCoverPhoto = async () => {
@@ -242,24 +303,24 @@ const Spot = () => {
 
   useEffect(() => {
     window.scroll({ top: 0, behavior: "smooth" });
-    getArticles();
+    getFavoritesWithPagination();
     getCoverPhoto();
   }, []);
 
   const sortFromOldToNew = () => {
-    const oldToNewArray = [...spot].sort((a, b) => {
+    const oldToNewArray = [...spots].sort((a, b) => {
       return a.created_time.seconds - b.created_time.seconds;
     });
-    setSpot(oldToNewArray);
+    setSpots(oldToNewArray);
     setOldToNewSelected(true);
     setNewToOldSelected(false);
   };
 
   const sortFromNewToOld = () => {
-    const newToOldArray = [...spot].sort((a, b) => {
+    const newToOldArray = [...spots].sort((a, b) => {
       return b.created_time.seconds - a.created_time.seconds;
     });
-    setSpot(newToOldArray);
+    setSpots(newToOldArray);
     setNewToOldSelected(true);
     setOldToNewSelected(false);
   };
@@ -288,20 +349,34 @@ const Spot = () => {
           </SortSection>
         </SpotsCover>
         <ArticleContainer>
-          {spot.length === 0 ? (
+          {spots.length === 0 ? (
             <NoArticle>無文章</NoArticle>
           ) : (
-            spot.map((item) => {
-              return (
-                <SpotItem
-                  key={item.title}
-                  title={item.title}
-                  content={item.content}
-                  displayName={item.displayName}
-                  created_time={item.created_time.toDate()}
-                  id={item.id}
-                />
-              );
+            spots.map((item, index) => {
+              if (spots.length === index + 1) {
+                return (
+                  <SpotItem
+                    ref={lastSpotItem}
+                    key={item.title}
+                    title={item.title}
+                    content={item.content}
+                    displayName={item.displayName}
+                    created_time={item.created_time.toDate()}
+                    id={item.id}
+                  />
+                );
+              } else {
+                return (
+                  <SpotItem
+                    key={item.title}
+                    title={item.title}
+                    content={item.content}
+                    displayName={item.displayName}
+                    created_time={item.created_time.toDate()}
+                    id={item.id}
+                  />
+                );
+              }
             })
           )}
         </ArticleContainer>
@@ -316,4 +391,4 @@ const Spot = () => {
   );
 };
 
-export default Spot;
+export default React.forwardRef(Spot);

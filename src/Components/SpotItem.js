@@ -67,10 +67,10 @@ const SpotItemContent = styled.p`
   }
 `;
 
-const SpotItem = ({ title, content, displayName, created_time, id }) => {
+const SpotItem = ({ title, content, displayName, created_time, id }, ref) => {
   return (
     <>
-      <SpotItemLink to={`/article/${id}`}>
+      <SpotItemLink to={`/article/${id}`} ref={ref}>
         <SpotItemTitle>{title}</SpotItemTitle>
         <SpotItemAuthorAndTime>
           <SpotItemSubtitle>{`作者：${displayName}`}</SpotItemSubtitle>
@@ -106,4 +106,6 @@ const SpotItem = ({ title, content, displayName, created_time, id }) => {
   );
 };
 
-export default SpotItem;
+const spotItem = React.forwardRef(SpotItem);
+
+export default spotItem;
