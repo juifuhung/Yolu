@@ -117,6 +117,26 @@ const SpotsCoverTitle = styled.div`
   align-items: center;
 `;
 
+const SpotsCoverTitleWords = styled.h1`
+  margin: 0;
+  color: white;
+  text-shadow: 5px 5px 4px black;
+  font-weight: 800;
+  font-size: 4.5rem;
+
+  @media (max-width: 880px) {
+    font-size: 3.5rem;
+  }
+
+  @media (max-width: 460px) {
+    font-size: 2.5rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 2rem;
+  }
+`;
+
 const SortSection = styled.div`
   display: flex;
   justify-content: center;
@@ -124,6 +144,20 @@ const SortSection = styled.div`
   bottom: 18%;
   width: 100%;
   z-index: 100;
+
+  @media (max-width: 460px) {
+    bottom: 26%;
+  }
+
+  @media (max-width: 420px) {
+    bottom: 21%;
+  }
+
+  @media (max-width: 360px) {
+    bottom: 10%;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const SortWords = styled.div`
@@ -142,25 +176,24 @@ const SortWords = styled.div`
   &:hover {
     color: white;
   }
-`;
-
-const SpotsCoverTitleWords = styled.h1`
-  margin: 0;
-  color: white;
-  text-shadow: 5px 5px 4px black;
-  font-weight: 800;
-  font-size: 4.5rem;
 
   @media (max-width: 880px) {
-    font-size: 3.5rem;
+    font-size: 1.1rem;
+    margin-right: ${(props) => (props.position === "left" ? "6px" : "0")};
+    margin-left: ${(props) => (props.position === "left" ? "0" : "6px")};
   }
 
   @media (max-width: 460px) {
-    font-size: 2.5rem;
+    font-size: 0.8rem;
+    margin-right: ${(props) => (props.position === "left" ? "4px" : "0")};
+    margin-left: ${(props) => (props.position === "left" ? "0" : "4px")};
   }
 
   @media (max-width: 360px) {
-    font-size: 2rem;
+    width: 100%;
+    justify-content: center;
+    margin: 1px 0;
+    font-size: 0.6rem;
   }
 `;
 
@@ -208,6 +241,7 @@ const Spot = () => {
   };
 
   useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
     getArticles();
     getCoverPhoto();
   }, []);
