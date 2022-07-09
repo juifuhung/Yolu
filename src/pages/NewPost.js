@@ -12,6 +12,8 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -94,29 +96,29 @@ const DisplayName = styled.p`
   }
 `;
 
-const Content = styled.textarea`
-  margin: 2rem 0;
-  width: 100%;
-  min-height: 40vh;
-  font-size: 1.5rem;
-  border: none;
-  outline: none;
-  resize: none;
-  ::placeholder {
-    color: #e0e0e0;
-  }
-  ::-webkit-scrollbar {
-    display: none;
-  }
+// const Content = styled.textarea`
+//   margin: 2rem 0;
+//   width: 100%;
+//   min-height: 40vh;
+//   font-size: 1.5rem;
+//   border: none;
+//   outline: none;
+//   resize: none;
+//   ::placeholder {
+//     color: #e0e0e0;
+//   }
+//   ::-webkit-scrollbar {
+//     display: none;
+//   }
 
-  @media (max-width: 900px) {
-    font-size: 1.2rem;
-  }
+//   @media (max-width: 900px) {
+//     font-size: 1.2rem;
+//   }
 
-  @media (max-width: 570px) {
-    font-size: 1rem;
-  }
-`;
+//   @media (max-width: 570px) {
+//     font-size: 1rem;
+//   }
+// `;
 
 const TagTitle = styled.p`
   width: 100%;
@@ -197,7 +199,7 @@ const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
   const [displayName, setDisplayName] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
-  const [enteredContent, setEnteredContent] = useState("");
+  // const [enteredContent, setEnteredContent] = useState("");
 
   const currentUser = useAuth();
   if (currentUser) {
@@ -210,6 +212,39 @@ const Post = () => {
     getDisplayName(localId);
   }, [localId]);
 
+  const API_URl = "https://noteyard-backend.herokuapp.com";
+  const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
+
+  const uploadAdapter = (loader) => {
+    return {
+      upload: () => {
+        return new Promise((resolve, reject) => {
+          const body = new FormData();
+          loader.file.then((file) => {
+            body.append("uploadImg", file);
+            fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
+              method: "post",
+              body: body,
+            })
+              .then((res) => res.json())
+              .then((res) => {
+                resolve({ default: `${API_URl}/${res.url}` });
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          });
+        });
+      },
+    };
+  };
+
+  const uploadPlugin = (editor) => {
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      return uploadAdapter(loader);
+    };
+  };
+
   const getDisplayName = async (localId) => {
     const docSnap = await getDoc(doc(db, "User", `${localId}`));
     setDisplayName(docSnap.data().name);
@@ -221,14 +256,14 @@ const Post = () => {
     try {
       await addDoc(collection(db, "Post"), {
         title: enteredTitle,
-        content: enteredContent,
+        // content: enteredContent,
         fullTagArray: tagArray,
         created_time: new Date(),
         localId: localId,
         displayName: displayName,
       });
       setEnteredTitle("");
-      setEnteredContent("");
+      // setEnteredContent("");
       setTagArray(spots);
 
       const q = query(
@@ -253,9 +288,9 @@ const Post = () => {
     setEnteredTitle(e.target.value);
   };
 
-  const contentInputChangeHandler = (e) => {
-    setEnteredContent(e.target.value);
-  };
+  // const contentInputChangeHandler = (e) => {
+  //   setEnteredContent(e.target.value);
+  // };
 
   const chooseTagHandler = (index) => {
     const newTagArray = [...tagArray].map((item, i) => {
@@ -286,13 +321,33 @@ const Post = () => {
             required
             placeholder="標題"
           />
-
-          <Content
+          {/* <Content
             onChange={contentInputChangeHandler}
             value={enteredContent}
             placeholder="內容"
             required
             maxlength="5000"
+          /> */}
+          <CKEditor
+            config={{
+              extraPlugins: [uploadPlugin],
+            }}
+            editor={ClassicEditor}
+            data=""
+            onReady={(editor) => {
+              // You can store the "editor" and use when it is needed.
+              console.log("Editor is ready to use!", editor);
+            }}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              console.log({ event, editor, data });
+            }}
+            onBlur={(event, editor) => {
+              console.log("Blur.", editor);
+            }}
+            onFocus={(event, editor) => {
+              console.log("Focus.", editor);
+            }}
           />
           <TagTitle>選擇標籤</TagTitle>
           <TagContainer>

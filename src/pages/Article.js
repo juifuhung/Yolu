@@ -176,6 +176,7 @@ const Content = styled.div`
   min-height: 50vh;
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
+  white-space: pre-line;
 
   @media (max-width: 570px) {
     font-size: 1rem;
@@ -299,6 +300,7 @@ const Article = () => {
         <Header />
       </FavoritesHeaderContainer>
       <BodyContainer>
+        {console.log(article.content)}
         <TitleSection>
           {article.title ? (
             <Title>{article.title}</Title>
