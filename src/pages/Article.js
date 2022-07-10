@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import parse from "html-react-parser";
 import { initializeApp } from "firebase/app";
 import { doc, getFirestore, getDoc, deleteDoc } from "firebase/firestore";
 import Header from "../components/Header";
@@ -365,7 +366,7 @@ const Article = () => {
           )}
         </SpotItemAuthorAndTime>
         {!article.content && <Content>Loading...</Content>}
-        <Content>{article.content}</Content>
+        <Content>{parse(`${article.content}`)}</Content>
         <TagContainer>
           {article.fullTagArray &&
             article.fullTagArray.map((item) => {

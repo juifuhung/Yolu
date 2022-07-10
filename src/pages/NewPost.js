@@ -65,6 +65,7 @@ const TitleInput = styled.input`
   font-weight: 600;
   border: none;
   outline: none;
+  margin-bottom: 1rem;
 
   ::placeholder {
     color: #e0e0e0;
@@ -199,7 +200,7 @@ const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
   const [displayName, setDisplayName] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
-  // const [enteredContent, setEnteredContent] = useState("");
+  const [enteredContent, setEnteredContent] = useState("");
 
   const currentUser = useAuth();
   if (currentUser) {
@@ -215,7 +216,23 @@ const Post = () => {
   const API_URl = "https://noteyard-backend.herokuapp.com";
   const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
 
-  const uploadAdapter = (loader) => {
+  const uploadAdapter = async (loader) => {
+    // try {
+    //   return {
+    //     upload: () => {
+    //       await addDoc(collection(db, "ArticleImage"), {
+    //         title: enteredTitle,
+    //         content: enteredContent,
+    //         fullTagArray: tagArray,
+    //         created_time: new Date(),
+    //         localId: localId,
+    //         displayName: displayName,
+    //       });
+    //     },
+    //   };
+    // } catch (e) {
+    //   console.log(e);
+    // }
     return {
       upload: () => {
         return new Promise((resolve, reject) => {
@@ -256,14 +273,14 @@ const Post = () => {
     try {
       await addDoc(collection(db, "Post"), {
         title: enteredTitle,
-        // content: enteredContent,
+        content: enteredContent,
         fullTagArray: tagArray,
         created_time: new Date(),
         localId: localId,
         displayName: displayName,
       });
       setEnteredTitle("");
-      // setEnteredContent("");
+      setEnteredContent("");
       setTagArray(spots);
 
       const q = query(
@@ -288,8 +305,9 @@ const Post = () => {
     setEnteredTitle(e.target.value);
   };
 
-  // const contentInputChangeHandler = (e) => {
-  //   setEnteredContent(e.target.value);
+  // const contentInputChangeHandler = (e, editor) => {
+  //   const data = editor.getData();
+  //   setEnteredContent(data);
   // };
 
   const chooseTagHandler = (index) => {
@@ -334,19 +352,11 @@ const Post = () => {
             }}
             editor={ClassicEditor}
             data=""
-            onReady={(editor) => {
-              // You can store the "editor" and use when it is needed.
-              console.log("Editor is ready to use!", editor);
-            }}
+            // onChange={() => contentInputChangeHandler(event, editor)}
             onChange={(event, editor) => {
               const data = editor.getData();
               console.log({ event, editor, data });
-            }}
-            onBlur={(event, editor) => {
-              console.log("Blur.", editor);
-            }}
-            onFocus={(event, editor) => {
-              console.log("Focus.", editor);
+              setEnteredContent(data);
             }}
           />
           <TagTitle>選擇標籤</TagTitle>
