@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { useAuth } from "../utils/Firebase";
 import { initializeApp } from "firebase/app";
 import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -63,6 +65,7 @@ const NameAndTime = styled.div`
   width: 100%;
   display: flex;
   color: #aaaaaa;
+  margin: 1.5rem 0;
 
   @media (max-width: 570px) {
     flex-direction: column;
@@ -71,7 +74,7 @@ const NameAndTime = styled.div`
 
 const DisplayNameAndDate = styled.p`
   margin: 0 1rem 0 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
 
   @media (max-width: 1300px) {
     font-size: 1rem;
@@ -84,27 +87,6 @@ const DisplayNameAndDate = styled.p`
 
   @media (max-width: 360px) {
     font-size: 0.7rem;
-  }
-`;
-
-const Content = styled.textarea`
-  margin: 2rem 0;
-  width: 100%;
-  min-height: 40vh;
-  font-size: 1.5rem;
-  border: none;
-  outline: none;
-  resize: none;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-
-  @media (max-width: 900px) {
-    font-size: 1.2rem;
-  }
-
-  @media (max-width: 570px) {
-    font-size: 1rem;
   }
 `;
 
@@ -196,6 +178,39 @@ const EditPost = () => {
     localId = currentUser.uid;
   }
 
+  const API_URl = "https://noteyard-backend.herokuapp.com";
+  const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
+
+  const uploadAdapter = (loader) => {
+    return {
+      upload: () => {
+        return new Promise((resolve, reject) => {
+          const body = new FormData();
+          loader.file.then((file) => {
+            body.append("uploadImg", file);
+            fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
+              method: "post",
+              body: body,
+            })
+              .then((res) => res.json())
+              .then((res) => {
+                resolve({ default: `${API_URl}/${res.url}` });
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          });
+        });
+      },
+    };
+  };
+
+  const uploadPlugin = (editor) => {
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      return uploadAdapter(loader);
+    };
+  };
+
   const getDisplayName = async (localId) => {
     const docSnap = await getDoc(doc(db, "User", `${localId}`));
     setDisplayName(docSnap.data().name);
@@ -234,10 +249,6 @@ const EditPost = () => {
 
   const titleInputChangeHandler = (e) => {
     setEnteredTitle(e.target.value);
-  };
-
-  const contentInputChangeHandler = (e) => {
-    setEnteredContent(e.target.value);
   };
 
   useEffect(() => {
@@ -302,12 +313,17 @@ const EditPost = () => {
               }`}</DisplayNameAndDate>
             )}
           </NameAndTime>
-          <Content
-            value={enteredContent}
-            onChange={contentInputChangeHandler}
-            required
-            maxlength="5000"
-          ></Content>
+          <CKEditor
+            config={{
+              extraPlugins: [uploadPlugin],
+            }}
+            editor={ClassicEditor}
+            data={enteredContent}
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              setEnteredContent(data);
+            }}
+          />
           <TagTitle>選擇標籤</TagTitle>
           <TagContainer>
             {tagArray.map((item, index) => {

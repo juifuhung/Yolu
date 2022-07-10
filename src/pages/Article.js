@@ -178,6 +178,8 @@ const Content = styled.div`
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
   white-space: pre-line;
+  border: solid green 1px;
+  overflow: scroll;
 
   @media (max-width: 570px) {
     font-size: 1rem;
@@ -232,29 +234,6 @@ const ViewAllCategoriesButton = styled(Link)`
   height: 80px;
   margin-bottom: 2rem;
   box-shadow: 5px 5px 10px #808080;
-
-  @media (max-width: 570px) {
-    border-radius: 1.2rem;
-    width: 220px;
-    height: 60px;
-    font-size: 1.5rem;
-  }
-`;
-
-const PreviousPageButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  font-size: 2rem;
-  background-color: #ff0000;
-  color: white;
-  border-radius: 2rem;
-  width: 300px;
-  height: 80px;
-  margin-bottom: 2rem;
-  box-shadow: 5px 5px 10px #808080;
-  cursor: pointer;
 
   @media (max-width: 570px) {
     border-radius: 1.2rem;
@@ -382,13 +361,6 @@ const Article = () => {
         <ViewAllCategoriesButton to={"/articles"}>
           瀏覽所有文章
         </ViewAllCategoriesButton>
-        <PreviousPageButton
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          回上頁
-        </PreviousPageButton>
       </BodyContainer>
       <Footer />
     </>

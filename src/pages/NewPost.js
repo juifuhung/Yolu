@@ -97,30 +97,6 @@ const DisplayName = styled.p`
   }
 `;
 
-// const Content = styled.textarea`
-//   margin: 2rem 0;
-//   width: 100%;
-//   min-height: 40vh;
-//   font-size: 1.5rem;
-//   border: none;
-//   outline: none;
-//   resize: none;
-//   ::placeholder {
-//     color: #e0e0e0;
-//   }
-//   ::-webkit-scrollbar {
-//     display: none;
-//   }
-
-//   @media (max-width: 900px) {
-//     font-size: 1.2rem;
-//   }
-
-//   @media (max-width: 570px) {
-//     font-size: 1rem;
-//   }
-// `;
-
 const TagTitle = styled.p`
   width: 100%;
   font-size: 1.5rem;
@@ -216,23 +192,7 @@ const Post = () => {
   const API_URl = "https://noteyard-backend.herokuapp.com";
   const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
 
-  const uploadAdapter = async (loader) => {
-    // try {
-    //   return {
-    //     upload: () => {
-    //       await addDoc(collection(db, "ArticleImage"), {
-    //         title: enteredTitle,
-    //         content: enteredContent,
-    //         fullTagArray: tagArray,
-    //         created_time: new Date(),
-    //         localId: localId,
-    //         displayName: displayName,
-    //       });
-    //     },
-    //   };
-    // } catch (e) {
-    //   console.log(e);
-    // }
+  const uploadAdapter = (loader) => {
     return {
       upload: () => {
         return new Promise((resolve, reject) => {
@@ -305,11 +265,6 @@ const Post = () => {
     setEnteredTitle(e.target.value);
   };
 
-  // const contentInputChangeHandler = (e, editor) => {
-  //   const data = editor.getData();
-  //   setEnteredContent(data);
-  // };
-
   const chooseTagHandler = (index) => {
     const newTagArray = [...tagArray].map((item, i) => {
       if (i === index) {
@@ -339,23 +294,14 @@ const Post = () => {
             required
             placeholder="標題"
           />
-          {/* <Content
-            onChange={contentInputChangeHandler}
-            value={enteredContent}
-            placeholder="內容"
-            required
-            maxlength="5000"
-          /> */}
           <CKEditor
             config={{
               extraPlugins: [uploadPlugin],
             }}
             editor={ClassicEditor}
             data=""
-            // onChange={() => contentInputChangeHandler(event, editor)}
             onChange={(event, editor) => {
               const data = editor.getData();
-              console.log({ event, editor, data });
               setEnteredContent(data);
             }}
           />

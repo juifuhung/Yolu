@@ -11,7 +11,6 @@ import AllArticles from "./pages/AllArticles";
 import Spot from "./pages/Spot";
 import NewPost from "./pages/NewPost";
 import EditPost from "./pages/EditPost";
-import MyCkeditor from "./pages/New2";
 import { Font, UniversalStyle } from "./styles/styles";
 
 let localId;
@@ -47,7 +46,6 @@ const App = () => {
             element={localId ? <NewPost /> : <Navigate to="/member" />}
           />
           <Route path="edit/:articleId" element={<EditPost />} />
-          <Route path="/new2" element={<MyCkeditor />} />
         </Routes>
       </Font>
     </>

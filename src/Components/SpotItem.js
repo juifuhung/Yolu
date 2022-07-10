@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 
 const SpotItemLink = styled(Link)`
@@ -104,7 +105,9 @@ const SpotItem = ({ title, content, displayName, created_time, id }, ref) => {
           }`}</SpotItemSubtitle>
         </SpotItemAuthorAndTime>
         <SpotItemContent>
-          {content.length <= 100 ? content : `${content.substring(0, 100)}...`}
+          {content.length <= 100
+            ? parse(`${content}`)
+            : parse(`${content.substring(0, 100)}...`)}
         </SpotItemContent>
       </SpotItemLink>
     </>

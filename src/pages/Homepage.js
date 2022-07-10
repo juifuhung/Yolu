@@ -267,6 +267,13 @@ const CategoryTitle = styled(Link)`
   color: white;
   position: absolute;
   bottom: 40px;
+  animation-duration: 3s;
+  animation-name: ${(props) =>
+    props.visible === "true"
+      ? props.align === "left"
+        ? "title-slide-from-right"
+        : "title-slide-from-left"
+      : ""};
   right: ${(props) => (props.align === "left" ? "10%" : "")};
   left: ${(props) => (props.align === "right" ? "10%" : "")};
   &:hover {
@@ -411,8 +418,8 @@ const Homepage = () => {
 
   const options = {
     root: null,
-    rootMargin: "200px",
-    threshold: 1.0,
+    rootMargin: "500px",
+    threshold: 1,
   };
 
   useEffect(() => {
