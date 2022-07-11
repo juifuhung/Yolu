@@ -25,14 +25,13 @@ const FavoriteItemSection = styled.div`
   justify-content: flex-start;
 `;
 
-const FavoriteItem = styled(Link)`
+const FavoriteItem = styled.div`
   background-color: white;
   display: flex;
   align-items: center;
   width: 92%;
   height: 250px;
   color: black;
-  text-decoration: none;
   border: solid black 4px;
   border-radius: 1rem;
   padding: 1.2rem;
@@ -58,7 +57,7 @@ const FavoriteItem = styled(Link)`
   }
 `;
 
-const FavoriteItemLeft = styled.div`
+const FavoriteItemLeft = styled(Link)`
   width: 790px;
   height: 240px;
   background-image: url(${(props) => (props.img ? props.img : loadingIcon)});
@@ -79,12 +78,14 @@ const FavoriteItemLeft = styled.div`
   }
 `;
 
-const FavoriteItemRight = styled.div`
+const FavoriteItemRight = styled(Link)`
   display: flex;
   flex-direction: column;
   width: 140%;
   height: 240px;
   align-items: start;
+  text-decoration: none;
+  color: black;
   padding: 0 20px 0;
 
   @media (max-width: 600px) {
@@ -173,7 +174,7 @@ const FavoriteItemCategory = styled.div`
   }
 `;
 
-const FavoriteItemTimestamp = styled.div`
+const FavoriteItemTimestamp = styled(Link)`
   display: flex;
   justify-content: flex-end;
   position: absolute;
@@ -181,6 +182,8 @@ const FavoriteItemTimestamp = styled.div`
   right: 20px;
   margin: 0;
   backgorund-color: yellow;
+  text-decoration: none;
+  color: black;
   width: 45%;
   font-weight: 100;
 
@@ -232,16 +235,15 @@ const FavoriteItemDiv = (
   return (
     <>
       <FavoriteItemSection>
-        <FavoriteItem
-          ref={ref}
-          id={id}
-          to={`/articles/${title}`}
-          title={`瀏覽${title}相關遊記`}
-        >
-          <FavoriteItemLeft img={img} alt="Loading...">
+        <FavoriteItem ref={ref} id={id} title={`瀏覽${title}相關遊記`}>
+          <FavoriteItemLeft
+            img={img}
+            alt="Loading..."
+            to={`/articles/${title}`}
+          >
             <FavoriteItemCategory>{category}</FavoriteItemCategory>
           </FavoriteItemLeft>
-          <FavoriteItemRight>
+          <FavoriteItemRight to={`/articles/${title}`}>
             <FavoriteItemTitle>{title}</FavoriteItemTitle>
             <FavoriteItemSubtitle>{subtitle}</FavoriteItemSubtitle>
             <FavoriteItemDescription>
@@ -251,7 +253,9 @@ const FavoriteItemDiv = (
             </FavoriteItemDescription>
           </FavoriteItemRight>
 
-          <FavoriteItemTimestamp>{`新增時間：${timestamp.getFullYear()}年 ${
+          <FavoriteItemTimestamp
+            to={`/articles/${title}`}
+          >{`新增時間：${timestamp.getFullYear()}年 ${
             timestamp.getMonth() + 1 < 10
               ? "0" + timestamp.getMonth().toString()
               : timestamp.getMonth().toString()
@@ -276,6 +280,7 @@ const FavoriteItemDiv = (
           <Trash
             title={"移出最愛清單"}
             onClick={() => {
+              console.log(`${id}, ${category}`);
               deleteHandler(id, category);
               alert(`已將「${title}」移出最愛清單`);
             }}

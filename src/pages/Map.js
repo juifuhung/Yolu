@@ -485,7 +485,7 @@ const Map = () => {
                 <InfoWindowDescription>
                   {selected.description}
                 </InfoWindowDescription>
-                <ArticleIcon to={`/articles/${selected.title}`} target="_blank">
+                <ArticleIcon to={`/articles/${selected.title}`}>
                   看遊記
                 </ArticleIcon>
                 {localId ? (

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
   doc,
@@ -309,6 +310,11 @@ const Favorites = () => {
   const [categories, setCategories] = useState(categoryArray);
   const [allCategoriesSelected, setAllCategoriesSelected] = useState(false);
 
+  console.log(totalFavorites);
+  console.log(localId);
+
+  const navigate = useNavigate();
+
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
@@ -350,7 +356,7 @@ const Favorites = () => {
 
   useEffect(() => {
     window.scroll({ top: 0, behavior: "smooth" });
-  });
+  }, []);
 
   const getTotalFavorites = async (localId, category) => {
     let totalFavorites;
@@ -458,7 +464,7 @@ const Favorites = () => {
         getTotalFavorites(localId, category);
         getFavoritesWithPagination(localId, category);
       }
-
+      navigate(`/favorites`);
       window.scroll({ top: 0, behavior: "smooth" });
     } catch (e) {
       console.error("Error deleting document: ", e);
@@ -517,7 +523,8 @@ const Favorites = () => {
         <BodyRight>
           <SubtitleContainer>
             <Subtitle>
-              {categorySelected === undefined ? (
+              {console.log(totalFavorites)}
+              {localId && categorySelected === undefined ? (
                 <TotalQuantity>{`全部共有${totalFavorites.length}個景點`}</TotalQuantity>
               ) : (
                 <TotalQuantity>{`${categorySelected}共有${totalFavorites.length}個景點`}</TotalQuantity>

@@ -178,8 +178,7 @@ const Content = styled.div`
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
   white-space: pre-line;
-  border: solid green 1px;
-  overflow: scroll;
+  overflow: auto;
 
   @media (max-width: 570px) {
     font-size: 1rem;
