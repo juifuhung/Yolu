@@ -123,7 +123,6 @@ const Tag = styled.div`
   width: auto;
   height: 35px;
   margin-right: 15px;
-
   cursor: pointer;
 
   &:hover {

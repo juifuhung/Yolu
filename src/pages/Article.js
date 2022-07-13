@@ -46,8 +46,8 @@ const TitleSection = styled.div`
 
 const Title = styled.div`
   max-width: 75%;
-  font-size: 3rem;
-  font-weight: 800;
+  font-size: 2.5rem;
+  font-weight: 600;
 
   @media (max-width: 1110px) {
     max-width: 85%;
@@ -70,67 +70,61 @@ const EditOrDeleteEditSection = styled(Link)`
   display: flex;
   align-items: end;
   text-decoration: none;
-  font-size: 2rem;
   color: #616161;
   color: red;
-  margin-left: 1.5rem;
+  margin-left: 0.8rem;
 
   @media (max-width: 1110px) {
-    margin-left: 0.2rem;
+    margin-left: 0.3rem;
   }
 `;
 
 const EditIcon = styled(FaEdit)`
-  width: 50px;
-  height: 50px;
+  width: 34px;
+  height: 34px;
   color: #616161;
   margin-bottom: -2px;
 
   @media (max-width: 1300px) {
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
   }
 
   @media (max-width: 720px) {
-    width: 38px;
-    height: 38px;
-  }
-
-  @media (max-width: 450px) {
-    width: 35px;
-    height: 35px;
-  }
-
-  @media (max-width: 400px) {
-    width: 24px;
-    height: 24px;
-  }
-`;
-
-const DeleteIcon = styled(FaTrash)`
-  width: 40px;
-  height: 40px;
-  color: #616161;
-
-  @media (max-width: 1300px) {
-    width: 30px;
-    height: 30px;
-  }
-
-  @media (max-width: 450px) {
     width: 26px;
     height: 26px;
   }
 
+  @media (max-width: 450px) {
+    width: 24px;
+    height: 24px;
+  }
+
   @media (max-width: 400px) {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
+  }
+`;
+
+const DeleteIcon = styled(FaTrash)`
+  width: 26px;
+  height: 26px;
+  color: #616161;
+
+  @media (max-width: 1300px) {
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 450px) {
+    width: 18px;
+    height: 18px;
   }
 `;
 
 const EditOrDeleteWords = styled.h3`
-  margin: 0 0 0 0.5rem;
-  font-size: 1.5rem;
+  margin: 0 0 0 0.2rem;
+  font-size: 1.3rem;
   color: #616161;
 
   @media (max-width: 1300px) {
@@ -154,21 +148,21 @@ const SpotItemAuthorAndTime = styled.div`
 `;
 
 const SpotItemSubtitle = styled.p`
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: #3a3b3c;
   margin-left: ${(props) => (props.time ? "1.5rem" : "0")};
 
   @media (max-width: 1300px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   @media (max-width: 570px) {
-    font-size: 0.9rem;
+    font-size: 0.6rem;
     margin: 0.1rem 0;
   }
 
   @media (max-width: 360px) {
-    font-size: 0.7rem;
+    font-size: 0.4rem;
   }
 `;
 
@@ -192,25 +186,27 @@ const TagContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 80%;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 
   @media (max-width: 570px) {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 `;
 
 const Tag = styled(Link)`
-  margin: 0.5rem 0;
-  padding: 0 15px;
-  text-decoration: none;
   background-color: #ececec;
+  color: black;
+  font-size: 0.8rem;
+  margin: 0.3rem 0;
+  padding: 0 10px;
+  text-decoration: none;
   display: flex;
   justify-content: center;
   align-items: center;
   width: auto;
-  height: 40px;
+  height: 35px;
   margin-right: 15px;
-  color: black;
+  cursor: pointer;
 
   &:hover {
     background-color: #949494;
@@ -218,8 +214,8 @@ const Tag = styled(Link)`
   }
 
   @media (max-width: 355px) {
-    height: 35px;
-    font-size: 0.8rem;
+    height: 32px;
+    font-size: 0.7rem;
   }
 `;
 
@@ -228,20 +224,21 @@ const ViewAllCategoriesButton = styled(Link)`
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  font-size: 2rem;
+  font-size: 1.3rem;
   background-color: #ff0000;
   color: white;
-  border-radius: 2rem;
-  width: 300px;
-  height: 80px;
+  border-radius: 1rem;
+  width: 180px;
+  height: 55px;
+  border: none;
   margin-bottom: 2rem;
-  box-shadow: 5px 5px 10px #808080;
+  cursor: pointer;
 
   @media (max-width: 570px) {
-    border-radius: 1.2rem;
-    width: 220px;
-    height: 60px;
-    font-size: 1.5rem;
+    border-radius: 0.8rem;
+    width: 120px;
+    height: 45px;
+    font-size: 1rem;
   }
 `;
 

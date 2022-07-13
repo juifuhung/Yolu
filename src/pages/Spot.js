@@ -223,21 +223,21 @@ const PreviousPageButton = styled.div`
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  font-size: 2rem;
+  font-size: 1.3rem;
   background-color: #ff0000;
   color: white;
-  border-radius: 2rem;
-  width: 300px;
-  height: 80px;
+  border-radius: 1rem;
   margin-bottom: 2rem;
-  box-shadow: 5px 5px 10px #808080;
+  width: 150px;
+  height: 50px;
+  border: none;
   cursor: pointer;
 
   @media (max-width: 570px) {
-    border-radius: 1.2rem;
-    width: 220px;
-    height: 60px;
-    font-size: 1.5rem;
+    border-radius: 0.8rem;
+    width: 120px;
+    height: 45px;
+    font-size: 1rem;
   }
 `;
 

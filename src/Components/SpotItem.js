@@ -1,20 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import parse from "html-react-parser";
+import striptags from "striptags";
 import { Link } from "react-router-dom";
 
 const SpotItemLink = styled(Link)`
   color: black;
   text-decoration: none;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   width: 60%;
-  min-height: 160px;
-  padding: 2rem;
-  border: solid #000000 3px;
+  min-height: 120px;
+  padding: 1.5rem;
+  border: solid #000000 2px;
   background-color: white;
 
   @media (max-width: 360px) {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   &:hover {
@@ -23,6 +23,7 @@ const SpotItemLink = styled(Link)`
 `;
 
 const SpotItemTitle = styled.h1`
+  font-size: 1.6rem;
   margin: 0;
 
   @media (max-width: 570px) {
@@ -30,11 +31,11 @@ const SpotItemTitle = styled.h1`
   }
 
   @media (max-width: 460px) {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   @media (max-width: 350px) {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 `;
 
@@ -49,7 +50,7 @@ const SpotItemAuthorAndTime = styled.div`
 `;
 
 const SpotItemSubtitle = styled.p`
-  font-size: 0.8rem;
+  font-size: 0.5rem;
   color: #3a3b3c;
   margin-left: ${(props) => (props.time ? "1.5rem" : "0")};
 
@@ -66,7 +67,7 @@ const SpotItemSubtitle = styled.p`
 
 const SpotItemContent = styled.p`
   margin-bottom: 0;
-  font-size: 1rem;
+  font-size: 0.9rem;
 
   @media (max-width: 360px) {
     font-size: 0.9rem;
@@ -106,8 +107,8 @@ const SpotItem = ({ title, content, displayName, created_time, id }, ref) => {
         </SpotItemAuthorAndTime>
         <SpotItemContent>
           {content.length <= 100
-            ? parse(`${content}`)
-            : parse(`${content.substring(0, 100)}...`)}
+            ? striptags(`${content}`)
+            : striptags(`${content.substring(0, 100)}...`)}
         </SpotItemContent>
       </SpotItemLink>
     </>
