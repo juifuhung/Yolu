@@ -33,15 +33,15 @@ initializeApp(firebaseConfig);
 const db = getFirestore();
 
 const TopButton = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 62px;
+  height: 62px;
   background-image: url(${TopIcon});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   position: fixed;
   bottom: 50px;
-  left: 30px;
+  right: 30px;
   cursor: pointer;
 
   @media (max-width: 1100px) {

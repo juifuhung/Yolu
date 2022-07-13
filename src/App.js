@@ -32,11 +32,10 @@ const App = () => {
             path="/favorites"
             element={localId ? <Favorites /> : <Navigate to="/member" />}
           />
-          <Route path="/favorites" element={<Favorites />} />
           <Route path="/map" element={<Map />} />
           <Route
             path={"/member"}
-            element={localId ? <Navigate to="/" /> : <Member />}
+            element={localId ? <Navigate to="/favorites" /> : <Member />}
           />
           <Route path={"/articles"} element={<AllArticles />} />
           <Route path="/articles/:spot/" element={<Spot />} />

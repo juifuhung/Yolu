@@ -416,6 +416,10 @@ const Homepage = () => {
     localId = currentUser.uid;
   }
 
+  useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  }, []);
+
   const options = {
     root: null,
     rootMargin: "500px",

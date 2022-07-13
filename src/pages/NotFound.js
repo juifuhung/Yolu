@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/Header";
@@ -92,6 +92,10 @@ const HomepageButton = styled(Link)`
 `;
 
 const NotFound = () => {
+  useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <>
       <NotFoundHeaderContainer>

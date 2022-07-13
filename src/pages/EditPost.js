@@ -187,6 +187,7 @@ const EditPost = () => {
         return new Promise((resolve, reject) => {
           const body = new FormData();
           loader.file.then((file) => {
+            console.log(123, file);
             body.append("uploadImg", file);
             fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
               method: "post",

@@ -22,27 +22,34 @@ const firebaseConfig = {
 };
 
 const TopButton = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 62px;
+  height: 62px;
   background-image: url(${TopIcon});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   position: fixed;
-  bottom: 50px;
+  bottom: 30px;
   right: 30px;
   cursor: pointer;
 
   @media (max-width: 1100px) {
-    width: 80px;
-    height: 80px;
+    width: 58px;
+    height: 58px;
+    bottom: 20px;
+    right: 20px;
   }
 
   @media (max-width: 850px) {
-    width: 60px;
-    height: 60px;
-    bottom: 30px;
-    left: 20px;
+    width: 55px;
+    height: 55px;
+  }
+
+  @media (max-width: 350px) {
+    width: 50px;
+    height: 50px;
+    bottom: 15px;
+    right: 15px;
   }
 
   &:hover {
@@ -75,7 +82,7 @@ const BodyContainer = styled.div`
 const TitleContainer = styled.div`
   width: 85%;
   display: flex;
-  margin: 2rem 0;
+  margin: 2rem 0 1rem;
   justify-content: space-between;
   align-items: end;
 
@@ -93,19 +100,19 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 3.5rem;
-  font-weight: 800;
+  font-size: 1.9rem;
+  font-weight: 600;
 
   @media (max-width: 1300px) {
-    font-size: 3rem;
+    font-size: 1.7rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
   }
 
   @media (max-width: 370px) {
-    font-size: 2.3rem;
+    font-size: 1.2rem;
   }
 `;
 
@@ -118,27 +125,32 @@ const EditSection = styled(Link)`
 `;
 
 const EditIcon = styled(FaEdit)`
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   color: #616161;
 
   @media (max-width: 1300px) {
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
   }
   @media (max-width: 450px) {
-    width: 35px;
-    height: 35px;
+    width: 22px;
+    height: 22px;
+  }
+
+  @media (max-width: 360px) {
+    width: 20px;
+    height: 20px;
   }
 `;
 
 const EditWords = styled.h3`
-  margin: 0 0 0 0.5rem;
-  font-size: 2rem;
+  margin: 0 0 0 0.2rem;
+  font-size: 1.3rem;
   color: #616161;
 
   @media (max-width: 1300px) {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 
   @media (max-width: 650px) {
@@ -148,21 +160,18 @@ const EditWords = styled.h3`
 
 const CategoryBlock = styled.div`
   width: 85%;
-  margin: 1.5rem;
-
-  @media (max-width: 450px) {
-    margin: 0.5rem;
-  }
+  margin: 0.5rem 0;
 `;
 
 const CategoryRedLine = styled.div`
   width: 100%;
-  height: 18px;
+  height: 9px;
   margin: 0.7rem 0;
   background-color: #ff0000;
 
   @media (max-width: 480px) {
-    height: 12px;
+    height: 6.5px;
+    margin: 0.4rem 0;
   }
 `;
 
@@ -172,18 +181,19 @@ const ItemSection = styled.div`
   display: flex;
   flex-wrap: wrap;
 
-  @media (max-width: 702px) {
+  @media (max-width: 352px) {
     justify-content: center;
   }
 `;
 
 const Label = styled.h2`
+  color: #333333;
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.3rem;
   font-weight: 600;
 
   @media (max-width: 480px) {
-    font-size: 1.7rem;
+    font-size: 1.1rem;
   }
 `;
 
@@ -228,7 +238,7 @@ const AllArticles = () => {
       <Header />
       <BodyContainer>
         <TitleContainer>
-          <Title>所有文章</Title>
+          <Title>所有文章標籤</Title>
           <EditSection
             onClick={newPostHandler}
             to={"/new-post"}

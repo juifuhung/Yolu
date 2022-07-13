@@ -461,7 +461,9 @@ const Header = () => {
         <MobileNav>
           <MobileNavLink to="/map">互動地圖</MobileNavLink>
           <MobileNavCenterLine />
-          <MobileNavLink to="/articles">遊記專區</MobileNavLink>
+          <MobileNavLink to="/favorites" onClick={displayMessage}>
+            我的最愛
+          </MobileNavLink>
         </MobileNav>
       </Font>
     </>

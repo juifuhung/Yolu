@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { signUp, signIn } from "../utils/Firebase";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
@@ -120,8 +120,11 @@ const Member = () => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
-
   const [isLogin, setIsLogin] = useState(true);
+
+  useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  }, []);
 
   const isLoginHandler = () => {
     setIsLogin((prev) => !prev);

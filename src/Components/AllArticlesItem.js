@@ -9,21 +9,21 @@ const Container = styled(Link)`
   align-items: center;
   text-decoration: none;
   color: black;
-  width: 170px;
-  height: 212px;
-  margin: 0.5rem 1.5rem 0.5rem 0;
+  width: 140px;
+  height: 160px;
+  margin: 0.5rem 0.2rem 0.5rem 0;
 `;
 
 const ImageContainer = styled.div`
-  width: 100%;
-  height: 170px;
-  border-radius: 2rem;
+  width: 90%;
+  height: 120px;
+  border-radius: 1.2rem;
   background-image: url("${(props) => props.image}");
   background-size: 200%;
   background-position: center;
   background-repeat: no-repeat;
   transition: all 0.3s ease-in-out;
-  box-shadow: -8px 8px 25px #aaaaaa;
+  box-shadow: -3px 3px 15px #aaaaaa;
 
   &:hover {
     background-size: 250%;
@@ -32,7 +32,7 @@ const ImageContainer = styled.div`
 
 const Title = styled.p`
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 0.82rem;
   font-weight: 500;
   width: auto;
   height: 30px;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import {
   doc,
@@ -45,15 +44,15 @@ const FavoritesHeaderContainer = styled.div`
 `;
 
 const TopButton = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 62px;
+  height: 62px;
   background-image: url(${TopIcon});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   position: fixed;
   bottom: 50px;
-  left: 30px;
+  right: 30px;
   cursor: pointer;
 
   @media (max-width: 1100px) {
@@ -310,11 +309,6 @@ const Favorites = () => {
   const [categories, setCategories] = useState(categoryArray);
   const [allCategoriesSelected, setAllCategoriesSelected] = useState(false);
 
-  console.log(totalFavorites);
-  console.log(localId);
-
-  const navigate = useNavigate();
-
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
@@ -359,26 +353,26 @@ const Favorites = () => {
   }, []);
 
   const getTotalFavorites = async (localId, category) => {
-    let totalFavorites;
+    let totalFavoritesItems;
     if (!category || category === "undefined") {
-      totalFavorites = query(
+      totalFavoritesItems = query(
         collection(db, "Favorites"),
         where("localId", "==", `${localId}`)
       );
     } else {
-      totalFavorites = query(
+      totalFavoritesItems = query(
         collection(db, "Favorites"),
         where("localId", "==", `${localId}`),
         where("category", "==", `${category}`)
       );
     }
 
-    const querySnapshot = await getDocs(totalFavorites);
-    let totalFavoriteArray = [];
+    const querySnapshot = await getDocs(totalFavoritesItems);
+    let totalFavoritesArray = [];
     querySnapshot.forEach((doc) => {
-      totalFavoriteArray.push({ ...doc.data(), id: doc.id });
+      totalFavoritesArray.push({ ...doc.data(), id: doc.id });
     });
-    setTotalFavorites(totalFavoriteArray);
+    setTotalFavorites(totalFavoritesArray);
   };
 
   const getFavoritesWithPagination = async (localId, category) => {
@@ -464,7 +458,6 @@ const Favorites = () => {
         getTotalFavorites(localId, category);
         getFavoritesWithPagination(localId, category);
       }
-      navigate(`/favorites`);
       window.scroll({ top: 0, behavior: "smooth" });
     } catch (e) {
       console.error("Error deleting document: ", e);
@@ -523,7 +516,6 @@ const Favorites = () => {
         <BodyRight>
           <SubtitleContainer>
             <Subtitle>
-              {console.log(totalFavorites)}
               {localId && categorySelected === undefined ? (
                 <TotalQuantity>{`全部共有${totalFavorites.length}個景點`}</TotalQuantity>
               ) : (
