@@ -16,27 +16,35 @@ const defaultRemainingTime = {
 };
 
 const HeaderCountDownSection = styled.section`
+  width: 195px;
   display: flex;
+  justify-content: center;
   align-items: center;
+  margin-left:10%;
+
+  @media (max-width: 600px) {
+    margin-left: 0;
+  }
+  }
 `;
 
 const HeaderCountDownWords = styled.span`
-  font-size: 2rem;
+  font-size: 1.2rem;
   color: #ff0000;
 
   @media (max-width: 570px) {
-    font-size: 1.6rem;
+    font-size: 1.1rem;
   }
 `;
 
 const HeaderChristmasTitle = styled.h2`
   margin: 0;
-  font-size: 3rem;
+  font-size: 1rem;
   font-weight: 800;
   color: #ff0000;
 
   @media (max-width: 570px) {
-    font-size: 1.8rem;
+    font-size: 1rem;
   }
 `;
 
@@ -44,24 +52,24 @@ const HeaderCountDownNumbers = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 95px;
-  height: 69px;
-  font-size: 2.2rem;
+  width: 60px;
+  height: 40px;
+  font-size: 1.3rem;
   color: #ffffff;
   font-weight: 400;
   background-color: #ff0000;
   margin: 0 8px 0 8px;
 
   @media (max-width: 800px) {
-    width: 80px;
-    height: 55px;
-    font-size: 2rem;
+    width: 55px;
+    height: 38px;
+    font-size: 1.1rem;
   }
 
-  @media (max-width: 570px) {
-    width: 65px;
-    height: 48px;
-    font-size: 1.6rem;
+  @media (max-width: 600px) {
+    width: 48px;
+    height: 32px;
+    font-size: 1rem;
   }
 `;
 

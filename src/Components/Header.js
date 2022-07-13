@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { initializeApp } from "firebase/app";
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from "firebase/firestore";
 import HeaderTimer from "./HeaderTimer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FaHeart } from "react-icons/fa";
 import { Font } from "../styles/styles";
 import { useAuth, logOut } from "../utils/Firebase";
 import headerLogo from "../images/header-yolu.png";
@@ -18,36 +9,23 @@ import webMemberIcon from "../images/web-member-icon.png";
 import mobileMemberLoginIcon from "../images/mobile-member-login.png";
 import mobileLogOutMemberIcon from "../images/mobile-member-logout.png";
 
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
-
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: #ffffff;
   width: 100%;
-  height: 120px;
+  height: 60px;
 
-  @media (min-width: 1500px) {
+  @media (min-width: 1100px) {
     box-shadow: 0 2px 5px #c4c4c4;
   }
 
-  @media (max-width: 800px) {
-    height: 160px;
+  @media (max-width: 1100px) {
+    height: 60px;
   }
 
-  @media (max-width: 570px) {
-    height: 140px;
+  @media (max-width: 600px) {
+    height: 100px;
   }
 `;
 
@@ -55,14 +33,13 @@ const HeaderContainerLeft = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 55%;
   height: 100%;
 
-  @media (max-width: 1500px) {
+  @media (max-width: 1100px) {
     width: 100%;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 600px) {
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -73,109 +50,37 @@ const HomepageLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 100%;
-  margin: 0 20px 0 20px;
+  height: 30px;
+  min-width: 60px;
+  margin: 0 15px 0 15px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(${headerLogo});
 
-  @media (max-width: 800px) {
+  @media (max-width: 1100px) {
     margin-bottom: 5px;
-    height: 40%;
-  }
-`;
-
-const HeartLink = styled(Link)`
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  top: 45px;
-  left: 10%;
-
-  @media (min-width: 800px) {
-    display: none;
-  }
-
-  @media (max-width: 550px) {
-    width: 40px;
-    height: 40px;
-  }
-
-  @media (max-width: 400px) {
-    width: 35px;
-    height: 35px;
-  }
-`;
-
-const HeartNumber = styled.p`
-  position: absolute;
-  top: 5px;
-  left: 29%;
-  width: 20px;
-  color: white;
-  margin: 0;
-  font-size: 1.6rem;
-`;
-
-const Heart = styled(FaHeart)`
-  transform: rotate(-35deg);
-  width: 100%;
-  height: 100%;
-  color: #ff0000;
-
-  &:hover {
-    animation: shake 0.5s;
-    animation-iteration-count: infinite;
-  }
-
-  @keyframes shake {
-    0% {
-      transform: rotate(-39deg);
-    }
-    10% {
-      transform: rotate(-31deg);
-    }
-    20% {
-      transform: rotate(-39deg);
-    }
-    30% {
-      transform: rotate(-31deg);
-    }
-    40% {
-      transform: rotate(-39deg);
-    }
-    50% {
-      transform: rotate(-31deg);
-    }
-    60% {
-      transform: rotate(-39deg);
-    }
-    70% {
-      transform: rotate(-31deg);
-    }
-    80% {
-      transform: rotate(-39deg);
-    }
-    90% {
-      transform: rotate(-31deg);
-    }
-    100% {
-      transform: rotate(-39deg);
-    }
+    height: 34px;
   }
 `;
 
 const WeatherLink = styled(Link)`
   display: flex;
   height: 100%;
-  width: 280px;
   text-decoration: none;
   color: #000000;
+  margin-left: 2rem;
 
-  @media (max-width: 800px) {
+  @media (max-width: 1210px) {
+    margin-left: 0;
+  }
+
+  @media (max-width: 600px) {
     display: none;
   }
 `;
 
-const WeatherSectionLeft = styled.section`
+const WeatherSectionRight = styled.section`
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -186,21 +91,14 @@ const WeatherSectionLeft = styled.section`
 const WeatherInformationMain = styled.section`
   display: flex;
   align-items: end;
-  font-size: 25px;
+  font-size: 1.1rem;
   height: 52%;
-`;
-
-const Temperature = styled.section`
-  display: flex;
-  align-items: start;
-  font-size: 20px;
-  height: 48%;
 `;
 
 const WeatherIcon = styled.div`
   align-items: center;
   height: 100%;
-  width: 50%;
+  width: 58px;
   z-index: 1;
   background-size: cover;
   background-repeat: no-repeat;
@@ -208,21 +106,32 @@ const WeatherIcon = styled.div`
   background-image: url(${(props) => props.icon});
 `;
 
+const Temperature = styled.section`
+  display: flex;
+  align-items: start;
+  font-size: 0.8rem;
+  height: 48%;
+`;
+
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
   padding-right: 2%;
   align-items: center;
-  width: 35%;
+  width: 460px;
   height: 100%;
 
-  @media (max-width: 1500px) {
+  @media (max-width: 1300px) {
+    width: 400px;
+  }
+
+  @media (max-width: 1100px) {
     display: none;
   }
 `;
 
 const WebNavLink = styled(Link)`
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   text-decoration: none;
   color: #000000;
 
@@ -235,7 +144,6 @@ const SignInLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
   text-decoration: none;
   color: #000000;
 
@@ -244,11 +152,25 @@ const SignInLink = styled(Link)`
   }
 `;
 
+const MemberWord = styled.p`
+  font-size: 1.2rem;
+  margin: 0;
+`;
+
+const WebMemberIcon = styled.div`
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(${webMemberIcon});
+`;
+
 const LogOut = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   text-decoration: none;
   color: #000000;
   cursor: pointer;
@@ -264,14 +186,14 @@ const MobileNav = styled.div`
   align-items: center;
   background-color: #403939;
   width: 100%;
-  height: 70px;
+  height: 40px;
 
-  @media (min-width: 1501px) {
+  @media (min-width: 1101px) {
     display: none;
   }
 
   @media (max-width: 480px) {
-    height: 60px;
+    height: 35px;
   }
 `;
 
@@ -281,12 +203,12 @@ const MobileNavLink = styled(Link)`
   align-items: center;
   width: 50%;
   margin: 0;
-  font-size: 2rem;
+  font-size: 1rem;
   color: white;
   text-decoration: none;
 
   @media (max-width: 480px) {
-    font-size: 1.5rem;
+    font-size: 0.9rem;
   }
 
   :hover {
@@ -321,7 +243,7 @@ const MobileMember = styled(Link)`
     top: 230px;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 1100px) {
     top: 250px;
   }
 `;
@@ -330,7 +252,6 @@ let localId;
 const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
 const Header = () => {
-  const [totalFavorites, setTotalFavorites] = useState([]);
   const [temperature, setTemperature] = useState(0);
   const [icon, setIcon] = useState(undefined);
   const [weatherMain, setWeatherMain] = useState(undefined);
@@ -339,25 +260,6 @@ const Header = () => {
   if (currentUser) {
     localId = currentUser.uid;
   }
-
-  useEffect(() => {
-    getTotalFavorites(localId);
-  }, [localId]);
-
-  const getTotalFavorites = async (localId) => {
-    let totalFavorites;
-    totalFavorites = query(
-      collection(db, "Favorites"),
-      where("localId", "==", `${localId}`)
-    );
-
-    const querySnapshot = await getDocs(totalFavorites);
-    let totalFavoriteArray = [];
-    querySnapshot.forEach((doc) => {
-      totalFavoriteArray.push({ ...doc.data(), id: doc.id });
-    });
-    setTotalFavorites(totalFavoriteArray);
-  };
 
   const displayMessage = () => {
     if (!localId) {
@@ -398,43 +300,37 @@ const Header = () => {
 
         <HeaderContainer>
           <HeaderContainerLeft>
-            <HeartLink to={"/favorites"}>
-              <Heart />
-              <HeartNumber>{totalFavorites.length}</HeartNumber>
-            </HeartLink>
-            <HomepageLink to="/">
-              <img src={headerLogo} />
-            </HomepageLink>
-            {window.screen.width > 1500 ? (
+            <HomepageLink to="/" />
+            {window.screen.width > 1210 ? (
               <WeatherLink
                 to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
                 target="_blank"
               >
-                <WeatherSectionLeft>
-                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
-                  <Temperature>{temperature} °C</Temperature>
-                </WeatherSectionLeft>
                 <WeatherIcon
                   icon={`http://openweathermap.org/img/w/${icon}.png`}
                 />
+                <WeatherSectionRight>
+                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
+                  <Temperature>{temperature} °C</Temperature>
+                </WeatherSectionRight>
               </WeatherLink>
             ) : (
               <HeaderTimer />
             )}
-            {window.screen.width > 1500 ? (
+            {window.screen.width > 1210 ? (
               <HeaderTimer />
             ) : (
               <WeatherLink
                 to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
                 target="_blank"
               >
-                <WeatherSectionLeft>
-                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
-                  <Temperature>{temperature} °C</Temperature>
-                </WeatherSectionLeft>
                 <WeatherIcon
                   icon={`http://openweathermap.org/img/w/${icon}.png`}
                 />
+                <WeatherSectionRight>
+                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
+                  <Temperature>{temperature} °C</Temperature>
+                </WeatherSectionRight>
               </WeatherLink>
             )}
           </HeaderContainerLeft>
@@ -446,14 +342,14 @@ const Header = () => {
             </WebNavLink>
             {localId ? (
               <LogOut onClick={logoutHandler}>
-                登出
-                <img src={webMemberIcon} />
+                <MemberWord>登出</MemberWord>
+                <WebMemberIcon />
               </LogOut>
             ) : null}
             {!localId ? (
               <SignInLink to="/member">
-                登入
-                <img src={webMemberIcon} />
+                <MemberWord>登入/註冊</MemberWord>
+                <WebMemberIcon />
               </SignInLink>
             ) : null}
           </Nav>

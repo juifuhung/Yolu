@@ -17,7 +17,7 @@ const MemberpageContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 70vh;
+  min-height: 85vh;
   background-image: url(${memberBackground});
   background-size: cover;
   background-repeat: no-repeat;
@@ -107,8 +107,8 @@ const Button = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 1rem;
+  width: 220px;
 
-  width: ${(props) => (props.changeIsLogin ? "220px" : "160px")};
   font-size: ${(props) => (props.changeIsLogin ? "0.8rem" : "1rem")};
   background-color: ${(props) =>
     props.changeIsLogin ? " #003777" : " #006ee6"};
