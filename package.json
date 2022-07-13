@@ -11,7 +11,6 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "ckeditor5-custom-build-full": "^1.0.0",
-    "dayjs": "^1.11.3",
     "firebase": "^9.8.3",
     "html-react-parser": "^3.0.0",
     "react": "^18.2.0",

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import HeaderTimer from "./HeaderTimer";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
@@ -18,32 +17,20 @@ const HeaderContainer = styled.div`
 
   @media (min-width: 1100px) {
     box-shadow: 0 2px 5px #c4c4c4;
-  }
-
-  @media (max-width: 1100px) {
     height: 60px;
-  }
-
-  @media (max-width: 600px) {
-    height: 100px;
   }
 `;
 
 const HeaderContainerLeft = styled.div`
   width: auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   height: 100%;
 
-  @media (max-width: 1100px) {
+  @media (max-width: 610px) {
     width: 100%;
-  }
-
-  @media (max-width: 600px) {
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
   }
 `;
 
@@ -53,7 +40,7 @@ const HomepageLink = styled(Link)`
   align-items: center;
   height: 30px;
   min-width: 60px;
-  margin: 0 15px 0 15px;
+  margin-left: 30px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -63,75 +50,31 @@ const HomepageLink = styled(Link)`
     margin-bottom: 5px;
     height: 34px;
   }
-`;
 
-const WeatherLink = styled(Link)`
-  display: flex;
-  height: 100%;
-  text-decoration: none;
-  color: #000000;
-  margin-left: 0.5rem;
+  @media (max-width: 770px) {
+    margin-left: 20px;
+  }
 
-  @media (max-width: 1210px) {
+  @media (max-width: 610px) {
     margin-left: 0;
   }
-
-  @media (max-width: 600px) {
-    display: none;
-  }
-`;
-
-const WeatherSectionRight = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  height: 100%;
-  z-index: 2;
-`;
-
-const WeatherInformationMain = styled.section`
-  display: flex;
-  align-items: end;
-  font-size: 1.1rem;
-  height: 52%;
-`;
-
-const WeatherIcon = styled.div`
-  align-items: center;
-  height: 100%;
-  width: 58px;
-  z-index: 1;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-image: url(${(props) => props.icon});
-`;
-
-const Temperature = styled.section`
-  display: flex;
-  align-items: start;
-  font-size: 0.8rem;
-  height: 48%;
 `;
 
 const Nav = styled.div`
+  min-width: 420px;
   display: flex;
   justify-content: space-between;
   padding-right: 2%;
   align-items: center;
-  width: 460px;
   height: 100%;
 
-  @media (max-width: 1300px) {
-    width: 400px;
-  }
-
-  @media (max-width: 1100px) {
+  @media (max-width: 610px) {
     display: none;
   }
 `;
 
 const WebNavLink = styled(Link)`
+  margin-right: 15px;
   font-size: 1.2rem;
   text-decoration: none;
   color: #000000;
@@ -189,7 +132,7 @@ const MobileNav = styled.div`
   width: 100%;
   height: 40px;
 
-  @media (min-width: 1101px) {
+  @media (min-width: 611px) {
     display: none;
   }
 
@@ -250,13 +193,8 @@ const MobileMember = styled(Link)`
 `;
 
 let localId;
-const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
 const Header = () => {
-  const [temperature, setTemperature] = useState(0);
-  const [icon, setIcon] = useState(undefined);
-  const [weatherMain, setWeatherMain] = useState(undefined);
-
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
@@ -278,20 +216,6 @@ const Header = () => {
     }
   };
 
-  useEffect(() => {
-    weather();
-  }, []);
-
-  const weather = async () => {
-    const result = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=rovaniemi&appid=${weatherApiKey}`
-    );
-    const parsedResult = await result.json();
-    9 / setTemperature(Math.round((parsedResult.main.temp - 272.15) * 10) / 10);
-    setIcon(parsedResult.weather[0].icon);
-    setWeatherMain(parsedResult.weather[0].main);
-  };
-
   return (
     <>
       <Font>
@@ -302,38 +226,6 @@ const Header = () => {
         <HeaderContainer>
           <HeaderContainerLeft>
             <HomepageLink to="/" />
-            {window.screen.width > 1210 ? (
-              <WeatherLink
-                to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
-                target="_blank"
-              >
-                <WeatherIcon
-                  icon={`http://openweathermap.org/img/w/${icon}.png`}
-                />
-                <WeatherSectionRight>
-                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
-                  <Temperature>{temperature} °C</Temperature>
-                </WeatherSectionRight>
-              </WeatherLink>
-            ) : (
-              <HeaderTimer />
-            )}
-            {window.screen.width > 1210 ? (
-              <HeaderTimer />
-            ) : (
-              <WeatherLink
-                to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
-                target="_blank"
-              >
-                <WeatherIcon
-                  icon={`http://openweathermap.org/img/w/${icon}.png`}
-                />
-                <WeatherSectionRight>
-                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
-                  <Temperature>{temperature} °C</Temperature>
-                </WeatherSectionRight>
-              </WeatherLink>
-            )}
           </HeaderContainerLeft>
           <Nav>
             <WebNavLink to="/map">互動地圖</WebNavLink>
