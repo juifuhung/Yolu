@@ -34,38 +34,43 @@ const SlideShow = styled.div`
 `;
 
 const SlideshowSlider = styled.div`
-  height: 440px;
+  height: 380px;
+  min-height: 150px;
   white-space: nowrap;
   transform: ${(props) => `translate3d(${-props.index * 100}%, 0, 0)`};
   transition: ease 1000ms;
 
   @media (max-width: 1100px) {
-    height: 390px;
+    height: 30vw;
   }
 
-  @media (max-width: 950px) {
-    height: 350px;
-  }
+  // @media (max-width: 1100px) {
+  //   height: 390px;
+  // }
 
-  @media (max-width: 770px) {
-    height: 300px;
-  }
+  // @media (max-width: 950px) {
+  //   height: 350px;
+  // }
 
-  @media (max-width: 650px) {
-    height: 270px;
-  }
+  // @media (max-width: 770px) {
+  //   height: 300px;
+  // }
 
-  @media (max-width: 500px) {
-    height: 250px;
-  }
+  // @media (max-width: 650px) {
+  //   height: 270px;
+  // }
 
-  @media (max-width: 450px) {
-    height: 180px;
-  }
+  // @media (max-width: 500px) {
+  //   height: 250px;
+  // }
 
-  @media (max-width: 360px) {
-    height: 170px;
-  }
+  // @media (max-width: 450px) {
+  //   height: 180px;
+  // }
+
+  // @media (max-width: 360px) {
+  //   height: 170px;
+  // }
 `;
 
 const Slide = styled.div`
@@ -83,11 +88,7 @@ const SlideShowDots = styled.div`
   align-items: center;
   width: 100%;
   position: absolute;
-  bottom: 25px;
-
-  @media (max-width: 360px) {
-    bottom: 16px;
-  }
+  bottom: 8%;
 `;
 
 const Dot = styled.div`
@@ -102,13 +103,19 @@ const Dot = styled.div`
     cursor: pointer;
   }
 
-  @media (max-width: 550px) {
+  @media (max-width: 900px) {
     margin: 0px 5px;
     height: 8px;
     width: 8px;
   }
 
-  @media (max-width: 360px) {
+  @media (max-width: 600px) {
+    margin: 0px 4px;
+    height: 6px;
+    width: 6px;
+  }
+
+  @media (max-width: 550px) {
     margin: 0px 3px;
     height: 5px;
     width: 5px;
@@ -123,40 +130,40 @@ const CarouselTitle = styled.div`
   height: 100%;
   width: 100%;
   position: absolute;
-  top: -40px;
+  top: -6%;
 
-  @media (max-width: 700px) {
-    top: -35px;
-  }
-
-  @media (max-width: 500px) {
-    top: -20px;
-  }
-
-  @media (max-width: 360px) {
-    top: -15px;
+  @media (max-width: 900px) {
+    top: -9%;
   }
 `;
 
 const CarouselYolu = styled.h1`
   margin: 0;
-  font-size: 6.5rem;
+  font-size: 5.5rem;
   font-weight: 1200;
   color: white;
 
   @media (max-width: 1100px) {
-    font-size: 6rem;
-  }
-
-  @media (max-width: 770px) {
     font-size: 5rem;
   }
 
-  @media (max-width: 500px) {
+  // @media (max-width: 800px) {
+  //   font-size: 4.5rem;
+  // }
+
+  // @media (max-width: 700px) {
+  //   font-size: 4rem;
+  // }
+
+  @media (max-width: 800px) {
     font-size: 3rem;
   }
 
-  @media (max-width: 360px) {
+  @media (max-width: 500px) {
+    font-size: 2.5rem;
+  }
+
+  @media (max-width: 400px) {
     font-size: 2rem;
   }
 `;
@@ -168,25 +175,33 @@ const CarouselChinese = styled.h2`
   color: white;
 
   @media (max-width: 1100px) {
-    font-size: 1.8rem;
-  }
-
-  @media (max-width: 770px) {
     font-size: 1.6rem;
   }
 
-  @media (max-width: 500px) {
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
+  // @media (max-width: 800px) {
+  //   font-size: 1.4rem;
+  // }
 
-  @media (max-width: 460px) {
-    font-weight: 400;
+  // @media (max-width: 700px) {
+  //   font-weight: 600;
+  //   font-size: 1.2rem;
+  // }
+
+  @media (max-width: 800px) {
     font-size: 1rem;
   }
 
-  @media (max-width: 340px) {
-    font-size: 0.9rem;
+  @media (max-width: 500px) {
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 0.6rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 0.4rem;
   }
 `;
 
@@ -225,39 +240,15 @@ const Container = styled.div`
   position: relative;
 
   @media (max-width: 1100px) {
-    height: 340px;
-  }
-
-  @media (max-width: 900px) {
-    width: 85%;
-    height: 280px;
-  }
-
-  @media (max-width: 800px) {
-    height: 250px;
+    height: 25vw;
   }
 
   @media (max-width: 700px) {
-    height: 200px;
     margin: 10px 0;
   }
 
-  @media (max-width: 600px) {
-    width: 90%;
-    height: 200px;
-  }
-
-  @media (max-width: 500px) {
-    height: 160px;
-  }
-
   @media (max-width: 400px) {
-    height: 120px;
     margin: 5px 0;
-  }
-
-  @media (max-width: 350px) {
-    height: 100px;
   }
 `;
 
@@ -397,6 +388,18 @@ const CategoryTitle = styled(Link)`
     }
   }
 
+  @media (max-width: 700px) {
+    width: 140px;
+    height: 65px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    bottom: 23px;
+
+    &:hover {
+      font-size: 1.7rem;
+    }
+  }
+
   @media (max-width: 600px) {
     width: 120px;
     height: 50px;
@@ -409,9 +412,21 @@ const CategoryTitle = styled(Link)`
     }
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     width: 100px;
-    height: 40px;
+    height: 42px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    bottom: 18px;
+
+    &:hover {
+      font-size: 1.2rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    width: 90px;
+    height: 38px;
     font-size: 1rem;
     bottom: 15px;
 
@@ -421,13 +436,13 @@ const CategoryTitle = styled(Link)`
   }
 
   @media (max-width: 350px) {
-    width: 90px;
-    height: 35px;
-    font-size: 0.9rem;
+    width: 80px;
+    height: 32px;
+    font-size: 0.7rem;
     bottom: 12px;
 
     &:hover {
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
   }
 `;
