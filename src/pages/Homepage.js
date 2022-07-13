@@ -48,19 +48,23 @@ const SlideshowSlider = styled.div`
   }
 
   @media (max-width: 770px) {
-    height: 320px;
+    height: 300px;
   }
 
-  @media (max-width: 600px) {
-    height: 280px;
+  @media (max-width: 650px) {
+    height: 270px;
   }
 
-  @media (max-width: 460px) {
+  @media (max-width: 500px) {
     height: 250px;
   }
 
+  @media (max-width: 450px) {
+    height: 180px;
+  }
+
   @media (max-width: 360px) {
-    height: 200px;
+    height: 170px;
   }
 `;
 
@@ -80,6 +84,10 @@ const SlideShowDots = styled.div`
   width: 100%;
   position: absolute;
   bottom: 25px;
+
+  @media (max-width: 360px) {
+    bottom: 16px;
+  }
 `;
 
 const Dot = styled.div`
@@ -99,6 +107,12 @@ const Dot = styled.div`
     height: 8px;
     width: 8px;
   }
+
+  @media (max-width: 360px) {
+    margin: 0px 3px;
+    height: 5px;
+    width: 5px;
+  }
 `;
 
 const CarouselTitle = styled.div`
@@ -115,8 +129,12 @@ const CarouselTitle = styled.div`
     top: -35px;
   }
 
-  @media (max-width: 550px) {
-    top: -30px;
+  @media (max-width: 500px) {
+    top: -20px;
+  }
+
+  @media (max-width: 360px) {
+    top: -15px;
   }
 `;
 
@@ -130,16 +148,16 @@ const CarouselYolu = styled.h1`
     font-size: 6rem;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 770px) {
     font-size: 5rem;
   }
 
-  @media (max-width: 550px) {
-    font-size: 4rem;
+  @media (max-width: 500px) {
+    font-size: 3rem;
   }
 
   @media (max-width: 360px) {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 `;
 
@@ -153,22 +171,17 @@ const CarouselChinese = styled.h2`
     font-size: 1.8rem;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 770px) {
     font-size: 1.6rem;
-    font-size: 1.4rem;
   }
 
-  @media (max-width: 550px) {
+  @media (max-width: 500px) {
+    font-size: 1.2rem;
     font-weight: 600;
   }
 
   @media (max-width: 460px) {
     font-weight: 400;
-    font-size: 1.2rem;
-  }
-
-  @media (max-width: 360px) {
-    font-weight: 300;
     font-size: 1rem;
   }
 
@@ -183,14 +196,21 @@ const Selection = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  min-height: 45vh;
 
   @media (max-width: 1300px) {
     margin-top: 0px;
+    margin-bottom: 20px;
   }
 
   @media (max-width: 800px) {
     flex-direction: column;
     align-items: center;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 400px) {
+    margin-bottom: 5px;
   }
 `;
 
@@ -209,7 +229,35 @@ const Container = styled.div`
   }
 
   @media (max-width: 900px) {
-    height: 300px;
+    width: 85%;
+    height: 280px;
+  }
+
+  @media (max-width: 800px) {
+    height: 250px;
+  }
+
+  @media (max-width: 700px) {
+    height: 200px;
+    margin: 10px 0;
+  }
+
+  @media (max-width: 600px) {
+    width: 90%;
+    height: 200px;
+  }
+
+  @media (max-width: 500px) {
+    height: 160px;
+  }
+
+  @media (max-width: 400px) {
+    height: 120px;
+    margin: 5px 0;
+  }
+
+  @media (max-width: 350px) {
+    height: 100px;
   }
 `;
 
@@ -282,9 +330,9 @@ const CategoryTitle = styled(Link)`
   align-items: center;
   width: 270px;
   height: 100px;
-  background-color: rgba(255, 0, 0, 0.8);
   font-size: 2.8rem;
   font-weight: 800;
+  background-color: rgba(255, 0, 0, 0.8);
   text-decoration: none;
   color: white;
   position: absolute;
@@ -292,74 +340,6 @@ const CategoryTitle = styled(Link)`
   animation-duration: 3s;
   animation-name: ${(props) =>
     props.visible === "true"
-      ? props.align === "left"
-        ? "title-slide-from-right"
-        : "title-slide-from-left"
-      : ""};
-  right: ${(props) => (props.align === "left" ? "10%" : "")};
-  left: ${(props) => (props.align === "right" ? "10%" : "")};
-  &:hover {
-    transform: scale(1.05, 1.05);
-    font-size: 3.08rem;
-  }
-
-  @media (max-width: 1200px) {
-    right: ${(props) => (props.align === "left" ? "8%" : "")};
-    left: ${(props) => (props.align === "right" ? "8%" : "")};
-
-    @keyframes title-slide-from-right {
-      from {
-        opacity: 0;
-        right: -100px;
-      }
-      to {
-        opacity: 1;
-        right: 8%;
-      }
-    }
-
-    @keyframes title-slide-from-left {
-      from {
-        opacity: 0;
-        left: -100px;
-      }
-      to {
-        opacity: 1;
-        left: 8%;
-      }
-    }
-  }
-
-  @media (max-width: 1000px) {
-    right: ${(props) => (props.align === "left" ? "7%" : "")};
-    left: ${(props) => (props.align === "right" ? "7%" : "")};
-
-    @keyframes title-slide-from-right {
-      from {
-        opacity: 0;
-        right: -100px;
-      }
-      to {
-        opacity: 1;
-        right: 7%;
-      }
-    }
-
-    @keyframes title-slide-from-left {
-      from {
-        opacity: 0;
-        left: -100px;
-      }
-      to {
-        opacity: 1;
-        left: 7%;
-      }
-    }
-  }
-
-  animation-duration: 3s;
-  animation-name: ${(props) =>
-    props.visible
       ? props.align === "left"
         ? "title-slide-from-right"
         : "title-slide-from-left"
@@ -372,10 +352,9 @@ const CategoryTitle = styled(Link)`
     }
     to {
       opacity: 1;
-      right: 10%;
+      right: 9%;
     }
   }
-
   @keyframes title-slide-from-left {
     from {
       opacity: 0;
@@ -383,10 +362,76 @@ const CategoryTitle = styled(Link)`
     }
     to {
       opacity: 1;
-      left: 10%;
+      left: 9%;
+    }
+  }
+
+  right: ${(props) => (props.align === "left" ? "10%" : "")};
+  left: ${(props) => (props.align === "right" ? "10%" : "")};
+  &:hover {
+    transform: scale(1.05, 1.05);
+    font-size: 3.08rem;
+  }
+
+  @media (max-width: 1000px) {
+    width: 200px;
+    height: 80px;
+    font-size: 2rem;
+    font-weight: 700;
+    bottom: 30px;
+
+    &:hover {
+      font-size: 2.1rem;
+    }
+  }
+
+  @media (max-width: 800px) {
+    width: 160px;
+    height: 70px;
+    font-size: 1.8rem;
+    font-weight: 600;
+    bottom: 25px;
+
+    &:hover {
+      font-size: 1.9rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    width: 120px;
+    height: 50px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    bottom: 20px;
+
+    &:hover {
+      font-size: 1.3rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    width: 100px;
+    height: 40px;
+    font-size: 1rem;
+    bottom: 15px;
+
+    &:hover {
+      font-size: 1.1rem;
+    }
+  }
+
+  @media (max-width: 350px) {
+    width: 90px;
+    height: 35px;
+    font-size: 0.9rem;
+    bottom: 12px;
+
+    &:hover {
+      font-size: 1rem;
     }
   }
 `;
+
 const Next = styled(FaArrowRight)`
   bottom: 45%;
   right: 0;

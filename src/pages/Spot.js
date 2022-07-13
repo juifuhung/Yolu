@@ -91,7 +91,7 @@ const FavoritesHeaderContainer = styled.div`
 
 const BodyContainer = styled.div`
   width: 100%;
-  min-height: 75vh;
+  min-height: 86vh;
   display: flex;
   flex-direction: column;
   align-items: center;
