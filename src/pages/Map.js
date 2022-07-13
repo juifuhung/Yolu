@@ -68,15 +68,7 @@ const MapContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 800px;
-
-  @media (max-width: 800px) {
-    height: 600px;
-  }
-
-  @media (max-width: 400px) {
-    height: 350px;
-  }
+  height: 57vh;
 `;
 
 const InfoWindowDiv = styled.div`
@@ -247,7 +239,7 @@ const ButtonSection = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 10px 0 80px;
+  margin-top: 10px;
 `;
 
 const Buttons = styled.div`
@@ -443,11 +435,30 @@ const Map = () => {
       <MapHeaderContainer>
         <Header />
       </MapHeaderContainer>
+      <ButtonSection>
+        <Buttons>
+          {categoryArray.map((category) => (
+            <MapCategoryItem
+              key={category.title}
+              category={category}
+              categoryHandler={categoryHandler}
+            />
+          ))}
+
+          <MapCategoryItem getData={getData} />
+          {localId && (
+            <MapCategoryItem
+              favorites={favorites}
+              showFavoriteHandler={showFavoriteHandler}
+            />
+          )}
+        </Buttons>
+      </ButtonSection>
       <MapContainer>
         <GoogleMap
-          zoom={12}
+          zoom={10.4}
           center={center}
-          mapContainerStyle={{ width: "90%", height: "90%" }}
+          mapContainerStyle={{ width: "85%", height: "90%" }}
         >
           {!showFavorites &&
             allSpots.map((location) => (
@@ -539,25 +550,7 @@ const Map = () => {
           )}
         </GoogleMap>
       </MapContainer>
-      <ButtonSection>
-        <Buttons>
-          {categoryArray.map((category) => (
-            <MapCategoryItem
-              key={category.title}
-              category={category}
-              categoryHandler={categoryHandler}
-            />
-          ))}
 
-          <MapCategoryItem getData={getData} />
-          {localId && (
-            <MapCategoryItem
-              favorites={favorites}
-              showFavoriteHandler={showFavoriteHandler}
-            />
-          )}
-        </Buttons>
-      </ButtonSection>
       <Footer />
     </>
   );
