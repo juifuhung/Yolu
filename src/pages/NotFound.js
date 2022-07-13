@@ -15,7 +15,7 @@ const NotFoundBackground = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 70vh;
+  height: 81vh;
   background-image: url(${AuroraNotFound});
   background-size: cover;
   background-repeat: no-repeat;
