@@ -30,6 +30,7 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderContainerLeft = styled.div`
+  width: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -69,7 +70,7 @@ const WeatherLink = styled(Link)`
   height: 100%;
   text-decoration: none;
   color: #000000;
-  margin-left: 2rem;
+  margin-left: 0.5rem;
 
   @media (max-width: 1210px) {
     margin-left: 0;
@@ -235,16 +236,16 @@ const MobileMember = styled(Link)`
   right: 0;
   z-index: 10;
 
-  @media (min-width: 1501px) {
+  @media (min-width: 1101px) {
     display: none;
   }
 
-  @media (max-width: 1500px) {
-    top: 230px;
+  @media (max-width: 1100px) {
+    top: 120px;
   }
 
-  @media (max-width: 1100px) {
-    top: 250px;
+  @media (max-width: 600px) {
+    top: 150px;
   }
 `;
 

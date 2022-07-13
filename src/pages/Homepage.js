@@ -12,7 +12,6 @@ import ArticleGrey from "../images/article_div.png";
 import FavoriteGrey from "../images/favorite_div.png";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Timer from "../components/Timer";
 
 const slideImages = [
   "https://img.onl/vlV7aI",
@@ -40,12 +39,28 @@ const SlideshowSlider = styled.div`
   transform: ${(props) => `translate3d(${-props.index * 100}%, 0, 0)`};
   transition: ease 1000ms;
 
-  @media (max-width: 550px) {
+  @media (max-width: 1100px) {
+    height: 390px;
+  }
+
+  @media (max-width: 950px) {
     height: 350px;
   }
 
+  @media (max-width: 770px) {
+    height: 320px;
+  }
+
+  @media (max-width: 600px) {
+    height: 280px;
+  }
+
   @media (max-width: 460px) {
-    height: 300px;
+    height: 250px;
+  }
+
+  @media (max-width: 360px) {
+    height: 200px;
   }
 `;
 
@@ -95,32 +110,56 @@ const CarouselTitle = styled.div`
   width: 100%;
   position: absolute;
   top: -40px;
+
+  @media (max-width: 700px) {
+    top: -35px;
+  }
+
+  @media (max-width: 550px) {
+    top: -30px;
+  }
 `;
 
 const CarouselYolu = styled.h1`
   margin: 0;
-  font-size: 7rem;
+  font-size: 6.5rem;
   font-weight: 1200;
   color: white;
 
-  @media (max-width: 770px) {
+  @media (max-width: 1100px) {
+    font-size: 6rem;
+  }
+
+  @media (max-width: 700px) {
     font-size: 5rem;
+  }
+
+  @media (max-width: 550px) {
+    font-size: 4rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 3rem;
   }
 `;
 
 const CarouselChinese = styled.h2`
   margin: 0;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 800;
   color: white;
 
-  @media (max-width: 770px) {
+  @media (max-width: 1100px) {
     font-size: 1.8rem;
+  }
+
+  @media (max-width: 700px) {
+    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 
   @media (max-width: 550px) {
     font-weight: 600;
-    font-size: 1.4rem;
   }
 
   @media (max-width: 460px) {
@@ -132,26 +171,9 @@ const CarouselChinese = styled.h2`
     font-weight: 300;
     font-size: 1rem;
   }
-`;
 
-const MainTimer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 300px;
-
-  @media (max-width: 850px) {
-    height: 250px;
-  }
-
-  @media (max-width: 570px) {
-    height: 200px;
-  }
-
-  @media (max-width: 490px) {
-    height: 180px;
+  @media (max-width: 340px) {
+    font-size: 0.9rem;
   }
 `;
 
@@ -377,7 +399,7 @@ const Next = styled(FaArrowRight)`
   color: white;
   z-index: 3;
 
-  @media (max-width: 800px) {
+  @media (max-width: 770px) {
     display: none;
   }
 `;
@@ -394,7 +416,7 @@ const Previous = styled(FaArrowLeft)`
   color: white;
   z-index: 3;
 
-  @media (max-width: 800px) {
+  @media (max-width: 770px) {
     display: none;
   }
 `;
@@ -529,10 +551,6 @@ const Homepage = () => {
             </CarouselChinese>
           </CarouselTitle>
         </SlideShow>
-
-        <MainTimer>
-          <Timer />
-        </MainTimer>
 
         <Selection>
           <Container align={"left"} ref={mapRef}>
