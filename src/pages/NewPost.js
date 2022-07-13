@@ -99,7 +99,7 @@ const DisplayName = styled.p`
 
 const TagTitle = styled.p`
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 1.1em;
   font-weight: 600;
   margin: 1rem 0;
   color: #464646;
@@ -113,14 +113,15 @@ const TagContainer = styled.div`
 `;
 
 const Tag = styled.div`
-  margin: 0.5rem 0;
-  padding: 0 15px;
+  font-size: 0.8rem;
+  margin: 0.3rem 0;
+  padding: 0 10px;
   text-decoration: none;
   display: flex;
   justify-content: center;
   align-items: center;
   width: auto;
-  height: 40px;
+  height: 35px;
   margin-right: 15px;
 
   cursor: pointer;
@@ -131,8 +132,8 @@ const Tag = styled.div`
   }
 
   @media (max-width: 355px) {
-    height: 35px;
-    font-size: 0.8rem;
+    height: 32px;
+    font-size: 0.7rem;
   }
 
   background-color: ${(props) => (props.state ? "#949494" : "#ececec")};
@@ -152,20 +153,20 @@ const SubmitButton = styled.button`
   justify-content: center;
   align-items: center;
   text-decoration: none;
-  font-size: 2rem;
+  font-size: 1.3rem;
   background-color: #ff0000;
   color: white;
-  border-radius: 2rem;
-  width: 300px;
-  height: 80px;
+  border-radius: 1rem;
+  width: 150px;
+  height: 50px;
   border: none;
   cursor: pointer;
 
   @media (max-width: 570px) {
-    border-radius: 1.2rem;
-    width: 220px;
-    height: 60px;
-    font-size: 1.5rem;
+    border-radius: 0.8rem;
+    width: 120px;
+    height: 45px;
+    font-size: 1rem;
   }
 `;
 

@@ -178,10 +178,13 @@ const Content = styled.div`
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
   white-space: pre-line;
-  overflow: auto;
 
   @media (max-width: 570px) {
     font-size: 1rem;
+  }
+
+  img {
+    max-width: 100%;
   }
 `;
 

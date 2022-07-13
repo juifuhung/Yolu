@@ -40,20 +40,27 @@ const TopButton = styled.div`
   background-repeat: no-repeat;
   background-position: center;
   position: fixed;
-  bottom: 50px;
+  bottom: 30px;
   right: 30px;
   cursor: pointer;
 
   @media (max-width: 1100px) {
-    width: 80px;
-    height: 80px;
+    width: 58px;
+    height: 58px;
+    bottom: 20px;
+    right: 20px;
   }
 
   @media (max-width: 850px) {
-    width: 60px;
-    height: 60px;
-    bottom: 30px;
-    left: 20px;
+    width: 55px;
+    height: 55px;
+  }
+
+  @media (max-width: 350px) {
+    width: 50px;
+    height: 50px;
+    bottom: 15px;
+    right: 15px;
   }
 
   &:hover {
