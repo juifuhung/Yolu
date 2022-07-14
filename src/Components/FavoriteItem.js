@@ -26,13 +26,12 @@ const FavoriteItemSection = styled.div`
 `;
 
 const FavoriteItem = styled.div`
-  background-color: white;
+  background-color: #f5f5f5;
   display: flex;
   align-items: center;
   width: 92%;
   height: 250px;
   color: black;
-  border: solid black 4px;
   border-radius: 1rem;
   padding: 1.2rem;
   margin: 10px 0;
@@ -211,20 +210,15 @@ const Trash = styled(FaTrash)`
   }
 
   @media (max-width: 600px) {
-    height: 40px;
-    width: 40px;
-    top: 30px;
+    height: 25px;
+    width: 25px;
+    top: 32px;
     right: 22px;
   }
 
   @media (max-width: 410px) {
-    height: 30px;
-    width: 30px;
-  }
-
-  @media (max-width: 350px) {
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
   }
 `;
 
@@ -235,7 +229,7 @@ const FavoriteItemDiv = (
   return (
     <>
       <FavoriteItemSection>
-        <FavoriteItem ref={ref} id={id} title={`瀏覽${title}相關遊記`}>
+        <FavoriteItem ref={ref} id={id} title={`查看「${title}」遊記頁面`}>
           <FavoriteItemLeft
             img={img}
             alt="Loading..."
