@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaRedoAlt } from "react-icons/fa";
 import Loading from "../images/loading.gif";
 import styled from "styled-components";
 import {
@@ -38,10 +38,38 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
+const RotateScreenContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+
+  @media (min-width: 391px) {
+    display: none;
+  }
+`;
+
+const RotateIcon = styled(FaRedoAlt)`
+  width: 48vw;
+  height: 48vw;
+  color: #404040;
+`;
+
+const RotateWords = styled.h1`
+  font-size: 2.2rem;
+  color: #404040;
+`;
+
 const MapHeaderContainer = styled.div`
   position: sticky;
   top: 0;
   z-index: 10;
+
+  @media (max-width: 391px) {
+    display: none;
+  }
 `;
 
 const LoadingDiv = styled.div`
@@ -68,7 +96,11 @@ const MapContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 57vh;
+  height: 77.5vh;
+
+  @media (max-width: 390px) {
+    display: none;
+  }
 `;
 
 const InfoWindowDiv = styled.div`
@@ -157,7 +189,9 @@ const EmptyHeart = styled(FaRegHeart)`
   }
 `;
 
-const InfoWindowTitle = styled.h5`
+const InfoWindowTitle = styled(Link)`
+  color: black;
+  text-decoration: none;
   margin: 12px 0 0;
   font-size: 1.8rem;
 
@@ -173,7 +207,9 @@ const InfoWindowTitle = styled.h5`
   }
 `;
 
-const InfoWindowSubTitle = styled.h6`
+const InfoWindowSubTitle = styled(Link)`
+  color: black;
+  text-decoration: none;
   margin: 0 0 2px;
   font-size: 0.8rem;
   font-weight: 100;
@@ -182,12 +218,22 @@ const InfoWindowSubTitle = styled.h6`
     font-size: 0.6rem;
   }
 
-  @media (max-width: 410px) {
+  @media (max-width: 500px) {
     font-size: 0.5rem;
+  }
+
+  @media (max-width: 410px) {
+    font-size: 0.4rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 0.2rem;
   }
 `;
 
-const InfoWindowDescription = styled.p`
+const InfoWindowDescription = styled(Link)`
+  color: black;
+  text-decoration: none;
   margin: 5px 0 15px 0;
   font-size: 1rem;
 
@@ -201,7 +247,7 @@ const InfoWindowDescription = styled.p`
   }
 `;
 
-const InfoWindowImage = styled.div`
+const InfoWindowImage = styled(Link)`
   width: 100%;
   height: 300px;
   background-image: url(${(props) => props.img});
@@ -239,7 +285,11 @@ const ButtonSection = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin-top: 10px;
+  margin: 20px 0 -20px 0;
+
+  @media (max-width: 390px) {
+    display: none;
+  }
 `;
 
 const Buttons = styled.div`
@@ -250,70 +300,18 @@ const Buttons = styled.div`
   height: 100%;
 `;
 
-const ArticleIcon = styled(Link)`
-  display: Flex;
-  justify-content: center;
-  align-items: center;
-  width: 80px;
-  height: 60px;
-  font-size: 1.1rem;
-  border-radius: 60%;
-  box-shadow: 1px 1px 2px #18191a;
-  background-color: #464646;
-  color: white;
-  position: absolute;
-  bottom: 15px;
-  right: 20px;
-  text-decoration: none;
-
-  &:hover {
-    animation: shake 0.7s;
-    animation-iteration-count: infinite;
-  }
-
-  @keyframes shake {
-    0% {
-      transform: translate(1px, 1px) rotate(0deg);
-    }
-    10% {
-      transform: translate(-1px, -2px) rotate(-1deg);
-    }
-    20% {
-      transform: translate(-3px, 0px) rotate(1deg);
-    }
-    30% {
-      transform: translate(3px, 2px) rotate(0deg);
-    }
-    40% {
-      transform: translate(1px, -1px) rotate(1deg);
-    }
-    50% {
-      transform: translate(-1px, 2px) rotate(-1deg);
-    }
-    60% {
-      transform: translate(-3px, 1px) rotate(0deg);
-    }
-    70% {
-      transform: translate(3px, 1px) rotate(-1deg);
-    }
-    80% {
-      transform: translate(-1px, -1px) rotate(1deg);
-    }
-    90% {
-      transform: translate(1px, 2px) rotate(0deg);
-    }
-    100% {
-      transform: translate(1px, -2px) rotate(-1deg);
-    }
+const FooterContainer = styled.div`
+  @media (max-width: 390px) {
+    display: none;
   }
 `;
 
 const categoryArray = [
   { title: "博物館", icon: "https://img.onl/on0zJn" },
-  { title: "自然景觀", icon: "https://img.onl/djbguI" },
+  { title: "購物", icon: "https://img.onl/FKDkN6" },
   { title: "餐廳", icon: "https://img.onl/Dw7xbi" },
   { title: "聖誕主題", icon: "https://img.onl/t3NmW1" },
-  { title: "購物", icon: "https://img.onl/FKDkN6" },
+  { title: "自然景觀", icon: "https://img.onl/djbguI" },
   { title: "交通", icon: "https://img.onl/0S0gd6" },
 ];
 
@@ -332,7 +330,7 @@ const Map = () => {
     localId = currentUser.uid;
   }
 
-  const center = { lat: 66.533688, lng: 25.75218 };
+  const center = { lat: 66.536772, lng: 25.779681 };
 
   const showFavoriteHandler = () => {
     setShowFavorites(true);
@@ -435,6 +433,10 @@ const Map = () => {
       <MapHeaderContainer>
         <Header />
       </MapHeaderContainer>
+      <RotateScreenContainer>
+        <RotateIcon />
+        <RotateWords>請旋轉螢幕</RotateWords>
+      </RotateScreenContainer>
       <ButtonSection>
         <Buttons>
           {categoryArray.map((category) => (
@@ -489,16 +491,26 @@ const Map = () => {
               onCloseClick={() => setSelected(null)}
             >
               <InfoWindowDiv>
-                <InfoWindowTitle>{selected.title}</InfoWindowTitle>
+                <InfoWindowTitle
+                  to={`/articles/${selected.title}`}
+                  title={`查看「${selected.title}」遊記頁面`}
+                >
+                  {selected.title}
+                </InfoWindowTitle>
                 {selected.subtitle && (
-                  <InfoWindowSubTitle>{selected.subtitle}</InfoWindowSubTitle>
+                  <InfoWindowSubTitle
+                    to={`/articles/${selected.title}`}
+                    title={`查看「${selected.title}」遊記頁面`}
+                  >
+                    {selected.subtitle}
+                  </InfoWindowSubTitle>
                 )}
-                <InfoWindowDescription>
+                <InfoWindowDescription
+                  to={`/articles/${selected.title}`}
+                  title={`查看「${selected.title}」遊記頁面`}
+                >
                   {selected.description}
                 </InfoWindowDescription>
-                <ArticleIcon to={`/articles/${selected.title}`}>
-                  看遊記
-                </ArticleIcon>
                 {localId ? (
                   favorites.find(
                     (element) => element.title === selected.title
@@ -544,14 +556,17 @@ const Map = () => {
                 )}
                 <InfoWindowImage
                   img={selected.image ? selected.image : Loading}
+                  to={`/articles/${selected.title}`}
+                  title={`查看「${selected.title}」遊記頁面`}
                 />
               </InfoWindowDiv>
             </InfoWindow>
           )}
         </GoogleMap>
       </MapContainer>
-
-      <Footer />
+      <FooterContainer>
+        <Footer />
+      </FooterContainer>
     </>
   );
 };

@@ -43,34 +43,6 @@ const SlideshowSlider = styled.div`
   @media (max-width: 1100px) {
     height: 30vw;
   }
-
-  // @media (max-width: 1100px) {
-  //   height: 390px;
-  // }
-
-  // @media (max-width: 950px) {
-  //   height: 350px;
-  // }
-
-  // @media (max-width: 770px) {
-  //   height: 300px;
-  // }
-
-  // @media (max-width: 650px) {
-  //   height: 270px;
-  // }
-
-  // @media (max-width: 500px) {
-  //   height: 250px;
-  // }
-
-  // @media (max-width: 450px) {
-  //   height: 180px;
-  // }
-
-  // @media (max-width: 360px) {
-  //   height: 170px;
-  // }
 `;
 
 const Slide = styled.div`
@@ -147,14 +119,6 @@ const CarouselYolu = styled.h1`
     font-size: 5rem;
   }
 
-  // @media (max-width: 800px) {
-  //   font-size: 4.5rem;
-  // }
-
-  // @media (max-width: 700px) {
-  //   font-size: 4rem;
-  // }
-
   @media (max-width: 800px) {
     font-size: 3rem;
   }
@@ -177,15 +141,6 @@ const CarouselChinese = styled.h2`
   @media (max-width: 1100px) {
     font-size: 1.6rem;
   }
-
-  // @media (max-width: 800px) {
-  //   font-size: 1.4rem;
-  // }
-
-  // @media (max-width: 700px) {
-  //   font-weight: 600;
-  //   font-size: 1.2rem;
-  // }
 
   @media (max-width: 800px) {
     font-size: 1rem;

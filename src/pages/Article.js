@@ -33,6 +33,7 @@ const BodyContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
 
 const TitleSection = styled.div`
