@@ -12,6 +12,8 @@ import {
   query,
   where,
   getDocs,
+  deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -178,6 +180,7 @@ const Post = () => {
   const [displayName, setDisplayName] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredContent, setEnteredContent] = useState("");
+  const [documentId, setDocumentId] = useState("");
 
   const currentUser = useAuth();
   if (currentUser) {
@@ -188,7 +191,16 @@ const Post = () => {
 
   useEffect(() => {
     getDisplayName(localId);
+    checkId();
   }, [localId]);
+
+  useEffect(() => {
+    autoSave();
+  }, [enteredTitle, enteredContent, tagArray]);
+
+  useEffect(() => {
+    getData();
+  }, [documentId]);
 
   const API_URl = "https://noteyard-backend.herokuapp.com";
   const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
@@ -228,6 +240,47 @@ const Post = () => {
     setDisplayName(docSnap.data().name);
   };
 
+  const checkId = async () => {
+    const q = query(collection(db, "Draft"), where("localId", "==", localId));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setDocumentId(doc.id);
+    });
+  };
+
+  const autoSave = async () => {
+    try {
+      if (!documentId) {
+        await addDoc(collection(db, "Draft"), {
+          title: enteredTitle,
+          content: enteredContent,
+          fullTagArray: tagArray,
+          created_time: new Date(),
+          localId: localId,
+          displayName: displayName,
+        });
+      } else {
+        await updateDoc(doc(db, "Draft", `${documentId}`), {
+          title: enteredTitle,
+          content: enteredContent,
+          fullTagArray: tagArray,
+          created_time: new Date(),
+          localId: localId,
+          displayName: displayName,
+        });
+      }
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
+  const getData = async () => {
+    const docSnap = await getDoc(doc(db, "Draft", `${documentId}`));
+    setTagArray(docSnap.data().fullTagArray);
+    setEnteredTitle(docSnap.data().title);
+    setEnteredContent(docSnap.data().content);
+  };
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -256,6 +309,8 @@ const Post = () => {
           localId: localId,
           displayName: displayName,
         });
+
+        await deleteDoc(doc(db, "Draft", `${documentId}`));
 
         const q = query(
           collection(db, "Post"),
