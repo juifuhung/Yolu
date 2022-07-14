@@ -214,11 +214,6 @@ const Header = () => {
 
   const logoutHandler = async () => {
     try {
-      Swal.fire({
-        icon: "success",
-        confirmButtonColor: "#3085d6",
-        title: `已登出`,
-      });
       await logOut();
       location.replace("./");
     } catch (e) {

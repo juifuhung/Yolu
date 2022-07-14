@@ -145,6 +145,10 @@ const FillHeart = styled(FaHeart)`
   right: 20px;
   cursor: pointer;
 
+  &:hover {
+    color: #ff6863;
+  }
+
   @media (max-width: 700px) {
     top: 12px;
     right: 12px;
@@ -171,6 +175,10 @@ const EmptyHeart = styled(FaRegHeart)`
   top: 20px;
   right: 20px;
   cursor: pointer;
+
+  &:hover {
+    color: #ff6863;
+  }
 
   @media (max-width: 700px) {
     top: 12px;
