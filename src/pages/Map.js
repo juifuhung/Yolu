@@ -150,13 +150,13 @@ const FillHeart = styled(FaHeart)`
   }
 
   @media (max-width: 600px) {
-    height: 20px;
-    width: 20px;
-  }
-
-  @media (max-width: 410px) {
     top: 5px;
     right: 5px;
+    height: 15px;
+    width: 15px;
+  }
+
+  @media (max-width: 500px) {
     height: 10px;
     width: 10px;
   }
@@ -177,13 +177,13 @@ const EmptyHeart = styled(FaRegHeart)`
   }
 
   @media (max-width: 600px) {
-    height: 20px;
-    width: 20px;
-  }
-
-  @media (max-width: 410px) {
     top: 5px;
     right: 5px;
+    height: 15px;
+    width: 15px;
+  }
+
+  @media (max-width: 500px) {
     height: 10px;
     width: 10px;
   }
@@ -200,7 +200,7 @@ const InfoWindowTitle = styled(Link)`
     font-size: 1.2rem;
   }
 
-  @media (max-width: 410px) {
+  @media (max-width: 600px) {
     margin: 0;
     font-weight: 500;
     font-size: 1rem;
