@@ -106,32 +106,32 @@ const MapContainer = styled.div`
 const InfoWindowDiv = styled.div`
   display: flex;
   flex-direction: column;
-  width: 590px;
+  width: 400px;
   height: auto;
   position: relative;
 
   @media (max-width: 850px) {
-    width: 450px;
+    width: 350px;
   }
 
   @media (max-width: 700px) {
-    width: 295px;
+    width: 300px;
   }
 
-  @media (max-width: 530px) {
+  @media (max-width: 650px) {
+    width: 250px;
+  }
+
+  @media (max-width: 600px) {
     width: 200px;
   }
 
-  @media (max-width: 410px) {
+  @media (max-width: 550px) {
+    width: 180px;
+  }
+
+  @media (max-width: 500px) {
     width: 160px;
-  }
-
-  @media (max-width: 380px) {
-    width: 120px;
-  }
-
-  @media (max-width: 330px) {
-    width: 110px;
   }
 `;
 
@@ -149,7 +149,7 @@ const FillHeart = styled(FaHeart)`
     right: 12px;
   }
 
-  @media (max-width: 530px) {
+  @media (max-width: 600px) {
     height: 20px;
     width: 20px;
   }
@@ -176,7 +176,7 @@ const EmptyHeart = styled(FaRegHeart)`
     right: 12px;
   }
 
-  @media (max-width: 530px) {
+  @media (max-width: 600px) {
     height: 20px;
     width: 20px;
   }
@@ -193,17 +193,17 @@ const InfoWindowTitle = styled(Link)`
   color: black;
   text-decoration: none;
   margin: 12px 0 0;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
 
   @media (max-width: 700px) {
     margin: 6px 0 0;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   @media (max-width: 410px) {
     margin: 0;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 `;
 
@@ -235,36 +235,36 @@ const InfoWindowDescription = styled(Link)`
   color: black;
   text-decoration: none;
   margin: 5px 0 15px 0;
-  font-size: 1rem;
+  font-size: 0.6rem;
 
-  @media (max-width: 700px) {
-    margin: 4px 0 6px 0;
-    font-size: 0.8rem;
+  @media (max-width: 850px) {
+    margin: 4px 0;
+    font-size: 0.5rem;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 0.3rem;
   }
 
   @media (max-width: 410px) {
-    font-size: 0.6rem;
+    font-size: 0.2rem;
   }
 `;
 
 const InfoWindowImage = styled(Link)`
   width: 100%;
-  height: 300px;
+  height: 200px;
   background-image: url(${(props) => props.img});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 
-  @media (max-width: 850px) {
-    height: 230px;
-  }
-
   @media (max-width: 700px) {
     height: 150px;
   }
 
-  @media (max-width: 530px) {
-    height: 100px;
+  @media (max-width: 620px) {
+    height: 120px;
   }
 
   @media (max-width: 530px) {
@@ -285,7 +285,7 @@ const ButtonSection = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 20px 0 -20px 0;
+  margin: 20px 0 -10px 0;
 
   @media (max-width: 390px) {
     display: none;
