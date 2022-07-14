@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../utils/Firebase";
+import Swal from "sweetalert2";
 import {
   getFirestore,
   collection,
@@ -39,7 +40,7 @@ const spots = [
 
 const BodyContainer = styled.div`
   width: 100%;
-  min-height: 75vh;
+  min-height: 87vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -230,34 +231,48 @@ const Post = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      await addDoc(collection(db, "Post"), {
-        title: enteredTitle,
-        content: enteredContent,
-        fullTagArray: tagArray,
-        created_time: new Date(),
-        localId: localId,
-        displayName: displayName,
+    if (enteredTitle === "") {
+      Swal.fire({
+        confirmButtonColor: "#3085d6",
+        title: `請填寫標題`,
       });
-      setEnteredTitle("");
-      setEnteredContent("");
-      setTagArray(spots);
-
-      const q = query(
-        collection(db, "Post"),
-        where("title", "==", enteredTitle),
-        where("localId", "==", localId)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        articleId = doc.id;
+    } else if (enteredContent === "") {
+      Swal.fire({
+        confirmButtonColor: "#3085d6",
+        title: `請填寫內容`,
       });
+    } else if (tagArray === spots) {
+      Swal.fire({
+        confirmButtonColor: "#3085d6",
+        title: `請選擇標籤`,
+      });
+    } else {
+      try {
+        await addDoc(collection(db, "Post"), {
+          title: enteredTitle,
+          content: enteredContent,
+          fullTagArray: tagArray,
+          created_time: new Date(),
+          localId: localId,
+          displayName: displayName,
+        });
 
-      if (articleId) {
-        navigate(`/article/${articleId}`);
+        const q = query(
+          collection(db, "Post"),
+          where("title", "==", enteredTitle),
+          where("localId", "==", localId)
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          articleId = doc.id;
+        });
+
+        if (articleId) {
+          navigate(`/article/${articleId}`);
+        }
+      } catch (e) {
+        console.log("error", e);
       }
-    } catch (e) {
-      console.log("error", e);
     }
   };
 
@@ -291,7 +306,6 @@ const Post = () => {
             onChange={titleInputChangeHandler}
             value={enteredTitle}
             maxlength="20"
-            required
             placeholder="標題"
           />
           <CKEditor

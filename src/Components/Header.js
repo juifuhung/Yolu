@@ -214,7 +214,10 @@ const Header = () => {
 
   const logoutHandler = async () => {
     try {
-      alert("已登出");
+      Swal.fire({
+        confirmButtonColor: "#3085d6",
+        title: `已登出`,
+      });
       await logOut();
       location.replace("./");
     } catch (e) {
@@ -259,9 +262,7 @@ const Header = () => {
         <MobileNav>
           <MobileNavLink to="/map">互動地圖</MobileNavLink>
           <MobileNavCenterLine />
-          <MobileNavLink to="/favorites" onClick={displayMessage}>
-            我的最愛
-          </MobileNavLink>
+          <MobileNavLink to="/articles">遊記專區</MobileNavLink>
         </MobileNav>
       </Font>
     </>

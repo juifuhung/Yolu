@@ -31,6 +31,7 @@ const FavoritesHeaderContainer = styled.div`
 `;
 
 const BodyContainer = styled.div`
+  min-height: 87vh;
   width: 100%;
   display: flex;
   flex-direction: column;

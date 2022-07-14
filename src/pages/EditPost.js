@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../utils/Firebase";
 import { initializeApp } from "firebase/app";
+import Swal from "sweetalert2";
 import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -22,9 +23,11 @@ const firebaseConfig = {
 initializeApp(firebaseConfig);
 const db = getFirestore();
 
+const falseState = (item) => item.state === false;
+
 const BodyContainer = styled.div`
   width: 100%;
-  min-height: 75vh;
+  min-height: 88vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -188,7 +191,6 @@ const EditPost = () => {
         return new Promise((resolve, reject) => {
           const body = new FormData();
           loader.file.then((file) => {
-            console.log(123, file);
             body.append("uploadImg", file);
             fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
               method: "post",
@@ -231,21 +233,36 @@ const EditPost = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      await updateDoc(doc(db, "Post", params.articleId), {
-        title: enteredTitle,
-        content: enteredContent,
-        fullTagArray: tagArray,
-        created_time: new Date(),
-        localId: localId,
-        displayName: displayName,
+    if (enteredTitle === "") {
+      Swal.fire({
+        confirmButtonColor: "#3085d6",
+        title: `請填寫標題`,
       });
-      setEnteredTitle("");
-      setEnteredContent("");
-
-      navigate(`/article/${params.articleId}`);
-    } catch (e) {
-      console.log("error", e);
+    } else if (enteredContent === "") {
+      Swal.fire({
+        confirmButtonColor: "#3085d6",
+        title: `請填寫內容`,
+      });
+    } else if (tagArray.every(falseState)) {
+      Swal.fire({
+        confirmButtonColor: "#3085d6",
+        title: `請選擇標籤`,
+      });
+    } else {
+      console.log(tagArray);
+      try {
+        await updateDoc(doc(db, "Post", params.articleId), {
+          title: enteredTitle,
+          content: enteredContent,
+          fullTagArray: tagArray,
+          created_time: new Date(),
+          localId: localId,
+          displayName: displayName,
+        });
+        navigate(`/article/${params.articleId}`);
+      } catch (e) {
+        console.log("error", e);
+      }
     }
   };
 
@@ -282,7 +299,6 @@ const EditPost = () => {
             value={enteredTitle}
             onChange={titleInputChangeHandler}
             maxlength="20"
-            required
           />
           <NameAndTime>
             {!displayName && (
