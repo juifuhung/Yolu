@@ -185,7 +185,7 @@ const EditPost = () => {
   const API_URl = "https://noteyard-backend.herokuapp.com";
   const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
 
-  const uploadAdapter = (loader) => {
+  function uploadAdapter(loader) {
     return {
       upload: () => {
         return new Promise((resolve, reject) => {
@@ -207,13 +207,13 @@ const EditPost = () => {
         });
       },
     };
-  };
+  }
 
-  const uploadPlugin = (editor) => {
+  function uploadPlugin(editor) {
     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
       return uploadAdapter(loader);
     };
-  };
+  }
 
   const getDisplayName = async (localId) => {
     const docSnap = await getDoc(doc(db, "User", `${localId}`));
@@ -235,21 +235,23 @@ const EditPost = () => {
 
     if (enteredTitle === "") {
       Swal.fire({
+        icon: "warning",
         confirmButtonColor: "#3085d6",
         title: `請填寫標題`,
       });
     } else if (enteredContent === "") {
       Swal.fire({
+        icon: "warning",
         confirmButtonColor: "#3085d6",
         title: `請填寫內容`,
       });
     } else if (tagArray.every(falseState)) {
       Swal.fire({
+        icon: "warning",
         confirmButtonColor: "#3085d6",
         title: `請選擇標籤`,
       });
     } else {
-      console.log(tagArray);
       try {
         await updateDoc(doc(db, "Post", params.articleId), {
           title: enteredTitle,

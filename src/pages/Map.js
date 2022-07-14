@@ -544,6 +544,7 @@ const Map = () => {
                         });
                         getFavorites();
                         Swal.fire({
+                          icon: "success",
                           confirmButtonColor: "#3085d6",
                           title: `已將「${selected.title}」加入最愛清單`,
                         });

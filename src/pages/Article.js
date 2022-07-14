@@ -313,7 +313,6 @@ const Article = () => {
         <Header />
       </FavoritesHeaderContainer>
       <BodyContainer>
-        {console.log(article.content)}
         <TitleSection>
           {article.title ? (
             <Title>{article.title}</Title>
