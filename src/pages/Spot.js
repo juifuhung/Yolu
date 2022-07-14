@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import { initializeApp } from "firebase/app";
 import {
@@ -222,20 +222,42 @@ const PreviousPageButton = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  text-decoration: none;
   font-size: 1.3rem;
   background-color: #ff0000;
   color: white;
   border-radius: 1rem;
-  margin-bottom: 2rem;
-  width: 150px;
+  margin-bottom: 1rem;
+  width: 180px;
   height: 50px;
   border: none;
   cursor: pointer;
 
   @media (max-width: 570px) {
     border-radius: 0.8rem;
-    width: 120px;
+    width: 150px;
+    height: 45px;
+    font-size: 1rem;
+  }
+`;
+
+const AllArticleButton = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 1.3rem;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  width: 180px;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+
+  @media (max-width: 570px) {
+    border-radius: 0.8rem;
+    width: 150px;
     height: 45px;
     font-size: 1rem;
   }
@@ -380,7 +402,7 @@ const Spot = () => {
         </SpotsCover>
         <ArticleContainer>
           {spots.length === 0 ? (
-            <NoArticle>無文章</NoArticle>
+            <NoArticle>無遊記</NoArticle>
           ) : (
             spots.map((item, index) => {
               if (spots.length === index + 1) {
@@ -417,6 +439,7 @@ const Spot = () => {
         >
           回上頁
         </PreviousPageButton>
+        <AllArticleButton to={"/articles"}>瀏覽所有遊記</AllArticleButton>
       </BodyContainer>
       <TopButton
         onClick={() => {

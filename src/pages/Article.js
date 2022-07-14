@@ -270,7 +270,7 @@ const Article = () => {
 
   const deleteHandler = async () => {
     await deleteDoc(doc(db, "Post", `${params.articleId}`));
-    alert("文章已刪除");
+    alert("遊記已刪除");
     navigate(`/articles`);
   };
 
@@ -292,7 +292,7 @@ const Article = () => {
             {article.localId === localId ? (
               <EditOrDeleteEditSection
                 to={`/edit/${params.articleId}`}
-                title={"編輯文章"}
+                title={"編輯遊記"}
               >
                 <EditIcon />
                 <EditOrDeleteWords>編輯</EditOrDeleteWords>
@@ -302,7 +302,7 @@ const Article = () => {
               <EditOrDeleteEditSection
                 to={`/edit/${params.articleId}`}
                 onClick={deleteHandler}
-                title={"刪除文章"}
+                title={"刪除遊記"}
               >
                 <DeleteIcon />
                 <EditOrDeleteWords>刪除</EditOrDeleteWords>
@@ -359,7 +359,7 @@ const Article = () => {
             })}
         </TagContainer>
         <ViewAllCategoriesButton to={"/articles"}>
-          瀏覽所有文章
+          瀏覽所有遊記
         </ViewAllCategoriesButton>
       </BodyContainer>
       <Footer />

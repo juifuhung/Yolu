@@ -298,10 +298,10 @@ const LoadingWords = styled.p`
 
 const categoryArray = [
   { title: "博物館", selected: false },
-  { title: "自然景觀", selected: false },
+  { title: "購物", selected: false },
   { title: "餐廳", selected: false },
   { title: "聖誕主題", selected: false },
-  { title: "購物", selected: false },
+  { title: "自然景觀", selected: false },
   { title: "交通", selected: false },
 ];
 
