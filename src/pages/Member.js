@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { signUp, signIn } from "../utils/Firebase";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
+import Swal from "sweetalert2";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import memberBackground from "../images/aurora_gif.gif";
@@ -17,7 +18,7 @@ const MemberpageContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 85vh;
+  min-height: 87vh;
   background-image: url(${memberBackground});
   background-size: cover;
   background-repeat: no-repeat;
@@ -142,7 +143,11 @@ const Member = () => {
       setEnteredEmail("");
       setEnteredPassword("");
     } catch (e) {
-      alert(e.message);
+      Swal.fire({
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        title: e.message,
+      });
     }
   };
 
@@ -152,7 +157,11 @@ const Member = () => {
       setEnteredEmail("");
       setEnteredPassword("");
     } catch (e) {
-      alert(e);
+      Swal.fire({
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        title: e.message,
+      });
     }
   };
 

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
 import { useAuth, logOut } from "../utils/Firebase";
+import Swal from "sweetalert2";
 import headerLogo from "../images/header-yolu.png";
 import webMemberIcon from "../images/web-member-icon.png";
 import mobileMemberLoginIcon from "../images/mobile-member-login.png";
@@ -202,7 +203,12 @@ const Header = () => {
 
   const displayMessage = () => {
     if (!localId) {
-      alert("請登入");
+      Swal.fire({
+        icon: "error",
+        title: "請先登入",
+        confirmButtonColor: "#3085d6",
+        footer: '<a href="/member">前往登入頁面</a>',
+      });
     }
   };
 
@@ -230,7 +236,10 @@ const Header = () => {
           <Nav>
             <WebNavLink to="/map">互動地圖</WebNavLink>
             <WebNavLink to="/articles">遊記專區</WebNavLink>
-            <WebNavLink to="/favorites" onClick={displayMessage}>
+            <WebNavLink
+              to={localId ? "/favorites" : ""}
+              onClick={displayMessage}
+            >
               我的最愛
             </WebNavLink>
             {localId ? (

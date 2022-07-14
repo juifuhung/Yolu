@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Font } from "../styles/styles";
 import { useAuth } from "../utils/Firebase";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import Swal from "sweetalert2";
 import Map from "../images/homepage_map.png";
 import Aurora from "../images/homepage_aurora.png";
 import River from "../images/homepage_river.png";
@@ -527,7 +528,12 @@ const Homepage = () => {
 
   const displayMessage = () => {
     if (!localId) {
-      alert("請先登入");
+      Swal.fire({
+        icon: "error",
+        title: "請先登入",
+        confirmButtonColor: "#3085d6",
+        footer: '<a href="/member">前往登入頁面</a>',
+      });
     }
   };
 
@@ -593,26 +599,27 @@ const Homepage = () => {
               to={"/articles"}
               align={"right"}
               visible={articleVisible}
-              onClick={displayMessage}
             >
               遊記專區
             </CategoryTitle>
           </Container>
           <Container align={"left"} ref={favoritesRef}>
             <Image
-              to={"/favorites"}
+              to={localId ? "/favorites" : "/"}
               img={River}
               align={"left"}
               visible={favortiesVisible}
+              onClick={displayMessage}
             >
               <GreyColorDiv align={"left"}>
                 <GreyColorWordsContainer img={FavoriteGrey} />
               </GreyColorDiv>
             </Image>
             <CategoryTitle
-              to={"/favorites"}
+              to={localId ? "/favorites" : "/"}
               align={"left"}
               visible={favortiesVisible}
+              onClick={displayMessage}
             >
               我的最愛
             </CategoryTitle>

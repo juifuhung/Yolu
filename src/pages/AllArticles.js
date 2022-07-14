@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { FaEdit } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs, collection } from "firebase/firestore";
+import Swal from "sweetalert2";
 import LoadingImage from "../images/loading.gif";
 import AllArticlesItem from "../components/AllArticlesItem";
 import Header from "../components/Header";
@@ -229,7 +230,12 @@ const AllArticles = () => {
 
   const newPostHandler = async () => {
     if (!localId) {
-      alert("請先登入");
+      Swal.fire({
+        icon: "error",
+        title: "請先登入",
+        confirmButtonColor: "#3085d6",
+        footer: '<a href="/member">前往登入頁面</a>',
+      });
     }
   };
 
@@ -241,7 +247,7 @@ const AllArticles = () => {
           <Title>所有文章標籤</Title>
           <EditSection
             onClick={newPostHandler}
-            to={"/new-post"}
+            to={localId ? "/new-post" : "/articles"}
             title={"發表文章"}
           >
             <EditIcon />

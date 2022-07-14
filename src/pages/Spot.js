@@ -91,7 +91,7 @@ const FavoritesHeaderContainer = styled.div`
 
 const BodyContainer = styled.div`
   width: 100%;
-  min-height: 86vh;
+  min-height: 87vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -206,6 +206,7 @@ const SortWords = styled.div`
 `;
 
 const ArticleContainer = styled.div`
+  min-height: 46vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -213,9 +214,17 @@ const ArticleContainer = styled.div`
 `;
 
 const NoArticle = styled.div`
-  margin-bottom: 2rem;
-  font-size: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 46vh;
+  font-size: 5rem;
   font-weight: 800;
+
+  @media (max-width: 500px) {
+    font-size: 3.5rem;
+  }
 `;
 
 const PreviousPageButton = styled.div`

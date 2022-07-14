@@ -4,6 +4,8 @@ import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import parse from "html-react-parser";
+import Swal from "sweetalert2";
+import "../styles/yesOrNo.css";
 import { initializeApp } from "firebase/app";
 import { doc, getFirestore, getDoc, deleteDoc } from "firebase/firestore";
 import Header from "../components/Header";
@@ -67,13 +69,27 @@ const EditAndDeleteSection = styled.div`
   display: flex;
 `;
 
-const EditOrDeleteEditSection = styled(Link)`
+const EditSection = styled(Link)`
   display: flex;
   align-items: end;
   text-decoration: none;
   color: #616161;
   color: red;
   margin-left: 0.8rem;
+
+  @media (max-width: 1110px) {
+    margin-left: 0.3rem;
+  }
+`;
+
+const DeleteSection = styled.div`
+  display: flex;
+  align-items: end;
+  text-decoration: none;
+  color: #616161;
+  color: red;
+  margin-left: 0.8rem;
+  cursor: pointer;
 
   @media (max-width: 1110px) {
     margin-left: 0.3rem;
@@ -268,10 +284,26 @@ const Article = () => {
     getArticle();
   }, []);
 
-  const deleteHandler = async () => {
-    await deleteDoc(doc(db, "Post", `${params.articleId}`));
-    alert("遊記已刪除");
-    navigate(`/articles`);
+  const deleteHandler = () => {
+    Swal.fire({
+      title: "確定刪除遊記？",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "是，請刪除",
+      cancelButtonText: "否",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteDoc(doc(db, "Post", `${params.articleId}`));
+        Swal.fire({
+          title: "遊記已刪除",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+        });
+        navigate(`/articles`);
+      }
+    });
   };
 
   return (
@@ -290,23 +322,16 @@ const Article = () => {
 
           <EditAndDeleteSection>
             {article.localId === localId ? (
-              <EditOrDeleteEditSection
-                to={`/edit/${params.articleId}`}
-                title={"編輯遊記"}
-              >
+              <EditSection to={`/edit/${params.articleId}`} title={"編輯遊記"}>
                 <EditIcon />
                 <EditOrDeleteWords>編輯</EditOrDeleteWords>
-              </EditOrDeleteEditSection>
+              </EditSection>
             ) : null}
             {article.localId === localId ? (
-              <EditOrDeleteEditSection
-                to={`/edit/${params.articleId}`}
-                onClick={deleteHandler}
-                title={"刪除遊記"}
-              >
+              <DeleteSection onClick={deleteHandler} title={"刪除遊記"}>
                 <DeleteIcon />
                 <EditOrDeleteWords>刪除</EditOrDeleteWords>
-              </EditOrDeleteEditSection>
+              </DeleteSection>
             ) : null}
           </EditAndDeleteSection>
         </TitleSection>

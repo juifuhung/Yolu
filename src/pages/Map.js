@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaHeart, FaRegHeart, FaRedoAlt } from "react-icons/fa";
 import Loading from "../images/loading.gif";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import {
   GoogleMap,
   useLoadScript,
@@ -96,7 +97,7 @@ const MapContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 77.5vh;
+  height: 79vh;
 
   @media (max-width: 390px) {
     display: none;
@@ -323,8 +324,6 @@ const Map = () => {
   const [showFavorites, setShowFavorites] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const navigate = useNavigate();
-
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
@@ -523,7 +522,10 @@ const Map = () => {
                         );
                         deleteHandler(favoriteItem.id);
                         getFavorites();
-                        alert(`已將「${selected.title}」移出最愛清單`);
+                        Swal.fire({
+                          confirmButtonColor: "#3085d6",
+                          title: `已將「${selected.title}」移出最愛清單`,
+                        });
                       }}
                     />
                   ) : (
@@ -541,7 +543,10 @@ const Map = () => {
                           icon: selected.icon,
                         });
                         getFavorites();
-                        alert(`已將「${selected.title}」加入最愛清單`);
+                        Swal.fire({
+                          confirmButtonColor: "#3085d6",
+                          title: `已將「${selected.title}」加入最愛清單`,
+                        });
                       }}
                     />
                   )
@@ -549,8 +554,12 @@ const Map = () => {
                   <EmptyHeart
                     title={"加入最愛清單"}
                     onClick={() => {
-                      alert("請先登入");
-                      navigate("/member");
+                      Swal.fire({
+                        icon: "error",
+                        title: "請先登入",
+                        confirmButtonColor: "#3085d6",
+                        footer: '<a href="/member">前往登入頁面</a>',
+                      });
                     }}
                   />
                 )}

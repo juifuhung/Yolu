@@ -15,6 +15,8 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import "../styles/yesOrNo.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import FavoritesCover from "../images/favorites_cover.jpg";
@@ -455,17 +457,34 @@ const Favorites = () => {
     }
   };
 
-  const deleteHandler = async (id, category) => {
+  const deleteHandler = (id, category) => {
     try {
-      await deleteDoc(doc(db, "Favorites", `${id}`));
-      if (!categorySelected) {
-        getTotalFavorites(localId);
-        getFavoritesWithPagination(localId);
-      } else {
-        getTotalFavorites(localId, category);
-        getFavoritesWithPagination(localId, category);
-      }
-      window.scroll({ top: 0, behavior: "smooth" });
+      Swal.fire({
+        title: "確定移出最愛清單？",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "是，請移除",
+        cancelButtonText: "否",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteDoc(doc(db, "Favorites", `${id}`));
+          Swal.fire({
+            title: "已移除",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+          });
+          window.scroll({ top: 0, behavior: "smooth" });
+          if (!categorySelected) {
+            getTotalFavorites(localId);
+            getFavoritesWithPagination(localId);
+          } else {
+            getTotalFavorites(localId, category);
+            getFavoritesWithPagination(localId, category);
+          }
+        }
+      });
     } catch (e) {
       console.error("Error deleting document: ", e);
     }
