@@ -246,15 +246,15 @@ const ViewAllCategoriesButton = styled(Link)`
   background-color: #ff0000;
   color: white;
   border-radius: 1rem;
-  width: 180px;
-  height: 55px;
-  border: none;
   margin-bottom: 2rem;
+  width: 180px;
+  height: 50px;
+  border: none;
   cursor: pointer;
 
   @media (max-width: 570px) {
     border-radius: 0.8rem;
-    width: 120px;
+    width: 150px;
     height: 45px;
     font-size: 1rem;
   }

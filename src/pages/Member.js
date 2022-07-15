@@ -109,10 +109,15 @@ const Button = styled.button`
   border: none;
   border-radius: 1rem;
   width: 220px;
-
   font-size: ${(props) => (props.changeIsLogin ? "0.8rem" : "1rem")};
   background-color: ${(props) =>
     props.changeIsLogin ? " #003777" : " #006ee6"};
+
+  @media (max-width: 450px) {
+    border-radius: 0.6rem;
+    height: 35px;
+    width: 160px;
+  }
 `;
 
 const db = getFirestore();
