@@ -162,7 +162,7 @@ const CarouselChinese = styled.h2`
 `;
 
 const Selection = styled.div`
-  margin: 50px 0;
+  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -464,64 +464,37 @@ const MessageSection = styled.div`
   }
 `;
 
-const Rovaniemi = styled.h1`
-  font-size: 3.2rem;
-  color: black;
-  margin: 0.6rem;
-
-  @media (max-width: 800px) {
-    font-size: 2.6rem;
-  }
-
-  @media (max-width: 600px) {
-    font-size: 2.4rem;
-  }
-
-  @media (max-width: 500px) {
-    font-size: 2.2rem;
-  }
-
-  @media (max-width: 400px) {
-    font-size: 2rem;
-    margin: 0.4rem;
-  }
-
-  @media (max-width: 370px) {
-    font-size: 1.6rem;
-  }
-`;
-
 const IntroMessage = styled.p`
   color: black;
   margin: 0.1rem;
   font-size: 1.8rem;
 
   @media (max-width: 1000px) {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 
   @media (max-width: 800px) {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
 
   @media (max-width: 600px) {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   @media (max-width: 500px) {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   @media (max-width: 400px) {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 
   @media (max-width: 370px) {
-    font-size: 0.6rem;
+    font-size: 0.8rem;
   }
 
   @media (max-width: 330px) {
-    font-size: 0.4rem;
+    font-size: 0.6rem;
   }
 `;
 
@@ -662,11 +635,9 @@ const Homepage = () => {
         </SlideShow>
 
         <MessageSection>
-          <Rovaniemi>羅瓦涅米</Rovaniemi>
-          <IntroMessage>
-            芬蘭最北行政區－拉普蘭的首府，一年八季都有獨特景觀，
-          </IntroMessage>
-          <IntroMessage>邀請您一同體驗聖誕老人故鄉的魅力！</IntroMessage>
+          <IntroMessage>羅瓦涅米是芬蘭最北行政區－拉普蘭的首府，</IntroMessage>
+          <IntroMessage>一年八季都有獨特景觀，</IntroMessage>
+          <IntroMessage>邀請您一同感受聖誕老人故鄉的魅力！</IntroMessage>
         </MessageSection>
 
         <Selection>
