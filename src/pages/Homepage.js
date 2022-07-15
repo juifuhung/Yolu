@@ -437,6 +437,94 @@ const Previous = styled(FaArrowLeft)`
   }
 `;
 
+const MessageSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 250px;
+  margin-top: 2vw;
+
+  @media (max-width: 800px) {
+    height: 200px;
+    margin-top: 0;
+  }
+
+  @media (max-width: 500px) {
+    height: 160px;
+  }
+
+  @media (max-width: 400px) {
+    height: 140px;
+  }
+
+  @media (max-width: 370px) {
+    height: 120px;
+  }
+`;
+
+const Rovaniemi = styled.h1`
+  font-size: 3.2rem;
+  color: black;
+  margin: 0.6rem;
+
+  @media (max-width: 800px) {
+    font-size: 2.6rem;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 2.4rem;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 2.2rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 2rem;
+    margin: 0.4rem;
+  }
+
+  @media (max-width: 370px) {
+    font-size: 1.6rem;
+  }
+`;
+
+const IntroMessage = styled.p`
+  color: black;
+  margin: 0.1rem;
+  font-size: 1.8rem;
+
+  @media (max-width: 1000px) {
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 370px) {
+    font-size: 0.6rem;
+  }
+
+  @media (max-width: 330px) {
+    font-size: 0.4rem;
+  }
+`;
+
 let localId;
 
 const Homepage = () => {
@@ -572,6 +660,14 @@ const Homepage = () => {
             </CarouselChinese>
           </CarouselTitle>
         </SlideShow>
+
+        <MessageSection>
+          <Rovaniemi>羅瓦涅米</Rovaniemi>
+          <IntroMessage>
+            芬蘭最北行政區－拉普蘭的首府，一年八季都有獨特景觀，
+          </IntroMessage>
+          <IntroMessage>邀請您一同體驗聖誕老人故鄉的魅力！</IntroMessage>
+        </MessageSection>
 
         <Selection>
           <Container align={"left"} ref={mapRef}>
