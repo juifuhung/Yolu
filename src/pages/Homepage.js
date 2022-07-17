@@ -62,6 +62,7 @@ const SlideShowDots = styled.div`
   width: 100%;
   position: absolute;
   bottom: 8%;
+  z-index: 2;
 `;
 
 const Dot = styled.div`

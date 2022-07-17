@@ -176,7 +176,7 @@ let articleId;
 const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
   const [displayName, setDisplayName] = useState("");
-  const [enteredTitle, setEnteredTitle] = useState("");
+  const [enteredTitle, setEnteredTitle] = useState("難忘的聖誕馴鹿雪橇體檢");
   const [enteredContent, setEnteredContent] = useState("");
 
   const currentUser = useAuth();
@@ -316,7 +316,7 @@ const Post = () => {
               extraPlugins: [uploadPlugin],
             }}
             editor={ClassicEditor}
-            data=""
+            data="今天居然跑去體驗馴鹿雪橇！跟聖誕老人搭同一種交通工具超酷的。"
             onChange={(event, editor) => {
               const data = editor.getData();
               setEnteredContent(data);
