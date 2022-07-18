@@ -21,13 +21,17 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 80px;
-  height: 110px;
-  margin: 10px;
+  width: 60px;
+  height: 70px;
+  margin: 5px;
   cursor: pointer;
 
+  @media (max-width: 450px) {
+    margin: 5px 2px;
+  }
+
   @media (max-width: 340px) {
-    height: 95px;
+    height: 65px;
   }
 `;
 
@@ -35,28 +39,29 @@ const CategoryWords = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 80px;
-  height: 30px;
+  font-size: 0.6rem;
+  width: 60px;
+  height: 20px;
   background-color: red;
   color: white;
 
-  @media (max-width: 340px) {
-    font-size: 0.9rem;
-    width: 70px;
+  @media (max-width: 450px) {
+    font-size: 0.2rem;
+    width: 55px;
   }
 `;
 
 const Icon = styled.div`
-  width: 70px;
-  height: 70px;
+  width: 45px;
+  height: 45px;
   background-image: url(${(props) => props.icon});
   background-size: 95%;
   background-repeat: no-repeat;
   background-position: center;
 
   @media (max-width: 340px) {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
   }
 `;
 

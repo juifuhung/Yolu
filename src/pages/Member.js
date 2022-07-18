@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { signUp, signIn } from "../utils/Firebase";
 import { getFirestore, setDoc, doc } from "firebase/firestore";
+import Swal from "sweetalert2";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import memberBackground from "../images/aurora_gif.gif";
@@ -17,7 +18,7 @@ const MemberpageContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 70vh;
+  min-height: 87vh;
   background-image: url(${memberBackground});
   background-size: cover;
   background-repeat: no-repeat;
@@ -107,11 +108,16 @@ const Button = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 1rem;
-
-  width: ${(props) => (props.changeIsLogin ? "220px" : "160px")};
+  width: 220px;
   font-size: ${(props) => (props.changeIsLogin ? "0.8rem" : "1rem")};
   background-color: ${(props) =>
     props.changeIsLogin ? " #003777" : " #006ee6"};
+
+  @media (max-width: 450px) {
+    border-radius: 0.6rem;
+    height: 35px;
+    width: 160px;
+  }
 `;
 
 const db = getFirestore();
@@ -120,8 +126,11 @@ const Member = () => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
-
   const [isLogin, setIsLogin] = useState(true);
+
+  useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  }, []);
 
   const isLoginHandler = () => {
     setIsLogin((prev) => !prev);
@@ -139,7 +148,11 @@ const Member = () => {
       setEnteredEmail("");
       setEnteredPassword("");
     } catch (e) {
-      alert(e.message);
+      Swal.fire({
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        title: e.message,
+      });
     }
   };
 
@@ -149,7 +162,11 @@ const Member = () => {
       setEnteredEmail("");
       setEnteredPassword("");
     } catch (e) {
-      alert(e);
+      Swal.fire({
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        title: e.message,
+      });
     }
   };
 

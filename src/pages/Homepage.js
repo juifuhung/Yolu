@@ -2,10 +2,17 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
+import { useAuth } from "../utils/Firebase";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import Swal from "sweetalert2";
+import Map from "../images/homepage_map.png";
+import Aurora from "../images/homepage_aurora.png";
+import River from "../images/homepage_river.png";
+import MapGrey from "../images/map_div.png";
+import ArticleGrey from "../images/article_div.png";
+import FavoriteGrey from "../images/favorite_div.png";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Timer from "../components/Timer";
 
 const slideImages = [
   "https://img.onl/vlV7aI",
@@ -28,17 +35,14 @@ const SlideShow = styled.div`
 `;
 
 const SlideshowSlider = styled.div`
-  height: 440px;
+  height: 380px;
+  min-height: 150px;
   white-space: nowrap;
   transform: ${(props) => `translate3d(${-props.index * 100}%, 0, 0)`};
   transition: ease 1000ms;
 
-  @media (max-width: 550px) {
-    height: 350px;
-  }
-
-  @media (max-width: 460px) {
-    height: 300px;
+  @media (max-width: 1100px) {
+    height: 30vw;
   }
 `;
 
@@ -57,7 +61,8 @@ const SlideShowDots = styled.div`
   align-items: center;
   width: 100%;
   position: absolute;
-  bottom: 25px;
+  bottom: 8%;
+  z-index: 2;
 `;
 
 const Dot = styled.div`
@@ -72,10 +77,22 @@ const Dot = styled.div`
     cursor: pointer;
   }
 
-  @media (max-width: 550px) {
+  @media (max-width: 900px) {
     margin: 0px 5px;
     height: 8px;
     width: 8px;
+  }
+
+  @media (max-width: 600px) {
+    margin: 0px 4px;
+    height: 6px;
+    width: 6px;
+  }
+
+  @media (max-width: 550px) {
+    margin: 0px 3px;
+    height: 5px;
+    width: 5px;
   }
 `;
 
@@ -87,163 +104,303 @@ const CarouselTitle = styled.div`
   height: 100%;
   width: 100%;
   position: absolute;
-  top: -40px;
+  top: -6%;
+
+  @media (max-width: 900px) {
+    top: -9%;
+  }
 `;
 
 const CarouselYolu = styled.h1`
   margin: 0;
-  font-size: 7rem;
+  font-size: 5.5rem;
   font-weight: 1200;
   color: white;
 
-  @media (max-width: 770px) {
+  @media (max-width: 1100px) {
     font-size: 5rem;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 3rem;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 2.5rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 2rem;
   }
 `;
 
 const CarouselChinese = styled.h2`
   margin: 0;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 800;
   color: white;
 
-  @media (max-width: 770px) {
-    font-size: 1.8rem;
+  @media (max-width: 1100px) {
+    font-size: 1.6rem;
   }
 
-  @media (max-width: 550px) {
-    font-weight: 600;
-    font-size: 1.4rem;
+  @media (max-width: 800px) {
+    font-size: 1rem;
   }
 
-  @media (max-width: 460px) {
-    font-weight: 400;
-    font-size: 1.2rem;
+  @media (max-width: 500px) {
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 0.6rem;
   }
 
   @media (max-width: 360px) {
-    font-weight: 300;
-    font-size: 1rem;
-  }
-`;
-
-const MainTimer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 300px;
-
-  @media (max-width: 850px) {
-    height: 250px;
-  }
-
-  @media (max-width: 570px) {
-    height: 200px;
-  }
-
-  @media (max-width: 490px) {
-    height: 180px;
+    font-size: 0.4rem;
   }
 `;
 
 const Selection = styled.div`
-  margin-top: 50px;
+  margin-bottom: 50px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
+  min-height: 45vh;
 
   @media (max-width: 1300px) {
     margin-top: 0px;
+    margin-bottom: 20px;
   }
 
   @media (max-width: 800px) {
     flex-direction: column;
     align-items: center;
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 400px) {
+    margin-bottom: 5px;
   }
 `;
 
-const MainCircleContainer = styled.div`
+const Container = styled.div`
+  margin: 20px 0;
   display: flex;
-  justify-content: center;
+  justify-content: ${(props) =>
+    props.align === "left" ? "flex-start" : "flex-end"};
   align-items: center;
-  border-radius: 50%;
-  margin: 50px;
-  width: 38vw;
-  height: 38vw;
-  overflow: hidden;
+  width: 80%;
+  height: 400px;
+  position: relative;
 
-  @media (max-width: 820px) {
-    margin: 20px;
+  @media (max-width: 1100px) {
+    height: 25vw;
   }
 
-  @media (max-width: 800px) {
-    width: 70vw;
-    height: 70vw;
+  @media (max-width: 700px) {
+    margin: 10px 0;
+  }
+
+  @media (max-width: 400px) {
+    margin: 5px 0;
   }
 `;
 
-const MainCircle = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  transition: all 0.3s ease-in-out;
+const Image = styled(Link)`
+  width: 75%;
+  height: 90%;
   background-image: url(${(props) => props.img});
-  background-size: 150%;
+  background-size: cover;
+  background-repeat: no-repeat;
   background-position: center;
+  position: absolute;
+  animation-duration: 3s;
+  animation-name: ${(props) =>
+    props.visible === "true"
+      ? props.align === "left"
+        ? "image-slide-from-left"
+        : "image-slide-from-right"
+      : ""};
+  @keyframes image-slide-from-left {
+    from {
+      left: -100px;
+    }
+    to {
+      left: 0;
+    }
+  }
+
+  @keyframes image-slide-from-right {
+    from {
+      right: -100px;
+    }
+    to {
+      right: 0;
+    }
+  }
+`;
+
+const GreyColorDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 0;
+  height: 100%;
+  background-color: rgba(34, 34, 34, 0.7);
+  position: absolute;
+  transition: 0.5s;
+  ${Image}:hover & {
+    width: 40%;
+  }
+  z-index: 2;
+  left: ${(props) => (props.align === "left" ? "0" : "")};
+  right: ${(props) => (props.align === "right" ? "0" : "")};
+`;
+
+const GreyColorWordsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 80%;
+  height: 80%;
+  background-image: url(${(props) => props.img});
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+`;
+
+const CategoryTitle = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 270px;
+  height: 100px;
+  font-size: 2.8rem;
+  font-weight: 800;
+  background-color: rgba(255, 0, 0, 0.8);
   text-decoration: none;
   color: white;
+  position: absolute;
+  bottom: 40px;
+  animation-duration: 3s;
+  animation-name: ${(props) =>
+    props.visible === "true"
+      ? props.align === "left"
+        ? "title-slide-from-right"
+        : "title-slide-from-left"
+      : ""};
 
+  @keyframes title-slide-from-right {
+    from {
+      opacity: 0;
+      right: -100px;
+    }
+    to {
+      opacity: 1;
+      right: 9%;
+    }
+  }
+  @keyframes title-slide-from-left {
+    from {
+      opacity: 0;
+      left: -100px;
+    }
+    to {
+      opacity: 1;
+      left: 9%;
+    }
+  }
+
+  right: ${(props) => (props.align === "left" ? "10%" : "")};
+  left: ${(props) => (props.align === "right" ? "10%" : "")};
   &:hover {
-    background-size: 180%;
-  }
-`;
-
-const MainCircleTitle = styled.h2`
-  margin: 0;
-  font-size: 8rem;
-
-  &:hover {
-    transform: scale(1);
+    transform: scale(1.05, 1.05);
+    font-size: 3.08rem;
   }
 
-  @media (max-width: 1600px) {
-    font-size: 7rem;
-  }
+  @media (max-width: 1000px) {
+    width: 200px;
+    height: 80px;
+    font-size: 2rem;
+    font-weight: 700;
+    bottom: 30px;
 
-  @media (max-width: 1350px) {
-    font-size: 6rem;
-  }
-
-  @media (max-width: 1160px) {
-    font-size: 5rem;
-  }
-
-  @media (max-width: 960px) {
-    font-size: 4rem;
-  }
-
-  @media (max-width: 820px) {
-    font-size: 3rem;
+    &:hover {
+      font-size: 2.1rem;
+    }
   }
 
   @media (max-width: 800px) {
-    font-size: 6rem;
+    width: 160px;
+    height: 70px;
+    font-size: 1.8rem;
+    font-weight: 600;
+    bottom: 25px;
+
+    &:hover {
+      font-size: 1.9rem;
+    }
   }
 
-  @media (max-width: 660px) {
-    font-size: 5rem;
+  @media (max-width: 700px) {
+    width: 140px;
+    height: 65px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    bottom: 23px;
+
+    &:hover {
+      font-size: 1.7rem;
+    }
   }
 
-  @media (max-width: 550px) {
-    font-size: 4rem;
+  @media (max-width: 600px) {
+    width: 120px;
+    height: 50px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    bottom: 20px;
+
+    &:hover {
+      font-size: 1.3rem;
+    }
   }
 
-  @media (max-width: 410px) {
-    font-size: 3rem;
+  @media (max-width: 500px) {
+    width: 100px;
+    height: 42px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    bottom: 18px;
+
+    &:hover {
+      font-size: 1.2rem;
+    }
+  }
+
+  @media (max-width: 400px) {
+    width: 90px;
+    height: 38px;
+    font-size: 1rem;
+    bottom: 15px;
+
+    &:hover {
+      font-size: 1.1rem;
+    }
+  }
+
+  @media (max-width: 350px) {
+    width: 80px;
+    height: 32px;
+    font-size: 0.7rem;
+    bottom: 12px;
+
+    &:hover {
+      font-size: 0.8rem;
+    }
   }
 `;
 
@@ -259,7 +416,7 @@ const Next = styled(FaArrowRight)`
   color: white;
   z-index: 3;
 
-  @media (max-width: 800px) {
+  @media (max-width: 770px) {
     display: none;
   }
 `;
@@ -276,16 +433,122 @@ const Previous = styled(FaArrowLeft)`
   color: white;
   z-index: 3;
 
-  @media (max-width: 800px) {
+  @media (max-width: 770px) {
     display: none;
   }
 `;
 
-const localId = window.localStorage.getItem("localId");
+const MessageSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 250px;
+  margin-top: 2vw;
+
+  @media (max-width: 800px) {
+    height: 200px;
+    margin-top: 0;
+  }
+
+  @media (max-width: 500px) {
+    height: 160px;
+  }
+
+  @media (max-width: 400px) {
+    height: 140px;
+  }
+
+  @media (max-width: 370px) {
+    height: 120px;
+  }
+`;
+
+const IntroMessage = styled.p`
+  color: black;
+  margin: 0.1rem;
+  font-size: 1.8rem;
+
+  @media (max-width: 1000px) {
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: 800px) {
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 500px) {
+    font-size: 1rem;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 370px) {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 330px) {
+    font-size: 0.6rem;
+  }
+`;
+
+let localId;
 
 const Homepage = () => {
   const [index, setIndex] = useState(0);
+  const [mapVisible, setMapVisible] = useState("false");
+  const [articleVisible, setArticleVisible] = useState("false");
+  const [favortiesVisible, setFavoritesVisible] = useState("false");
   const timeoutRef = useRef(null);
+  const mapRef = useRef();
+  const articleRef = useRef();
+  const favoritesRef = useRef();
+
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
+  useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const options = {
+    root: null,
+    rootMargin: "500px",
+    threshold: 1,
+  };
+
+  useEffect(() => {
+    const mapObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setMapVisible("true");
+      }
+    }, options);
+
+    const favoritesObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setFavoritesVisible("true");
+      }
+    }, options);
+
+    const articleObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setArticleVisible("true");
+      }
+    }, options);
+
+    mapObserver.observe(mapRef.current);
+    favoritesObserver.observe(favoritesRef.current);
+    articleObserver.observe(articleRef.current);
+  }, []);
 
   const resetTimeout = () => {
     if (timeoutRef.current) {
@@ -327,7 +590,12 @@ const Homepage = () => {
 
   const displayMessage = () => {
     if (!localId) {
-      alert("please sign in");
+      Swal.fire({
+        icon: "error",
+        title: "請先登入",
+        confirmButtonColor: "#3085d6",
+        footer: '<a href="/member">前往登入頁面</a>',
+      });
     }
   };
 
@@ -367,25 +635,63 @@ const Homepage = () => {
           </CarouselTitle>
         </SlideShow>
 
-        <MainTimer>
-          <Timer />
-        </MainTimer>
+        <MessageSection>
+          <IntroMessage>羅瓦涅米是芬蘭最北行政區－拉普蘭的首府，</IntroMessage>
+          <IntroMessage>一年八季都有獨特景觀，</IntroMessage>
+          <IntroMessage>邀請您一同感受聖誕老人故鄉的魅力！</IntroMessage>
+        </MessageSection>
 
         <Selection>
-          <MainCircleContainer>
-            <MainCircle img={`https://img.onl/PBCUmN`} to="/map">
-              <MainCircleTitle>互動地圖</MainCircleTitle>
-            </MainCircle>
-          </MainCircleContainer>
-          <MainCircleContainer>
-            <MainCircle
-              img={`https://img.onl/MyS2bP`}
-              to="/favorites"
+          <Container align={"left"} ref={mapRef}>
+            <Image to={"/map"} img={Map} align={"left"} visible={mapVisible}>
+              <GreyColorDiv align={"left"}>
+                <GreyColorWordsContainer img={MapGrey} />
+              </GreyColorDiv>
+            </Image>
+            <CategoryTitle to={"/map"} align={"left"} visible={mapVisible}>
+              互動地圖
+            </CategoryTitle>
+          </Container>
+          <Container align={"right"} ref={articleRef}>
+            <Image
+              to={"/articles"}
+              img={Aurora}
+              align={"right"}
+              visible={articleVisible}
+            >
+              <GreyColorDiv align={"right"}>
+                <GreyColorWordsContainer img={ArticleGrey} />
+              </GreyColorDiv>
+            </Image>
+            <CategoryTitle
+              to={"/articles"}
+              align={"right"}
+              visible={articleVisible}
+            >
+              遊記專區
+            </CategoryTitle>
+          </Container>
+          <Container align={"left"} ref={favoritesRef}>
+            <Image
+              to={localId ? "/favorites" : "/"}
+              img={River}
+              align={"left"}
+              visible={favortiesVisible}
               onClick={displayMessage}
             >
-              <MainCircleTitle>我的最愛</MainCircleTitle>
-            </MainCircle>
-          </MainCircleContainer>
+              <GreyColorDiv align={"left"}>
+                <GreyColorWordsContainer img={FavoriteGrey} />
+              </GreyColorDiv>
+            </Image>
+            <CategoryTitle
+              to={localId ? "/favorites" : "/"}
+              align={"left"}
+              visible={favortiesVisible}
+              onClick={displayMessage}
+            >
+              我的最愛
+            </CategoryTitle>
+          </Container>
         </Selection>
       </Font>
       <Footer />

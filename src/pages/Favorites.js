@@ -15,6 +15,8 @@ import {
 } from "firebase/firestore";
 import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import "../styles/yesOrNo.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import FavoritesCover from "../images/favorites_cover.jpg";
@@ -44,27 +46,34 @@ const FavoritesHeaderContainer = styled.div`
 `;
 
 const TopButton = styled.div`
-  width: 100px;
-  height: 100px;
+  width: 62px;
+  height: 62px;
   background-image: url(${TopIcon});
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   position: fixed;
-  bottom: 50px;
-  left: 30px;
+  bottom: 30px;
+  right: 30px;
   cursor: pointer;
 
   @media (max-width: 1100px) {
-    width: 80px;
-    height: 80px;
+    width: 58px;
+    height: 58px;
+    bottom: 20px;
+    right: 20px;
   }
 
   @media (max-width: 850px) {
-    width: 60px;
-    height: 60px;
-    bottom: 30px;
-    left: 20px;
+    width: 55px;
+    height: 55px;
+  }
+
+  @media (max-width: 350px) {
+    width: 50px;
+    height: 50px;
+    bottom: 15px;
+    right: 15px;
   }
 
   &:hover {
@@ -134,7 +143,7 @@ const FavoritesCoverTitleWords = styled.h1`
 const BodyContainer = styled.div`
   display: flex;
   width: 100%;
-  min-height: 400px;
+  min-height: 58vh;
   margin-bottom: 20px;
 
   @media (max-width: 1100px) {
@@ -291,10 +300,10 @@ const LoadingWords = styled.p`
 
 const categoryArray = [
   { title: "博物館", selected: false },
-  { title: "自然景觀", selected: false },
+  { title: "購物", selected: false },
   { title: "餐廳", selected: false },
   { title: "聖誕主題", selected: false },
-  { title: "購物", selected: false },
+  { title: "自然景觀", selected: false },
   { title: "交通", selected: false },
 ];
 
@@ -348,27 +357,31 @@ const Favorites = () => {
     getFavoritesWithPagination(localId);
   }, [localId]);
 
+  useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  }, []);
+
   const getTotalFavorites = async (localId, category) => {
-    let totalFavorites;
+    let totalFavoritesItems;
     if (!category || category === "undefined") {
-      totalFavorites = query(
+      totalFavoritesItems = query(
         collection(db, "Favorites"),
         where("localId", "==", `${localId}`)
       );
     } else {
-      totalFavorites = query(
+      totalFavoritesItems = query(
         collection(db, "Favorites"),
         where("localId", "==", `${localId}`),
         where("category", "==", `${category}`)
       );
     }
 
-    const querySnapshot = await getDocs(totalFavorites);
-    let totalFavoriteArray = [];
+    const querySnapshot = await getDocs(totalFavoritesItems);
+    let totalFavoritesArray = [];
     querySnapshot.forEach((doc) => {
-      totalFavoriteArray.push({ ...doc.data(), id: doc.id });
+      totalFavoritesArray.push({ ...doc.data(), id: doc.id });
     });
-    setTotalFavorites(totalFavoriteArray);
+    setTotalFavorites(totalFavoritesArray);
   };
 
   const getFavoritesWithPagination = async (localId, category) => {
@@ -444,18 +457,34 @@ const Favorites = () => {
     }
   };
 
-  const deleteHandler = async (id, category) => {
+  const deleteHandler = (id, category) => {
     try {
-      await deleteDoc(doc(db, "Favorites", `${id}`));
-      if (!categorySelected) {
-        getTotalFavorites(localId);
-        getFavoritesWithPagination(localId);
-      } else {
-        getTotalFavorites(localId, category);
-        getFavoritesWithPagination(localId, category);
-      }
-
-      window.scroll({ top: 0, behavior: "smooth" });
+      Swal.fire({
+        title: "確定移出最愛清單？",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "是，請移除",
+        cancelButtonText: "否",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteDoc(doc(db, "Favorites", `${id}`));
+          Swal.fire({
+            title: "已移除",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+          });
+          window.scroll({ top: 0, behavior: "smooth" });
+          if (!categorySelected) {
+            getTotalFavorites(localId);
+            getFavoritesWithPagination(localId);
+          } else {
+            getTotalFavorites(localId, category);
+            getFavoritesWithPagination(localId, category);
+          }
+        }
+      });
     } catch (e) {
       console.error("Error deleting document: ", e);
     }
@@ -513,7 +542,7 @@ const Favorites = () => {
         <BodyRight>
           <SubtitleContainer>
             <Subtitle>
-              {categorySelected === undefined ? (
+              {localId && categorySelected === undefined ? (
                 <TotalQuantity>{`全部共有${totalFavorites.length}個景點`}</TotalQuantity>
               ) : (
                 <TotalQuantity>{`${categorySelected}共有${totalFavorites.length}個景點`}</TotalQuantity>

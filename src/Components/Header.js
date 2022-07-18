@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import HeaderTimer from "./HeaderTimer";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Font } from "../styles/styles";
 import { useAuth, logOut } from "../utils/Firebase";
+import Swal from "sweetalert2";
 import headerLogo from "../images/header-yolu.png";
 import webMemberIcon from "../images/web-member-icon.png";
 import mobileMemberLoginIcon from "../images/mobile-member-login.png";
@@ -14,36 +14,24 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   background-color: #ffffff;
   width: 100%;
-  height: 120px;
+  height: 60px;
 
-  @media (min-width: 1500px) {
+  @media (min-width: 611px) {
     box-shadow: 0 2px 5px #c4c4c4;
-  }
-
-  @media (max-width: 800px) {
-    height: 160px;
-  }
-
-  @media (max-width: 570px) {
-    height: 140px;
+    height: 60px;
   }
 `;
 
 const HeaderContainerLeft = styled.div`
+  width: auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
-  width: 50%;
   height: 100%;
 
-  @media (max-width: 1500px) {
+  @media (max-width: 610px) {
     width: 100%;
-  }
-
-  @media (max-width: 800px) {
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
   }
 `;
 
@@ -51,76 +39,44 @@ const HomepageLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  height: 100%;
-  margin: 0 20px 0 20px;
-
-  @media (max-width: 800px) {
-    margin-bottom: 5px;
-    height: 40%;
-  }
-`;
-
-const WeatherLink = styled(Link)`
-  display: flex;
-  height: 100%;
-  width: 195px;
-  text-decoration: none;
-  color: #000000;
-
-  @media (max-width: 800px) {
-    display: none;
-  }
-`;
-
-const WeatherSectionLeft = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  height: 100%;
-  z-index: 2;
-`;
-
-const WeatherInformationMain = styled.section`
-  display: flex;
-  align-items: end;
-  font-size: 35px;
-  height: 60%;
-`;
-
-const Temperature = styled.section`
-  display: flex;
-  align-items: start;
-  font-size: 20px;
-  height: 40%;
-`;
-
-const WeatherIcon = styled.div`
-  align-items: center;
-  height: 100%;
-  width: 50%;
-  z-index: 1;
-  background-size: cover;
+  height: 30px;
+  min-width: 60px;
+  margin-left: 30px;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  background-image: url(${(props) => props.icon});
+  background-image: url(${headerLogo});
+
+  @media (max-width: 1100px) {
+    margin-bottom: 5px;
+    height: 34px;
+  }
+
+  @media (max-width: 770px) {
+    margin-left: 20px;
+  }
+
+  @media (max-width: 610px) {
+    margin-left: 0;
+  }
 `;
 
 const Nav = styled.div`
+  min-width: 420px;
   display: flex;
   justify-content: space-between;
   padding-right: 2%;
   align-items: center;
-  width: 35%;
   height: 100%;
 
-  @media (max-width: 1500px) {
+  @media (max-width: 610px) {
     display: none;
   }
 `;
 
 const WebNavLink = styled(Link)`
-  font-size: 2rem;
+  margin-right: 15px;
+  font-size: 1.2rem;
   text-decoration: none;
   color: #000000;
 
@@ -133,7 +89,6 @@ const SignInLink = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
   text-decoration: none;
   color: #000000;
 
@@ -142,11 +97,25 @@ const SignInLink = styled(Link)`
   }
 `;
 
+const MemberWord = styled.p`
+  font-size: 1.2rem;
+  margin: 0;
+`;
+
+const WebMemberIcon = styled.div`
+  width: 32px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(${webMemberIcon});
+`;
+
 const LogOut = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.2rem;
   text-decoration: none;
   color: #000000;
   cursor: pointer;
@@ -162,14 +131,14 @@ const MobileNav = styled.div`
   align-items: center;
   background-color: #403939;
   width: 100%;
-  height: 70px;
+  height: 40px;
 
-  @media (min-width: 1501px) {
+  @media (min-width: 611px) {
     display: none;
   }
 
   @media (max-width: 480px) {
-    height: 60px;
+    height: 35px;
   }
 `;
 
@@ -179,12 +148,12 @@ const MobileNavLink = styled(Link)`
   align-items: center;
   width: 50%;
   margin: 0;
-  font-size: 2rem;
+  font-size: 1rem;
   color: white;
   text-decoration: none;
 
   @media (max-width: 480px) {
-    font-size: 1.5rem;
+    font-size: 0.9rem;
   }
 
   :hover {
@@ -211,27 +180,22 @@ const MobileMember = styled(Link)`
   right: 0;
   z-index: 10;
 
-  @media (min-width: 1501px) {
+  @media (min-width: 1101px) {
     display: none;
   }
 
-  @media (max-width: 1500px) {
-    top: 230px;
+  @media (max-width: 1100px) {
+    top: 120px;
   }
 
-  @media (max-width: 800px) {
-    top: 250px;
+  @media (max-width: 600px) {
+    top: 150px;
   }
 `;
 
 let localId;
-const weatherApiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
 const Header = () => {
-  const [temperature, setTemperature] = useState(0);
-  const [icon, setIcon] = useState(undefined);
-  const [weatherMain, setWeatherMain] = useState(undefined);
-
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
@@ -239,32 +203,22 @@ const Header = () => {
 
   const displayMessage = () => {
     if (!localId) {
-      alert("請登入");
+      Swal.fire({
+        icon: "error",
+        title: "請先登入",
+        confirmButtonColor: "#3085d6",
+        footer: '<a href="/member">前往登入頁面</a>',
+      });
     }
   };
 
   const logoutHandler = async () => {
     try {
-      alert("已登出");
       await logOut();
       location.replace("./");
     } catch (e) {
       console.log(e);
     }
-  };
-
-  useEffect(() => {
-    weather();
-  }, []);
-
-  const weather = async () => {
-    const result = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=rovaniemi&appid=${weatherApiKey}`
-    );
-    const parsedResult = await result.json();
-    9 / setTemperature(Math.round((parsedResult.main.temp - 272.15) * 10) / 10);
-    setIcon(parsedResult.weather[0].icon);
-    setWeatherMain(parsedResult.weather[0].main);
   };
 
   return (
@@ -276,57 +230,27 @@ const Header = () => {
 
         <HeaderContainer>
           <HeaderContainerLeft>
-            <HomepageLink to="/">
-              <img src={headerLogo} />
-            </HomepageLink>
-            {window.screen.width > 1500 ? (
-              <WeatherLink
-                to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
-                target="_blank"
-              >
-                <WeatherSectionLeft>
-                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
-                  <Temperature>{temperature} °C</Temperature>
-                </WeatherSectionLeft>
-                <WeatherIcon
-                  icon={`http://openweathermap.org/img/w/${icon}.png`}
-                />
-              </WeatherLink>
-            ) : (
-              <HeaderTimer />
-            )}
-            {window.screen.width > 1500 ? (
-              <HeaderTimer />
-            ) : (
-              <WeatherLink
-                to="//weather.com/zh-TW/weather/tenday/l/Rovaniemi+Lappi+Finland?canonicalCityId=f33f0e3d39ae49429748c3ca17e88fccf4acd065e7ca8ae0a1160b4c9ed7970d"
-                target="_blank"
-              >
-                <WeatherSectionLeft>
-                  <WeatherInformationMain>{weatherMain}</WeatherInformationMain>
-                  <Temperature>{temperature} °C</Temperature>
-                </WeatherSectionLeft>
-                <WeatherIcon
-                  icon={`http://openweathermap.org/img/w/${icon}.png`}
-                />
-              </WeatherLink>
-            )}
+            <HomepageLink to="/" />
           </HeaderContainerLeft>
           <Nav>
-            <WebNavLink to="/map">羅瓦涅米地圖</WebNavLink>
-            <WebNavLink to="/favorites" onClick={displayMessage}>
+            <WebNavLink to="/map">互動地圖</WebNavLink>
+            <WebNavLink to="/articles">遊記專區</WebNavLink>
+            <WebNavLink
+              to={localId ? "/favorites" : ""}
+              onClick={displayMessage}
+            >
               我的最愛
             </WebNavLink>
             {localId ? (
               <LogOut onClick={logoutHandler}>
-                登出
-                <img src={webMemberIcon} />
+                <MemberWord>登出</MemberWord>
+                <WebMemberIcon />
               </LogOut>
             ) : null}
             {!localId ? (
               <SignInLink to="/member">
-                會員登入
-                <img src={webMemberIcon} />
+                <MemberWord>登入/註冊</MemberWord>
+                <WebMemberIcon />
               </SignInLink>
             ) : null}
           </Nav>
@@ -334,9 +258,7 @@ const Header = () => {
         <MobileNav>
           <MobileNavLink to="/map">互動地圖</MobileNavLink>
           <MobileNavCenterLine />
-          <MobileNavLink to="/favorites" onClick={displayMessage}>
-            我的最愛
-          </MobileNavLink>
+          <MobileNavLink to="/articles">遊記專區</MobileNavLink>
         </MobileNav>
       </Font>
     </>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../components/Header";
@@ -15,7 +15,7 @@ const NotFoundBackground = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 70vh;
+  height: 87vh;
   background-image: url(${AuroraNotFound});
   background-size: cover;
   background-repeat: no-repeat;
@@ -92,6 +92,10 @@ const HomepageButton = styled(Link)`
 `;
 
 const NotFound = () => {
+  useEffect(() => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  }, []);
+
   return (
     <>
       <NotFoundHeaderContainer>

@@ -1,10 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import loadingIcon from "../images/loading.gif";
-import { FaHeart } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
@@ -25,12 +25,12 @@ const FavoriteItemSection = styled.div`
 `;
 
 const FavoriteItem = styled.div`
-  background-color: white;
+  background-color: #f5f5f5;
   display: flex;
   align-items: center;
   width: 92%;
   height: 250px;
-  border: solid black 4px;
+  color: black;
   border-radius: 1rem;
   padding: 1.2rem;
   margin: 10px 0;
@@ -55,7 +55,7 @@ const FavoriteItem = styled.div`
   }
 `;
 
-const FavoriteItemLeft = styled.div`
+const FavoriteItemLeft = styled(Link)`
   width: 790px;
   height: 240px;
   background-image: url(${(props) => (props.img ? props.img : loadingIcon)});
@@ -76,12 +76,14 @@ const FavoriteItemLeft = styled.div`
   }
 `;
 
-const FavoriteItemRight = styled.div`
+const FavoriteItemRight = styled(Link)`
   display: flex;
   flex-direction: column;
   width: 140%;
   height: 240px;
   align-items: start;
+  text-decoration: none;
+  color: black;
   padding: 0 20px 0;
 
   @media (max-width: 600px) {
@@ -170,7 +172,7 @@ const FavoriteItemCategory = styled.div`
   }
 `;
 
-const FavoriteItemTimestamp = styled.div`
+const FavoriteItemTimestamp = styled(Link)`
   display: flex;
   justify-content: flex-end;
   position: absolute;
@@ -178,6 +180,8 @@ const FavoriteItemTimestamp = styled.div`
   right: 20px;
   margin: 0;
   backgorund-color: yellow;
+  text-decoration: none;
+  color: black;
   width: 45%;
   font-weight: 100;
 
@@ -186,11 +190,11 @@ const FavoriteItemTimestamp = styled.div`
   }
 `;
 
-const Heart = styled(FaHeart)`
-  color: #ff0000;
+const Trash = styled(FaTrash)`
+  color: #8e8e8e;
   position: absolute;
-  height: 50px;
-  width: 50px;
+  height: 32px;
+  width: 32px;
   top: 20px;
   right: 20px;
   cursor: pointer;
@@ -205,20 +209,15 @@ const Heart = styled(FaHeart)`
   }
 
   @media (max-width: 600px) {
-    height: 40px;
-    width: 40px;
-    top: 30px;
+    height: 25px;
+    width: 25px;
+    top: 32px;
     right: 22px;
   }
 
   @media (max-width: 410px) {
-    height: 30px;
-    width: 30px;
-  }
-
-  @media (max-width: 350px) {
-    height: 25px;
-    width: 25px;
+    height: 20px;
+    width: 20px;
   }
 `;
 
@@ -229,17 +228,27 @@ const FavoriteItemDiv = (
   return (
     <>
       <FavoriteItemSection>
-        <FavoriteItem ref={ref} id={id}>
-          <FavoriteItemLeft img={img} alt="Loading...">
+        <FavoriteItem ref={ref} id={id} title={`查看「${title}」遊記頁面`}>
+          <FavoriteItemLeft
+            img={img}
+            alt="Loading..."
+            to={`/articles/${title}`}
+          >
             <FavoriteItemCategory>{category}</FavoriteItemCategory>
           </FavoriteItemLeft>
-          <FavoriteItemRight>
+          <FavoriteItemRight to={`/articles/${title}`}>
             <FavoriteItemTitle>{title}</FavoriteItemTitle>
             <FavoriteItemSubtitle>{subtitle}</FavoriteItemSubtitle>
-            <FavoriteItemDescription>{description}</FavoriteItemDescription>
+            <FavoriteItemDescription>
+              {description.length <= 100
+                ? description
+                : `${description.substring(0, 100)}...`}
+            </FavoriteItemDescription>
           </FavoriteItemRight>
 
-          <FavoriteItemTimestamp>{`新增時間：${timestamp.getFullYear()}年 ${
+          <FavoriteItemTimestamp
+            to={`/articles/${title}`}
+          >{`新增時間：${timestamp.getFullYear()}年 ${
             timestamp.getMonth() + 1 < 10
               ? "0" + timestamp.getMonth().toString()
               : timestamp.getMonth().toString()
@@ -261,11 +270,10 @@ const FavoriteItemDiv = (
               : timestamp.getMinutes().toString()
           }`}</FavoriteItemTimestamp>
 
-          <Heart
+          <Trash
             title={"移出最愛清單"}
             onClick={() => {
               deleteHandler(id, category);
-              alert(`已將「${title}」移出最愛清單`);
             }}
           />
         </FavoriteItem>
