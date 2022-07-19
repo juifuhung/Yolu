@@ -324,8 +324,10 @@ const Favorites = () => {
   }
 
   const getDisplayName = async (localId) => {
-    const docSnap = await getDoc(doc(db, "User", `${localId}`));
-    displayName = docSnap.data().name;
+    if (localId) {
+      const docSnap = await getDoc(doc(db, "User", `${localId}`));
+      displayName = docSnap.data().name;
+    }
   };
 
   const observer = useRef();

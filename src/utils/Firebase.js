@@ -9,6 +9,17 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
+import {
+  getFirestore,
+  getDocs,
+  collection,
+  // getDoc,
+  doc,
+  addDoc,
+  deleteDoc,
+  query,
+  where,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -22,6 +33,7 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 const auth = getAuth();
+const db = getFirestore();
 
 export const signUp = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
@@ -48,4 +60,31 @@ export const useAuth = () => {
   }, []);
 
   return currentUser;
+};
+
+export const getFirestoreDocuments = async (collectionName) => {
+  const querySnapshot = await getDocs(collection(db, `${collectionName}`));
+  return querySnapshot;
+};
+
+export const addDocumentToFirestore = async (collectionName, obj) => {
+  await addDoc(collection(db, `${collectionName}`), obj);
+};
+
+export const getFirestoreDocumentsWithQuery = async (
+  collectionName,
+  queryKey,
+  queryValue
+) => {
+  const querySnapshot = await getDocs(
+    query(
+      collection(db, `${collectionName}`),
+      where(`${queryKey}`, "==", queryValue)
+    )
+  );
+  return querySnapshot;
+};
+
+export const deleteFireStoreDocument = async (collectionName, id) => {
+  await deleteDoc(doc(db, `${collectionName}`, id));
 };

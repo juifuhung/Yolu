@@ -224,8 +224,10 @@ const Post = () => {
   }
 
   const getDisplayName = async (localId) => {
-    const docSnap = await getDoc(doc(db, "User", `${localId}`));
-    setDisplayName(docSnap.data().name);
+    if (localId) {
+      const docSnap = await getDoc(doc(db, "User", `${localId}`));
+      setDisplayName(docSnap.data().name);
+    }
   };
 
   const handleFormSubmit = async (event) => {

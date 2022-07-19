@@ -266,6 +266,7 @@ let localId;
 const Article = () => {
   const [article, setArticle] = useState({});
   const [timestamp, setTimestamp] = useState();
+
   const params = useParams();
   const navigate = useNavigate();
 

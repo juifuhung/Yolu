@@ -9,35 +9,17 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
-import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
-  getDocs,
-  collection,
-  doc,
-  addDoc,
-  deleteDoc,
-  query,
-  where,
-} from "firebase/firestore";
-import { useAuth } from "../utils/Firebase";
+  useAuth,
+  getFirestoreDocuments,
+  getFirestoreDocumentsWithQuery,
+  deleteFireStoreDocument,
+  addDocumentToFirestore,
+} from "../utils/Firebase";
 import Loading from "../images/loading.gif";
 import MapCategoryItem from "../components/MapCategoryItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
 
 const RotateScreenContainer = styled.div`
   display: flex;
@@ -347,7 +329,7 @@ const Map = () => {
     setShowFavorites(false);
     try {
       let allSpotsArray = [];
-      const querySnapshot = await getDocs(collection(db, "Spots"));
+      const querySnapshot = await getFirestoreDocuments("Spots");
       querySnapshot.forEach((doc) => {
         allSpotsArray.push(doc.data());
       });
@@ -361,8 +343,10 @@ const Map = () => {
     try {
       if (localId) {
         let favoritesArray = [];
-        const querySnapshot = await getDocs(
-          query(collection(db, "Favorites"), where("localId", "==", localId))
+        const querySnapshot = await getFirestoreDocumentsWithQuery(
+          "Favorites",
+          "localId",
+          localId
         );
         querySnapshot.forEach((doc) => {
           favoritesArray.push({ ...doc.data(), id: doc.id });
@@ -381,7 +365,7 @@ const Map = () => {
 
   const deleteHandler = async (id) => {
     try {
-      await deleteDoc(doc(db, "Favorites", `${id}`));
+      await deleteFireStoreDocument("Favorites", `${id}`);
     } catch (e) {
       console.error("Error deleting document: ", e);
     }
@@ -389,7 +373,7 @@ const Map = () => {
 
   const addToFavorite = async (obj) => {
     try {
-      await addDoc(collection(db, "Favorites"), {
+      await addDocumentToFirestore("Favorites", {
         title: obj.title,
         subtitle: obj.subtitle,
         category: obj.category,
@@ -410,8 +394,10 @@ const Map = () => {
     setShowFavorites(false);
     try {
       let categoryArray = [];
-      const querySnapshot = await getDocs(
-        query(collection(db, "Spots"), where("category", "==", `${category}`))
+      const querySnapshot = await getFirestoreDocumentsWithQuery(
+        "Spots",
+        "category",
+        `${category}`
       );
       querySnapshot.forEach((doc) => {
         categoryArray.push(doc.data());

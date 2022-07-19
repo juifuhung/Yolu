@@ -205,6 +205,7 @@ let localId;
 
 const AllArticles = () => {
   const [allSpots, setAllSpots] = useState([]);
+
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
@@ -223,12 +224,16 @@ const AllArticles = () => {
     }
   };
 
-  useEffect(() => {
+  const scrollToTop = () => {
     window.scroll({ top: 0, behavior: "smooth" });
     getData();
+  };
+
+  useEffect(() => {
+    scrollToTop();
   }, []);
 
-  const newPostHandler = async () => {
+  const newPostHandler = () => {
     if (!localId) {
       Swal.fire({
         icon: "error",
@@ -353,7 +358,7 @@ const AllArticles = () => {
       </BodyContainer>
       <TopButton
         onClick={() => {
-          window.scroll({ top: 0, behavior: "smooth" });
+          scrollToTop();
         }}
       />
       <Footer />
