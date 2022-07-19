@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import { FaEdit } from "react-icons/fa";
+import Swal from "sweetalert2";
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs, collection } from "firebase/firestore";
-import Swal from "sweetalert2";
+import { useAuth } from "../utils/Firebase";
 import LoadingImage from "../images/loading.gif";
+import TopIcon from "../images/top.png";
 import AllArticlesItem from "../components/AllArticlesItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import TopIcon from "../images/top.png";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

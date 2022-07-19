@@ -2,16 +2,16 @@ import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import Homepage from "./pages/Homepage";
+import { Font, UniversalStyle } from "./styles/styles";
+import { useAuth } from "./utils/Firebase";
 import Favorites from "./pages/Favorites";
 import Map from "./pages/Map";
 import Member from "./pages/Member";
-import { useAuth } from "./utils/Firebase";
 import Article from "./pages/Article";
 import AllArticles from "./pages/AllArticles";
 import Spot from "./pages/Spot";
 import NewPost from "./pages/NewPost";
 import EditPost from "./pages/EditPost";
-import { Font, UniversalStyle } from "./styles/styles";
 
 let localId;
 

@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import { Font } from "../styles/styles";
 import { useAuth, logOut } from "../utils/Firebase";
-import Swal from "sweetalert2";
 import headerLogo from "../images/header-yolu.png";
 import webMemberIcon from "../images/web-member-icon.png";
 import mobileMemberLoginIcon from "../images/mobile-member-login.png";

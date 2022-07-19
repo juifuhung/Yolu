@@ -14,10 +14,10 @@ import {
   limit,
   startAfter,
 } from "firebase/firestore";
+import TopIcon from "../images/top.png";
+import SpotItem from "../components/SpotItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import SpotItem from "../components/SpotItem";
-import TopIcon from "../images/top.png";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

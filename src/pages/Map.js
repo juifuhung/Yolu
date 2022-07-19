@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FaHeart, FaRegHeart, FaRedoAlt } from "react-icons/fa";
-import Loading from "../images/loading.gif";
 import styled from "styled-components";
+import { FaHeart, FaRegHeart, FaRedoAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
 import {
   GoogleMap,
@@ -22,9 +21,10 @@ import {
   where,
 } from "firebase/firestore";
 import { useAuth } from "../utils/Firebase";
+import Loading from "../images/loading.gif";
+import MapCategoryItem from "../components/MapCategoryItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import MapCategoryItem from "../components/MapCategoryItem";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

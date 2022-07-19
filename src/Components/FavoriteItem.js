@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import loadingIcon from "../images/loading.gif";
 import { FaTrash } from "react-icons/fa";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import loadingIcon from "../images/loading.gif";
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,

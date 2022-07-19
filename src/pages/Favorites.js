@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import styled from "styled-components";
+import Swal from "sweetalert2";
 import { initializeApp } from "firebase/app";
 import {
   doc,
@@ -14,17 +16,15 @@ import {
   startAfter,
 } from "firebase/firestore";
 import { useAuth } from "../utils/Firebase";
-import styled from "styled-components";
-import Swal from "sweetalert2";
 import "../styles/yesOrNo.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import FavoriteItem from "../components/FavoriteItem";
+import FavoritesCategory from "../components/FavoritesCategory";
 import FavoritesCover from "../images/favorites_cover.jpg";
 import TopIcon from "../images/top.png";
 import Loading from "../images/loading.gif";
 import NoItemImage from "../images/no_item_found.png";
-import FavoriteItem from "../components/FavoriteItem";
-import FavoritesCategory from "../components/FavoritesCategory";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

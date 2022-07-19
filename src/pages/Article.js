@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import parse from "html-react-parser";
 import Swal from "sweetalert2";
-import "../styles/yesOrNo.css";
+import parse from "html-react-parser";
 import { initializeApp } from "firebase/app";
 import { doc, getFirestore, getDoc, deleteDoc } from "firebase/firestore";
+import { useAuth } from "../utils/Firebase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import "../styles/yesOrNo.css";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

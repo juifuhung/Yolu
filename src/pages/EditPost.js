@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useAuth } from "../utils/Firebase";
-import { initializeApp } from "firebase/app";
 import Swal from "sweetalert2";
+import { initializeApp } from "firebase/app";
 import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
+import { useAuth } from "../utils/Firebase";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Header from "../components/Header";

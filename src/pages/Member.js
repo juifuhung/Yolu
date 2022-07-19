@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { signUp, signIn } from "../utils/Firebase";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
 import Swal from "sweetalert2";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { signUp, signIn } from "../utils/Firebase";
+import memberBackground from "../images/aurora_gif.gif";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import memberBackground from "../images/aurora_gif.gif";
 
 const MemberHeaderContainer = styled.div`
   position: sticky;

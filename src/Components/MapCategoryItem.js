@@ -1,6 +1,6 @@
 import React from "react";
-import { initializeApp } from "firebase/app";
 import styled from "styled-components";
+import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {

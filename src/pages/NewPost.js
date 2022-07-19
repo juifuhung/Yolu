@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useAuth } from "../utils/Firebase";
 import Swal from "sweetalert2";
 import {
   getFirestore,
@@ -15,6 +14,7 @@ import {
 } from "firebase/firestore";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { useAuth } from "../utils/Firebase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -324,19 +324,17 @@ const Post = () => {
           />
           <TagTitle>選擇標籤</TagTitle>
           <TagContainer>
-            {tagArray.map((item, index) => {
-              return (
-                <Tag
-                  key={item.title}
-                  state={item.state}
-                  onClick={() => {
-                    chooseTagHandler(index);
-                  }}
-                >
-                  {item.title}
-                </Tag>
-              );
-            })}
+            {tagArray.map((item, index) => (
+              <Tag
+                key={item.title}
+                state={item.state}
+                onClick={() => {
+                  chooseTagHandler(index);
+                }}
+              >
+                {item.title}
+              </Tag>
+            ))}
           </TagContainer>
           <ButtonContainer>
             <SubmitButton>發表</SubmitButton>

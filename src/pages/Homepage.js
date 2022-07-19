@@ -1,16 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Font } from "../styles/styles";
-import { useAuth } from "../utils/Firebase";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { useAuth } from "../utils/Firebase";
 import Map from "../images/homepage_map.png";
 import Aurora from "../images/homepage_aurora.png";
 import River from "../images/homepage_river.png";
 import MapGrey from "../images/map_div.png";
 import ArticleGrey from "../images/article_div.png";
 import FavoriteGrey from "../images/favorite_div.png";
+import { Font } from "../styles/styles";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
