@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
-import { signUp, signIn } from "../utils/Firebase";
+import { signUp, signIn, setDocumentToFirestore } from "../utils/Firebase";
 import memberBackground from "../images/aurora_gif.gif";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -120,8 +119,6 @@ const Button = styled.button`
   }
 `;
 
-const db = getFirestore();
-
 const Member = () => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -139,7 +136,7 @@ const Member = () => {
   const signUpHandler = async () => {
     try {
       const result = await signUp(enteredEmail, enteredPassword);
-      await setDoc(doc(db, "User", `${result.user.uid}`), {
+      await setDocumentToFirestore("User", `${result.user.uid}`, {
         name: enteredName,
         uid: result.user.uid,
         email: result.user.email,
