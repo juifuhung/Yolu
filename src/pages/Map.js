@@ -346,6 +346,7 @@ const Map = () => {
         const querySnapshot = await getFirestoreDocumentsWithQuery(
           "Favorites",
           "localId",
+          "==",
           localId
         );
         querySnapshot.forEach((doc) => {
@@ -373,18 +374,7 @@ const Map = () => {
 
   const addToFavorite = async (obj) => {
     try {
-      await addDocumentToFirestore("Favorites", {
-        title: obj.title,
-        subtitle: obj.subtitle,
-        category: obj.category,
-        description: obj.description,
-        photo: obj.img,
-        created_time: new Date(),
-        localId: localId,
-        lng: obj.lng,
-        lat: obj.lat,
-        icon: obj.icon,
-      });
+      await addDocumentToFirestore("Favorites", obj);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -397,6 +387,7 @@ const Map = () => {
       const querySnapshot = await getFirestoreDocumentsWithQuery(
         "Spots",
         "category",
+        "==",
         `${category}`
       );
       querySnapshot.forEach((doc) => {
@@ -535,6 +526,7 @@ const Map = () => {
                           lng: selected.lng,
                           lat: selected.lat,
                           icon: selected.icon,
+                          localId: localId,
                         });
                         getFavorites();
                         Swal.fire({

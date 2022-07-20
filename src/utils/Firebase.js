@@ -96,7 +96,7 @@ export const getFirestoreDocumentsWithQuery = async (
   secondOperator,
   secondQueryValue
 ) => {
-  if (!secondQueryKey && !secondQueryValue) {
+  if (!secondQueryKey && !secondOperator && !secondQueryValue) {
     return await getDocs(
       query(
         collection(db, `${collectionName}`),
@@ -104,6 +104,7 @@ export const getFirestoreDocumentsWithQuery = async (
       )
     );
   } else {
+    console.log("hi");
     return await getDocs(
       query(
         collection(db, `${collectionName}`),
