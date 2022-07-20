@@ -3,24 +3,12 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
-import { initializeApp } from "firebase/app";
-import { getFirestore, getDocs, collection } from "firebase/firestore";
-import { useAuth } from "../utils/Firebase";
+import { useAuth, getFirestoreDocuments } from "../utils/Firebase";
 import LoadingImage from "../images/loading.gif";
 import TopIcon from "../images/top.png";
 import AllArticlesItem from "../components/AllArticlesItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
 
 const TopButton = styled.div`
   width: 62px;
@@ -198,9 +186,6 @@ const Label = styled.h2`
   }
 `;
 
-initializeApp(firebaseConfig);
-const db = getFirestore();
-
 let localId;
 
 const AllArticles = () => {
@@ -214,7 +199,7 @@ const AllArticles = () => {
   const getData = async () => {
     try {
       let allSpotsArray = [];
-      const querySnapshot = await getDocs(collection(db, "Spots"));
+      const querySnapshot = await getFirestoreDocuments("Spots");
       querySnapshot.forEach((doc) => {
         allSpotsArray.push(doc.data());
       });
