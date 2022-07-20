@@ -527,6 +527,7 @@ const Map = () => {
                           lat: selected.lat,
                           icon: selected.icon,
                           localId: localId,
+                          created_time: new Date(),
                         });
                         getFavorites();
                         Swal.fire({

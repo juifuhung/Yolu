@@ -104,7 +104,6 @@ export const getFirestoreDocumentsWithQuery = async (
       )
     );
   } else {
-    console.log("hi");
     return await getDocs(
       query(
         collection(db, `${collectionName}`),
@@ -128,7 +127,6 @@ export const getFirestoreDocumentsWithPagination = async (
   limitNumber
 ) => {
   if (!secondQueryKey && !secondQueryValue) {
-    console.log(typeof `${order}`);
     return await getDocs(
       query(
         collection(db, `${collectionName}`),
@@ -187,7 +185,7 @@ export const getFirestoreDocumentsForLoadMoreItems = async (
   }
 };
 
-export const getFirestoreDocumentsWithPagination2 = async (
+export const favoritesGetFirestoreDocumentsWithPagination = async (
   collectionName,
   queryKey,
   operator,
@@ -198,15 +196,8 @@ export const getFirestoreDocumentsWithPagination2 = async (
   orderByItem,
   limitNumber
 ) => {
-  // console.log(`${collectionName}`);
-  // console.log(`${queryKey}`);
-  // console.log(`${operator}`);
-  // console.log(queryValue);
-  // console.log(`${orderByItem}`);
-  // console.log(limitNumber);
   if (!secondQueryKey && !secondQueryValue) {
-    console.log("nothing");
-    const a = await getDocs(
+    return await getDocs(
       query(
         collection(db, `${collectionName}`),
         where(`${queryKey}`, `${operator}`, queryValue),
@@ -214,8 +205,6 @@ export const getFirestoreDocumentsWithPagination2 = async (
         limit(limitNumber)
       )
     );
-    console.log("i", a);
-    return a;
   } else {
     return await getDocs(
       query(
@@ -229,7 +218,7 @@ export const getFirestoreDocumentsWithPagination2 = async (
   }
 };
 
-export const getFirestoreDocumentsForLoadMoreItems2 = async (
+export const favoritesLoadMoreItems = async (
   collectionName,
   queryKey,
   operator,
@@ -238,7 +227,6 @@ export const getFirestoreDocumentsForLoadMoreItems2 = async (
   secondOperator,
   secondQueryValue,
   orderByItem,
-  order,
   startAfterItem,
   limitNumber
 ) => {
@@ -247,7 +235,7 @@ export const getFirestoreDocumentsForLoadMoreItems2 = async (
       query(
         collection(db, `${collectionName}`),
         where(`${queryKey}`, `${operator}`, queryValue),
-        orderBy(`${orderByItem}`, `${order}`),
+        orderBy(`${orderByItem}`),
         startAfter(startAfterItem),
         limit(limitNumber)
       )
@@ -258,7 +246,7 @@ export const getFirestoreDocumentsForLoadMoreItems2 = async (
         collection(db, `${collectionName}`),
         where(`${queryKey}`, `${operator}`, queryValue),
         where(`${secondQueryKey}`, `${secondOperator}`, secondQueryValue),
-        orderBy(`${orderByItem}`, `${order}`),
+        orderBy(`${orderByItem}`),
         startAfter(startAfterItem),
         limit(limitNumber)
       )

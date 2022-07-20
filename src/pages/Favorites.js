@@ -6,8 +6,8 @@ import {
   getDisplayName,
   deleteFireStoreDocument,
   getFirestoreDocumentsWithQuery,
-  getFirestoreDocumentsWithPagination2,
-  getFirestoreDocumentsForLoadMoreItems2,
+  favoritesGetFirestoreDocumentsWithPagination,
+  favoritesLoadMoreItems,
 } from "../utils/Firebase";
 import "../styles/yesOrNo.css";
 import Header from "../components/Header";
@@ -389,35 +389,32 @@ const Favorites = () => {
     setCategorySelected(category);
     let documentSnapshots;
     try {
-      if (category) {
-        documentSnapshots = await getFirestoreDocumentsWithPagination2(
+      if (!category) {
+        documentSnapshots = await favoritesGetFirestoreDocumentsWithPagination(
           "Favorites",
           "localId",
           "==",
-          `${localId}`,
-          "category",
-          "==",
-          `${category}`,
-          "create_time",
+          localId,
+          null,
+          null,
+          null,
+          "created_time",
           3
         );
       } else {
-        console.log("ho");
-        documentSnapshots = await getFirestoreDocumentsWithPagination2(
+        documentSnapshots = await favoritesGetFirestoreDocumentsWithPagination(
           "Favorites",
           "localId",
           "==",
-          `${localId}`,
-          null,
-          null,
-          null,
-          "create_time",
+          localId,
+          "category",
+          "==",
+          `${category}`,
+          "created_time",
           3
         );
-        console.log(456, documentSnapshots);
       }
 
-      console.log(123, documentSnapshots);
       let favoritesArray = [];
       documentSnapshots.forEach((doc) => {
         favoritesArray.push({ ...doc.data(), id: doc.id });
@@ -436,8 +433,21 @@ const Favorites = () => {
           previousDocumentSnapshots.docs.length - 1
         ];
       let nextDocumentSnapshots;
-      if (category) {
-        nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems2(
+      if (!category) {
+        nextDocumentSnapshots = await favoritesLoadMoreItems(
+          "Favorites",
+          "localId",
+          "==",
+          localId,
+          null,
+          null,
+          null,
+          "created_time",
+          lastVisible,
+          3
+        );
+      } else {
+        nextDocumentSnapshots = await favoritesLoadMoreItems(
           "Favorites",
           "localId",
           "==",
@@ -445,21 +455,7 @@ const Favorites = () => {
           "category",
           "==",
           category,
-          "create_time",
-          lastVisible,
-          3
-        );
-      } else {
-        nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems2(
-          "Favorites",
-          "localId",
-          "==",
-          localId,
-          null,
-          null,
-          null,
-          "title",
-          "create_time",
+          "created_time",
           lastVisible,
           3
         );
@@ -546,7 +542,6 @@ const Favorites = () => {
       <FavoritesHeaderContainer>
         <Header />
       </FavoritesHeaderContainer>
-      {console.log(favorites)}
       <FavoritesCoverSection>
         <FavoritesCoverTitle>
           <FavoritesCoverTitleWords>最愛清單</FavoritesCoverTitleWords>
