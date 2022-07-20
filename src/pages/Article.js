@@ -4,25 +4,14 @@ import styled from "styled-components";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import parse from "html-react-parser";
-import { initializeApp } from "firebase/app";
-import { doc, getFirestore, getDoc, deleteDoc } from "firebase/firestore";
-import { useAuth } from "../utils/Firebase";
+import {
+  useAuth,
+  getFirestoreDocument,
+  deleteFireStoreDocument,
+} from "../utils/Firebase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../styles/yesOrNo.css";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
 
 const FavoritesHeaderContainer = styled.div`
   position: sticky;
@@ -276,14 +265,17 @@ const Article = () => {
   }
 
   const getArticle = async () => {
-    const docRef = doc(db, "Post", `${params.articleId}`);
-    const docSnap = await getDoc(docRef);
+    const docSnap = await getFirestoreDocument("Post", `${params.articleId}`);
     setArticle(docSnap.data());
     setTimestamp(docSnap.data().created_time.toDate());
   };
 
-  useEffect(() => {
+  const scrollToTop = () => {
     window.scroll({ top: 0, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToTop();
     getArticle();
   }, []);
 
@@ -298,7 +290,7 @@ const Article = () => {
       cancelButtonText: "否",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteDoc(doc(db, "Post", `${params.articleId}`));
+        deleteFireStoreDocument("Post", `${params.articleId}`);
         Swal.fire({
           title: "遊記已刪除",
           icon: "success",

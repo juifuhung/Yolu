@@ -70,9 +70,12 @@ export const getDisplayName = async (collectionName, localId) => {
   return docSnap.data().name;
 };
 
+export const getFirestoreDocument = async (document, id) => {
+  return await getDoc(doc(db, `${document}`, id));
+};
+
 export const getFirestoreDocuments = async (collectionName) => {
-  const querySnapshot = await getDocs(collection(db, `${collectionName}`));
-  return querySnapshot;
+  return await getDocs(collection(db, `${collectionName}`));
 };
 
 export const addDocumentToFirestore = async (collectionName, obj) => {
