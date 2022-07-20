@@ -22,6 +22,7 @@ import {
   orderBy,
   limit,
   startAfter,
+  updateDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -80,6 +81,10 @@ export const getFirestoreDocuments = async (collectionName) => {
 
 export const addDocumentToFirestore = async (collectionName, obj) => {
   await addDoc(collection(db, `${collectionName}`), obj);
+};
+
+export const updateFirestoreDocument = async (collectionName, id, obj) => {
+  await updateDoc(doc(db, `${collectionName}`, id), obj);
 };
 
 export const getFirestoreDocumentsWithQuery = async (

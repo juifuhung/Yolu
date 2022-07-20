@@ -2,28 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
-import { initializeApp } from "firebase/app";
-import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
-import { useAuth } from "../utils/Firebase";
+import {
+  useAuth,
+  getDisplayName,
+  getFirestoreDocument,
+  updateFirestoreDocument,
+} from "../utils/Firebase";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
-
-const falseState = (item) => item.state === false;
 
 const BodyContainer = styled.div`
   width: 100%;
@@ -167,6 +155,7 @@ const SubmitButton = styled.button`
 `;
 
 let localId;
+const falseState = (item) => item.state === false;
 
 const EditPost = () => {
   const [tagArray, setTagArray] = useState([]);
@@ -215,24 +204,23 @@ const EditPost = () => {
     };
   }
 
-  const getDisplayName = async (localId) => {
+  const showDisplayName = async (localId) => {
     if (localId) {
-      const docSnap = await getDoc(doc(db, "User", `${localId}`));
-      setDisplayName(docSnap.data().name);
+      setDisplayName(await getDisplayName("User", localId));
     }
   };
 
   const params = useParams();
 
   const getArticle = async () => {
-    const docSnap = await getDoc(doc(db, "Post", params.articleId));
+    const docSnap = await getFirestoreDocument("Post", params.articleId);
     setTagArray(docSnap.data().fullTagArray);
     setEnteredTitle(docSnap.data().title);
     setEnteredContent(docSnap.data().content);
     setTimestamp(docSnap.data().created_time.toDate());
   };
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
 
     if (enteredTitle === "") {
@@ -255,7 +243,7 @@ const EditPost = () => {
       });
     } else {
       try {
-        await updateDoc(doc(db, "Post", params.articleId), {
+        updateFirestoreDocument("Post", params.articleId, {
           title: enteredTitle,
           content: enteredContent,
           fullTagArray: tagArray,
@@ -279,7 +267,7 @@ const EditPost = () => {
   }, []);
 
   useEffect(() => {
-    getDisplayName(localId);
+    showDisplayName(localId);
   }, [localId]);
 
   const chooseTagHandler = (index) => {
