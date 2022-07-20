@@ -288,10 +288,10 @@ const categoryArray = [
 ];
 
 let localId;
-let displayName;
 let previousDocumentSnapshots;
 
 const Favorites = () => {
+  const [displayName, setDisplayName] = useState("");
   const [totalFavorites, setTotalFavorites] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState(categoryArray);
@@ -305,7 +305,7 @@ const Favorites = () => {
 
   const showDisplayName = async (localId) => {
     if (localId) {
-      displayName = await getDisplayName("User", localId);
+      setDisplayName(await getDisplayName("User", localId));
     }
   };
 
