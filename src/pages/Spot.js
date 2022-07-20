@@ -1,36 +1,15 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
-import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  orderBy,
-  where,
-  limit,
-  startAfter,
-} from "firebase/firestore";
+  getFirestoreDocumentsWithPagination,
+  getFirestoreDocumentsForLoadMoreItems,
+  getFirestoreDocument,
+} from "../utils/Firebase";
 import TopIcon from "../images/top.png";
 import SpotItem from "../components/SpotItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
 
 const TopButton = styled.div`
   width: 62px;
@@ -283,8 +262,13 @@ const Spot = () => {
   const [newToOldSelected, setNewToOldSelected] = useState(false);
   const [oldToNewSelected, setOldToNewSelected] = useState(false);
   const [coverPhoto, setCoverPhoto] = useState("");
+
   const params = useParams();
   const navigate = useNavigate();
+
+  const scrollToTop = () => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  };
 
   const observer = useRef();
   const lastSpotItem = useCallback((node) => {
@@ -305,19 +289,23 @@ const Spot = () => {
   }, []);
 
   const getSpotsWithPagination = async () => {
-    let first;
+    let documentSnapshots;
     try {
-      first = query(
-        collection(db, "Post"),
-        where("fullTagArray", "array-contains", {
+      documentSnapshots = await getFirestoreDocumentsWithPagination(
+        "Post",
+        "fullTagArray",
+        "array-contains",
+        {
           state: true,
           title: `${params.spot}`,
-        }),
-        orderBy("created_time", "desc"),
-        limit(3)
+        },
+        null,
+        null,
+        null,
+        "created_time",
+        "desc",
+        3
       );
-
-      const documentSnapshots = await getDocs(first);
       let spotsArray = [];
       documentSnapshots.forEach((doc) => {
         spotsArray.push({ ...doc.data(), id: doc.id });
@@ -335,19 +323,24 @@ const Spot = () => {
         previousDocumentSnapshots.docs[
           previousDocumentSnapshots.docs.length - 1
         ];
-      let next;
-      next = query(
-        collection(db, "Post"),
-        where("fullTagArray", "array-contains", {
+      let nextDocumentSnapshots;
+      nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems(
+        "Post",
+        "fullTagArray",
+        "array-contains",
+        {
           state: true,
           title: `${params.spot}`,
-        }),
-        orderBy("created_time", "desc"),
-        startAfter(lastVisible),
-        limit(3)
+        },
+        null,
+        null,
+        null,
+        "created_time",
+        "desc",
+        lastVisible,
+        3
       );
 
-      const nextDocumentSnapshots = await getDocs(next);
       let newSpotsArray = [];
       nextDocumentSnapshots.forEach((doc) => {
         newSpotsArray.push({ ...doc.data(), id: doc.id });
@@ -362,12 +355,15 @@ const Spot = () => {
   };
 
   const getCoverPhoto = async () => {
-    const docSnap = await getDoc(doc(db, "SpotsCoverPhoto", `${params.spot}`));
+    const docSnap = await getFirestoreDocument(
+      "SpotsCoverPhoto",
+      `${params.spot}`
+    );
     setCoverPhoto(docSnap.data().image);
   };
 
   useEffect(() => {
-    window.scroll({ top: 0, behavior: "smooth" });
+    scrollToTop();
     getSpotsWithPagination();
     getCoverPhoto();
   }, []);

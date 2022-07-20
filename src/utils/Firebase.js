@@ -85,96 +85,178 @@ export const addDocumentToFirestore = async (collectionName, obj) => {
 export const getFirestoreDocumentsWithQuery = async (
   collectionName,
   queryKey,
+  operator,
   queryValue,
   secondQueryKey,
+  secondOperator,
   secondQueryValue
 ) => {
   if (!secondQueryKey && !secondQueryValue) {
-    const querySnapshot = await getDocs(
+    return await getDocs(
       query(
         collection(db, `${collectionName}`),
-        where(`${queryKey}`, "==", queryValue)
+        where(`${queryKey}`, `${operator}`, queryValue)
       )
     );
-    return querySnapshot;
   } else {
-    const querySnapshot = await getDocs(
+    return await getDocs(
       query(
         collection(db, `${collectionName}`),
-        where(`${queryKey}`, "==", queryValue),
-        where(`${secondQueryKey}`, "==", secondQueryValue)
+        where(`${queryKey}`, `${operator}`, queryValue),
+        where(`${secondQueryKey}`, `${secondOperator}`, secondQueryValue)
       )
     );
-    return querySnapshot;
   }
 };
 
 export const getFirestoreDocumentsWithPagination = async (
   collectionName,
   queryKey,
+  operator,
   queryValue,
   secondQueryKey,
+  secondOperator,
   secondQueryValue,
   orderByItem,
+  order,
   limitNumber
 ) => {
   if (!secondQueryKey && !secondQueryValue) {
-    const documentSnapshots = await getDocs(
+    console.log(typeof `${order}`);
+    return await getDocs(
       query(
         collection(db, `${collectionName}`),
-        where(`${queryKey}`, "==", queryValue),
-        orderBy(`${orderByItem}`),
+        where(`${queryKey}`, `${operator}`, queryValue),
+        orderBy(`${orderByItem}`, `${order}`),
         limit(limitNumber)
       )
     );
-    return documentSnapshots;
   } else {
-    const documentSnapshots = await getDocs(
+    return await getDocs(
       query(
         collection(db, `${collectionName}`),
-        where(`${queryKey}`, "==", queryValue),
-        where(`${secondQueryKey}`, "==", secondQueryValue),
-        orderBy(`${orderByItem}`),
+        where(`${queryKey}`, `${operator}`, queryValue),
+        where(`${secondQueryKey}`, `${secondOperator}`, secondQueryValue),
+        orderBy(`${orderByItem}`, `${order}`),
         limit(limitNumber)
       )
     );
-    return documentSnapshots;
   }
 };
 
 export const getFirestoreDocumentsForLoadMoreItems = async (
   collectionName,
   queryKey,
+  operator,
   queryValue,
   secondQueryKey,
+  secondOperator,
   secondQueryValue,
   orderByItem,
+  order,
   startAfterItem,
   limitNumber
 ) => {
   if (!secondQueryKey && !secondQueryValue) {
-    const nextDocumentSnapshots = await getDocs(
+    return await getDocs(
       query(
         collection(db, `${collectionName}`),
-        where(`${queryKey}`, "==", queryValue),
-        orderBy(`${orderByItem}`),
+        where(`${queryKey}`, `${operator}`, queryValue),
+        orderBy(`${orderByItem}`, `${order}`),
         startAfter(startAfterItem),
         limit(limitNumber)
       )
     );
-    return nextDocumentSnapshots;
   } else {
-    const nextDocumentSnapshots = await getDocs(
+    return await getDocs(
       query(
         collection(db, `${collectionName}`),
-        where(`${queryKey}`, "==", queryValue),
-        where(`${secondQueryKey}`, "==", secondQueryValue),
-        orderBy(`${orderByItem}`),
+        where(`${queryKey}`, `${operator}`, queryValue),
+        where(`${secondQueryKey}`, `${secondOperator}`, secondQueryValue),
+        orderBy(`${orderByItem}`, `${order}`),
         startAfter(startAfterItem),
         limit(limitNumber)
       )
     );
-    return nextDocumentSnapshots;
+  }
+};
+
+export const getFirestoreDocumentsWithPagination2 = async (
+  collectionName,
+  queryKey,
+  operator,
+  queryValue,
+  secondQueryKey,
+  secondOperator,
+  secondQueryValue,
+  orderByItem,
+  limitNumber
+) => {
+  // console.log(`${collectionName}`);
+  // console.log(`${queryKey}`);
+  // console.log(`${operator}`);
+  // console.log(queryValue);
+  // console.log(`${orderByItem}`);
+  // console.log(limitNumber);
+  if (!secondQueryKey && !secondQueryValue) {
+    console.log("nothing");
+    const a = await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, `${operator}`, queryValue),
+        orderBy(`${orderByItem}`),
+        limit(limitNumber)
+      )
+    );
+    console.log("i", a);
+    return a;
+  } else {
+    return await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, `${operator}`, queryValue),
+        where(`${secondQueryKey}`, `${secondOperator}`, secondQueryValue),
+        orderBy(`${orderByItem}`),
+        limit(limitNumber)
+      )
+    );
+  }
+};
+
+export const getFirestoreDocumentsForLoadMoreItems2 = async (
+  collectionName,
+  queryKey,
+  operator,
+  queryValue,
+  secondQueryKey,
+  secondOperator,
+  secondQueryValue,
+  orderByItem,
+  order,
+  startAfterItem,
+  limitNumber
+) => {
+  if (!secondQueryKey && !secondQueryValue) {
+    return await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, `${operator}`, queryValue),
+        orderBy(`${orderByItem}`, `${order}`),
+        startAfter(startAfterItem),
+        limit(limitNumber)
+      )
+    );
+  } else {
+    return await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, `${operator}`, queryValue),
+        where(`${secondQueryKey}`, `${secondOperator}`, secondQueryValue),
+        orderBy(`${orderByItem}`, `${order}`),
+        startAfter(startAfterItem),
+        limit(limitNumber)
+      )
+    );
   }
 };
 

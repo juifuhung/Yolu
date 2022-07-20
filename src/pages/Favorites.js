@@ -6,8 +6,8 @@ import {
   getDisplayName,
   deleteFireStoreDocument,
   getFirestoreDocumentsWithQuery,
-  getFirestoreDocumentsWithPagination,
-  getFirestoreDocumentsForLoadMoreItems,
+  getFirestoreDocumentsWithPagination2,
+  getFirestoreDocumentsForLoadMoreItems2,
 } from "../utils/Firebase";
 import "../styles/yesOrNo.css";
 import Header from "../components/Header";
@@ -290,12 +290,12 @@ const categoryArray = [
 let localId;
 let displayName;
 let previousDocumentSnapshots;
-let categorySelected;
 
 const Favorites = () => {
   const [totalFavorites, setTotalFavorites] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState(categoryArray);
+  const [categorySelected, setCategorySelected] = useState(undefined);
   const [allCategoriesSelected, setAllCategoriesSelected] = useState(false);
 
   const currentUser = useAuth();
@@ -357,14 +357,20 @@ const Favorites = () => {
         querySnapshot = await getFirestoreDocumentsWithQuery(
           "Favorites",
           "localId",
-          `${localId}`
+          "==",
+          `${localId}`,
+          null,
+          null,
+          null
         );
       } else {
         querySnapshot = await getFirestoreDocumentsWithQuery(
           "Favorites",
           "localId",
+          "==",
           `${localId}`,
           "category",
+          "==",
           `${category}`
         );
       }
@@ -380,36 +386,43 @@ const Favorites = () => {
   };
 
   const getFavoritesWithPagination = async (localId, category) => {
+    setCategorySelected(category);
     let documentSnapshots;
     try {
       if (category) {
-        documentSnapshots = await getFirestoreDocumentsWithPagination(
+        documentSnapshots = await getFirestoreDocumentsWithPagination2(
           "Favorites",
           "localId",
+          "==",
           `${localId}`,
           "category",
+          "==",
           `${category}`,
-          "created_time",
+          "create_time",
           3
         );
       } else {
-        documentSnapshots = await getFirestoreDocumentsWithPagination(
+        console.log("ho");
+        documentSnapshots = await getFirestoreDocumentsWithPagination2(
           "Favorites",
           "localId",
+          "==",
           `${localId}`,
           null,
           null,
-          "created_time",
+          null,
+          "create_time",
           3
         );
+        console.log(456, documentSnapshots);
       }
 
+      console.log(123, documentSnapshots);
       let favoritesArray = [];
       documentSnapshots.forEach((doc) => {
         favoritesArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites(favoritesArray);
-      categorySelected = category;
       previousDocumentSnapshots = documentSnapshots;
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
@@ -424,24 +437,29 @@ const Favorites = () => {
         ];
       let nextDocumentSnapshots;
       if (category) {
-        nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems(
+        nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems2(
           "Favorites",
           "localId",
+          "==",
           localId,
           "category",
+          "==",
           category,
-          "created_time",
+          "create_time",
           lastVisible,
           3
         );
       } else {
-        nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems(
+        nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems2(
           "Favorites",
           "localId",
+          "==",
           localId,
           null,
           null,
-          "created_time",
+          null,
+          "title",
+          "create_time",
           lastVisible,
           3
         );
@@ -528,6 +546,7 @@ const Favorites = () => {
       <FavoritesHeaderContainer>
         <Header />
       </FavoritesHeaderContainer>
+      {console.log(favorites)}
       <FavoritesCoverSection>
         <FavoritesCoverTitle>
           <FavoritesCoverTitleWords>最愛清單</FavoritesCoverTitleWords>
