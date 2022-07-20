@@ -1,21 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
-import { initializeApp } from "firebase/app";
 import {
-  doc,
-  deleteDoc,
-  collection,
-  getDoc,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-  orderBy,
-  limit,
-  startAfter,
-} from "firebase/firestore";
-import { useAuth } from "../utils/Firebase";
+  useAuth,
+  getDisplayName,
+  deleteFireStoreDocument,
+  getFirestoreDocumentsWithQuery,
+  getFirestoreDocumentsWithPagination,
+  getFirestoreDocumentsForLoadMoreItems,
+} from "../utils/Firebase";
 import "../styles/yesOrNo.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -25,19 +18,6 @@ import FavoritesCover from "../images/favorites_cover.jpg";
 import TopIcon from "../images/top.png";
 import Loading from "../images/loading.gif";
 import NoItemImage from "../images/no_item_found.png";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
 
 const FavoritesHeaderContainer = styled.div`
   position: sticky;
@@ -323,11 +303,18 @@ const Favorites = () => {
     localId = currentUser.uid;
   }
 
-  const getDisplayName = async (localId) => {
+  const showDisplayName = async (localId) => {
     if (localId) {
-      const docSnap = await getDoc(doc(db, "User", `${localId}`));
-      displayName = docSnap.data().name;
+      displayName = await getDisplayName("User", localId);
     }
+  };
+
+  const scrollToTop = () => {
+    window.scroll({ top: 0, behavior: "smooth" });
+  };
+
+  const scrollTo250PxFromTop = () => {
+    window.scroll({ top: 250, behavior: "smooth" });
   };
 
   const observer = useRef();
@@ -354,31 +341,37 @@ const Favorites = () => {
   }, []);
 
   useEffect(() => {
-    getDisplayName(localId);
+    showDisplayName(localId);
     getTotalFavorites(localId);
     getFavoritesWithPagination(localId);
   }, [localId]);
 
   useEffect(() => {
-    window.scroll({ top: 0, behavior: "smooth" });
+    scrollToTop();
   }, []);
 
   const getTotalFavorites = async (localId, category) => {
-    let totalFavoritesItems;
-    if (!category || category === "undefined") {
-      totalFavoritesItems = query(
-        collection(db, "Favorites"),
-        where("localId", "==", `${localId}`)
-      );
-    } else {
-      totalFavoritesItems = query(
-        collection(db, "Favorites"),
-        where("localId", "==", `${localId}`),
-        where("category", "==", `${category}`)
-      );
+    let querySnapshot;
+    try {
+      if (!category || category === "undefined") {
+        querySnapshot = await getFirestoreDocumentsWithQuery(
+          "Favorites",
+          "localId",
+          `${localId}`
+        );
+      } else {
+        querySnapshot = await getFirestoreDocumentsWithQuery(
+          "Favorites",
+          "localId",
+          `${localId}`,
+          "category",
+          `${category}`
+        );
+      }
+    } catch (e) {
+      console.log(`Error getting total favorites: ${e}`);
     }
 
-    const querySnapshot = await getDocs(totalFavoritesItems);
     let totalFavoritesArray = [];
     querySnapshot.forEach((doc) => {
       totalFavoritesArray.push({ ...doc.data(), id: doc.id });
@@ -387,26 +380,30 @@ const Favorites = () => {
   };
 
   const getFavoritesWithPagination = async (localId, category) => {
-    let first;
+    let documentSnapshots;
     try {
       if (category) {
-        first = query(
-          collection(db, "Favorites"),
-          where("localId", "==", localId),
-          where("category", "==", `${category}`),
-          orderBy("created_time"),
-          limit(3)
+        documentSnapshots = await getFirestoreDocumentsWithPagination(
+          "Favorites",
+          "localId",
+          `${localId}`,
+          "category",
+          `${category}`,
+          "created_time",
+          3
         );
       } else {
-        first = query(
-          collection(db, "Favorites"),
-          where("localId", "==", `${localId}`),
-          orderBy("created_time"),
-          limit(3)
+        documentSnapshots = await getFirestoreDocumentsWithPagination(
+          "Favorites",
+          "localId",
+          `${localId}`,
+          null,
+          null,
+          "created_time",
+          3
         );
       }
 
-      const documentSnapshots = await getDocs(first);
       let favoritesArray = [];
       documentSnapshots.forEach((doc) => {
         favoritesArray.push({ ...doc.data(), id: doc.id });
@@ -425,27 +422,31 @@ const Favorites = () => {
         previousDocumentSnapshots.docs[
           previousDocumentSnapshots.docs.length - 1
         ];
-      let next;
+      let nextDocumentSnapshots;
       if (category) {
-        next = query(
-          collection(db, "Favorites"),
-          where("localId", "==", localId),
-          where("category", "==", category),
-          orderBy("created_time"),
-          startAfter(lastVisible),
-          limit(3)
+        nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems(
+          "Favorites",
+          "localId",
+          localId,
+          "category",
+          category,
+          "created_time",
+          lastVisible,
+          3
         );
       } else {
-        next = query(
-          collection(db, "Favorites"),
-          where("localId", "==", localId),
-          orderBy("created_time"),
-          startAfter(lastVisible),
-          limit(3)
+        nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems(
+          "Favorites",
+          "localId",
+          localId,
+          null,
+          null,
+          "created_time",
+          lastVisible,
+          3
         );
       }
 
-      const nextDocumentSnapshots = await getDocs(next);
       let newFavoritesArray = [];
       nextDocumentSnapshots.forEach((doc) => {
         newFavoritesArray.push({ ...doc.data(), id: doc.id });
@@ -459,7 +460,7 @@ const Favorites = () => {
     }
   };
 
-  const deleteHandler = (id, category) => {
+  const deleteHandler = (id) => {
     try {
       Swal.fire({
         title: "確定移出最愛清單？",
@@ -471,20 +472,15 @@ const Favorites = () => {
         cancelButtonText: "否",
       }).then((result) => {
         if (result.isConfirmed) {
-          deleteDoc(doc(db, "Favorites", `${id}`));
+          deleteFireStoreDocument("Favorites", `${id}`);
           Swal.fire({
             title: "已移除",
             icon: "success",
             confirmButtonColor: "#3085d6",
           });
-          window.scroll({ top: 0, behavior: "smooth" });
-          if (!categorySelected) {
-            getTotalFavorites(localId);
-            getFavoritesWithPagination(localId);
-          } else {
-            getTotalFavorites(localId, category);
-            getFavoritesWithPagination(localId, category);
-          }
+          scrollToTop();
+          getTotalFavorites(localId);
+          getFavoritesWithPagination(localId);
         }
       });
     } catch (e) {
@@ -497,7 +493,7 @@ const Favorites = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
-    window.scroll({ top: 420, behavior: "smooth" });
+    scrollTo250PxFromTop();
   };
 
   const sortFromNewToOld = () => {
@@ -505,7 +501,7 @@ const Favorites = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setFavorites(newToOldArray);
-    window.scroll({ top: 250, behavior: "smooth" });
+    scrollTo250PxFromTop();
   };
 
   const selectionHandler = (i) => {
@@ -518,13 +514,13 @@ const Favorites = () => {
       }
     });
     setCategories(newCategoryArray);
-    window.scroll({ top: 250, behavior: "smooth" });
+    scrollTo250PxFromTop();
   };
 
   const categorySelectionHandler = () => {
     setAllCategoriesSelected(true);
     setCategories(categoryArray);
-    window.scroll({ top: 250, behavior: "smooth" });
+    scrollTo250PxFromTop();
   };
 
   return (
@@ -620,7 +616,7 @@ const Favorites = () => {
       </BodyContainer>
       <TopButton
         onClick={() => {
-          window.scroll({ top: 0, behavior: "smooth" });
+          scrollToTop();
         }}
       />
       <Footer />

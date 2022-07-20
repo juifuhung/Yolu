@@ -13,12 +13,15 @@ import {
   getFirestore,
   getDocs,
   collection,
-  // getDoc,
+  getDoc,
   doc,
   addDoc,
   deleteDoc,
   query,
   where,
+  orderBy,
+  limit,
+  startAfter,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -62,6 +65,11 @@ export const useAuth = () => {
   return currentUser;
 };
 
+export const getDisplayName = async (collectionName, localId) => {
+  const docSnap = await getDoc(doc(db, `${collectionName}`, `${localId}`));
+  return docSnap.data().name;
+};
+
 export const getFirestoreDocuments = async (collectionName) => {
   const querySnapshot = await getDocs(collection(db, `${collectionName}`));
   return querySnapshot;
@@ -74,15 +82,97 @@ export const addDocumentToFirestore = async (collectionName, obj) => {
 export const getFirestoreDocumentsWithQuery = async (
   collectionName,
   queryKey,
-  queryValue
+  queryValue,
+  secondQueryKey,
+  secondQueryValue
 ) => {
-  const querySnapshot = await getDocs(
-    query(
-      collection(db, `${collectionName}`),
-      where(`${queryKey}`, "==", queryValue)
-    )
-  );
-  return querySnapshot;
+  if (!secondQueryKey && !secondQueryValue) {
+    const querySnapshot = await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, "==", queryValue)
+      )
+    );
+    return querySnapshot;
+  } else {
+    const querySnapshot = await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, "==", queryValue),
+        where(`${secondQueryKey}`, "==", secondQueryValue)
+      )
+    );
+    return querySnapshot;
+  }
+};
+
+export const getFirestoreDocumentsWithPagination = async (
+  collectionName,
+  queryKey,
+  queryValue,
+  secondQueryKey,
+  secondQueryValue,
+  orderByItem,
+  limitNumber
+) => {
+  if (!secondQueryKey && !secondQueryValue) {
+    const documentSnapshots = await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, "==", queryValue),
+        orderBy(`${orderByItem}`),
+        limit(limitNumber)
+      )
+    );
+    return documentSnapshots;
+  } else {
+    const documentSnapshots = await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, "==", queryValue),
+        where(`${secondQueryKey}`, "==", secondQueryValue),
+        orderBy(`${orderByItem}`),
+        limit(limitNumber)
+      )
+    );
+    return documentSnapshots;
+  }
+};
+
+export const getFirestoreDocumentsForLoadMoreItems = async (
+  collectionName,
+  queryKey,
+  queryValue,
+  secondQueryKey,
+  secondQueryValue,
+  orderByItem,
+  startAfterItem,
+  limitNumber
+) => {
+  if (!secondQueryKey && !secondQueryValue) {
+    const nextDocumentSnapshots = await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, "==", queryValue),
+        orderBy(`${orderByItem}`),
+        startAfter(startAfterItem),
+        limit(limitNumber)
+      )
+    );
+    return nextDocumentSnapshots;
+  } else {
+    const nextDocumentSnapshots = await getDocs(
+      query(
+        collection(db, `${collectionName}`),
+        where(`${queryKey}`, "==", queryValue),
+        where(`${secondQueryKey}`, "==", secondQueryValue),
+        orderBy(`${orderByItem}`),
+        startAfter(startAfterItem),
+        limit(limitNumber)
+      )
+    );
+    return nextDocumentSnapshots;
+  }
 };
 
 export const deleteFireStoreDocument = async (collectionName, id) => {
