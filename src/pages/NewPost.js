@@ -217,8 +217,12 @@ const Post = () => {
   }, [localId]);
 
   const showDisplayName = async (localId) => {
-    if (localId) {
-      setDisplayName(await getDisplayName("User", localId));
+    try {
+      if (localId) {
+        setDisplayName(await getDisplayName("User", localId));
+      }
+    } catch (e) {
+      console.error(`Error getting displayName: ${e}`);
     }
   };
 
@@ -271,7 +275,7 @@ const Post = () => {
           navigate(`/article/${articleId}`);
         }
       } catch (e) {
-        console.log("error", e);
+        console.log(`Error submitting new post: ${e}`);
       }
     }
   };

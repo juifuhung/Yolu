@@ -269,9 +269,13 @@ const Article = () => {
   }
 
   const getArticle = async () => {
-    const docSnap = await getFirestoreDocument("Post", `${params.articleId}`);
-    setArticle(docSnap.data());
-    setTimestamp(docSnap.data().created_time.toDate());
+    try {
+      const docSnap = await getFirestoreDocument("Post", `${params.articleId}`);
+      setArticle(docSnap.data());
+      setTimestamp(docSnap.data().created_time.toDate());
+    } catch (e) {
+      console.error(`Error getting article: ${e}`);
+    }
   };
 
   useEffect(() => {

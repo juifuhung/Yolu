@@ -205,19 +205,27 @@ const EditPost = () => {
   }
 
   const showDisplayName = async (localId) => {
-    if (localId) {
-      setDisplayName(await getDisplayName("User", localId));
+    try {
+      if (localId) {
+        setDisplayName(await getDisplayName("User", localId));
+      }
+    } catch (e) {
+      console.error(`Error getting displayName: ${e}`);
     }
   };
 
   const params = useParams();
 
   const getArticle = async () => {
-    const docSnap = await getFirestoreDocument("Post", params.articleId);
-    setTagArray(docSnap.data().fullTagArray);
-    setEnteredTitle(docSnap.data().title);
-    setEnteredContent(docSnap.data().content);
-    setTimestamp(docSnap.data().created_time.toDate());
+    try {
+      const docSnap = await getFirestoreDocument("Post", params.articleId);
+      setTagArray(docSnap.data().fullTagArray);
+      setEnteredTitle(docSnap.data().title);
+      setEnteredContent(docSnap.data().content);
+      setTimestamp(docSnap.data().created_time.toDate());
+    } catch (e) {
+      console.error(`Error getting article: ${e}`);
+    }
   };
 
   const handleFormSubmit = (event) => {
@@ -242,19 +250,15 @@ const EditPost = () => {
         title: `請選擇標籤`,
       });
     } else {
-      try {
-        updateFirestoreDocument("Post", params.articleId, {
-          title: enteredTitle,
-          content: enteredContent,
-          fullTagArray: tagArray,
-          created_time: new Date(),
-          localId: localId,
-          displayName: displayName,
-        });
-        navigate(`/article/${params.articleId}`);
-      } catch (e) {
-        console.log("error", e);
-      }
+      updateFirestoreDocument("Post", params.articleId, {
+        title: enteredTitle,
+        content: enteredContent,
+        fullTagArray: tagArray,
+        created_time: new Date(),
+        localId: localId,
+        displayName: displayName,
+      });
+      navigate(`/article/${params.articleId}`);
     }
   };
 

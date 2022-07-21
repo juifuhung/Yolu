@@ -186,10 +186,14 @@ const Member = () => {
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    if (isLogin) {
-      await signInHandler();
-    } else {
-      await signUpHandler();
+    try {
+      if (isLogin) {
+        await signInHandler();
+      } else {
+        await signUpHandler();
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 

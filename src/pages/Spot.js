@@ -311,7 +311,7 @@ const Spot = () => {
       setSpots(spotsArray);
       previousDocumentSnapshots = documentSnapshots;
     } catch (e) {
-      console.error("Error getting article documents: ", e);
+      console.error(`Error getting article documents: ${e}`);
     }
   };
 
@@ -347,16 +347,20 @@ const Spot = () => {
       });
       previousDocumentSnapshots = nextDocumentSnapshots;
     } catch (e) {
-      console.error("Error getting more article documents: ", e);
+      console.error(`Error getting more article documents: ${e}`);
     }
   };
 
   const getCoverPhoto = async () => {
-    const docSnap = await getFirestoreDocument(
-      "SpotsCoverPhoto",
-      `${params.spot}`
-    );
-    setCoverPhoto(docSnap.data().image);
+    try {
+      const docSnap = await getFirestoreDocument(
+        "SpotsCoverPhoto",
+        `${params.spot}`
+      );
+      setCoverPhoto(docSnap.data().image);
+    } catch (e) {
+      console.error(`Error getting cover photo: ${e}`);
+    }
   };
 
   useEffect(() => {

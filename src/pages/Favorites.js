@@ -312,8 +312,12 @@ const Favorites = () => {
   }
 
   const showDisplayName = async (localId) => {
-    if (localId) {
-      setDisplayName(await getDisplayName("User", localId));
+    try {
+      if (localId) {
+        setDisplayName(await getDisplayName("User", localId));
+      }
+    } catch (e) {
+      console.error(`Error getting displayName: ${e}`);
     }
   };
 
@@ -472,31 +476,27 @@ const Favorites = () => {
   };
 
   const deleteHandler = (id) => {
-    try {
-      Swal.fire({
-        title: "確定移出最愛清單？",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "是，請移除",
-        cancelButtonText: "否",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          deleteFireStoreDocument("Favorites", `${id}`);
-          Swal.fire({
-            title: "已移除",
-            icon: "success",
-            confirmButtonColor: "#3085d6",
-          });
-          scrollToTop();
-          getTotalFavorites(localId);
-          getFavoritesWithPagination(localId);
-        }
-      });
-    } catch (e) {
-      console.error("Error deleting document: ", e);
-    }
+    Swal.fire({
+      title: "確定移出最愛清單？",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "是，請移除",
+      cancelButtonText: "否",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteFireStoreDocument("Favorites", `${id}`);
+        Swal.fire({
+          title: "已移除",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+        });
+        scrollToTop();
+        getTotalFavorites(localId);
+        getFavoritesWithPagination(localId);
+      }
+    });
   };
 
   const sortFromOldToNew = () => {
