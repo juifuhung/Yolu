@@ -252,6 +252,10 @@ const ViewAllCategoriesButton = styled(Link)`
 
 let localId;
 
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
 const Article = () => {
   const [article, setArticle] = useState({});
   const [timestamp, setTimestamp] = useState();
@@ -268,10 +272,6 @@ const Article = () => {
     const docSnap = await getFirestoreDocument("Post", `${params.articleId}`);
     setArticle(docSnap.data());
     setTimestamp(docSnap.data().created_time.toDate());
-  };
-
-  const scrollToTop = () => {
-    window.scroll({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {

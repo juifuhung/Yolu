@@ -257,6 +257,10 @@ const AllArticleButton = styled(Link)`
 
 let previousDocumentSnapshots;
 
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
 const Spot = () => {
   const [spots, setSpots] = useState([]);
   const [newToOldSelected, setNewToOldSelected] = useState(false);
@@ -266,20 +270,14 @@ const Spot = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const scrollToTop = () => {
-    window.scroll({ top: 0, behavior: "smooth" });
-  };
-
   const observer = useRef();
   const lastSpotItem = useCallback((node) => {
     if (observer.current) {
       observer.current.disconnect();
     }
     observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        if (previousDocumentSnapshots) {
-          loadMoreItems();
-        }
+      if (entries[0].isIntersecting && previousDocumentSnapshots) {
+        loadMoreItems();
         return;
       }
     });
@@ -323,8 +321,7 @@ const Spot = () => {
         previousDocumentSnapshots.docs[
           previousDocumentSnapshots.docs.length - 1
         ];
-      let nextDocumentSnapshots;
-      nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems(
+      let nextDocumentSnapshots = await getFirestoreDocumentsForLoadMoreItems(
         "Post",
         "fullTagArray",
         "array-contains",

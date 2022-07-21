@@ -246,14 +246,6 @@ export const favoritesLoadMoreItems = async (
       )
     );
   } else {
-    console.log(2 + `${collectionName}`);
-    console.log(2 + `${queryKey}`);
-    console.log(2 + `${operator}`);
-    console.log(2 + queryValue);
-    console.log(2 + `${secondQueryKey}`);
-    console.log(2 + `${secondOperator}`);
-    console.log(2 + secondQueryValue);
-    console.log(2 + `${orderByItem}`);
     return await getDocs(
       query(
         collection(db, `${collectionName}`),

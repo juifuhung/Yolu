@@ -119,6 +119,10 @@ const Button = styled.button`
   }
 `;
 
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
 const Member = () => {
   const [enteredName, setEnteredName] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
@@ -126,7 +130,7 @@ const Member = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   useEffect(() => {
-    window.scroll({ top: 0, behavior: "smooth" });
+    scrollToTop();
   }, []);
 
   const isLoginHandler = () => {

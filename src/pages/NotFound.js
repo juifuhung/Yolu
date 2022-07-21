@@ -91,9 +91,13 @@ const HomepageButton = styled(Link)`
   }
 `;
 
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
 const NotFound = () => {
   useEffect(() => {
-    window.scroll({ top: 0, behavior: "smooth" });
+    scrollToTop();
   }, []);
 
   return (

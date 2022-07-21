@@ -295,21 +295,17 @@ const CategoryTitle = styled(Link)`
 
   @keyframes title-slide-from-right {
     from {
-      opacity: 0;
       right: -100px;
     }
     to {
-      opacity: 1;
       right: 9%;
     }
   }
   @keyframes title-slide-from-left {
     from {
-      opacity: 0;
       left: -100px;
     }
     to {
-      opacity: 1;
       left: 9%;
     }
   }
@@ -501,6 +497,21 @@ const IntroMessage = styled.p`
 
 let localId;
 
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
+const displayMessage = () => {
+  if (!localId) {
+    Swal.fire({
+      icon: "error",
+      title: "請先登入",
+      confirmButtonColor: "#3085d6",
+      footer: '<a href="/member">前往登入頁面</a>',
+    });
+  }
+};
+
 const Homepage = () => {
   const [index, setIndex] = useState(0);
   const [mapVisible, setMapVisible] = useState("false");
@@ -517,7 +528,7 @@ const Homepage = () => {
   }
 
   useEffect(() => {
-    window.scroll({ top: 0, behavior: "smooth" });
+    scrollToTop();
   }, []);
 
   const options = {
@@ -587,17 +598,6 @@ const Homepage = () => {
       resetTimeout();
     };
   }, [index]);
-
-  const displayMessage = () => {
-    if (!localId) {
-      Swal.fire({
-        icon: "error",
-        title: "請先登入",
-        confirmButtonColor: "#3085d6",
-        footer: '<a href="/member">前往登入頁面</a>',
-      });
-    }
-  };
 
   return (
     <>

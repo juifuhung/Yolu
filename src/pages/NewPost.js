@@ -166,6 +166,39 @@ const SubmitButton = styled.button`
 let localId;
 let articleId;
 
+const API_URl = "https://noteyard-backend.herokuapp.com";
+const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
+
+const uploadAdapter = (loader) => {
+  return {
+    upload: () => {
+      return new Promise((resolve, reject) => {
+        const body = new FormData();
+        loader.file.then((file) => {
+          body.append("uploadImg", file);
+          fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
+            method: "post",
+            body: body,
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              resolve({ default: `${API_URl}/${res.url}` });
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        });
+      });
+    },
+  };
+};
+
+const uploadPlugin = (editor) => {
+  editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+    return uploadAdapter(loader);
+  };
+};
+
 const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
   const [displayName, setDisplayName] = useState("");
@@ -182,39 +215,6 @@ const Post = () => {
   useEffect(() => {
     showDisplayName(localId);
   }, [localId]);
-
-  const API_URl = "https://noteyard-backend.herokuapp.com";
-  const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
-
-  function uploadAdapter(loader) {
-    return {
-      upload: () => {
-        return new Promise((resolve, reject) => {
-          const body = new FormData();
-          loader.file.then((file) => {
-            body.append("uploadImg", file);
-            fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
-              method: "post",
-              body: body,
-            })
-              .then((res) => res.json())
-              .then((res) => {
-                resolve({ default: `${API_URl}/${res.url}` });
-              })
-              .catch((err) => {
-                reject(err);
-              });
-          });
-        });
-      },
-    };
-  }
-
-  function uploadPlugin(editor) {
-    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-      return uploadAdapter(loader);
-    };
-  }
 
   const showDisplayName = async (localId) => {
     if (localId) {

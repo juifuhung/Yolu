@@ -307,6 +307,23 @@ const categoryArray = [
 ];
 
 let localId;
+const center = { lat: 66.536772, lng: 25.779681 };
+
+const addToFavorite = async (obj) => {
+  try {
+    await addDocumentToFirestore("Favorites", obj);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+
+const deleteHandler = async (id) => {
+  try {
+    await deleteFireStoreDocument("Favorites", `${id}`);
+  } catch (e) {
+    console.error("Error deleting document: ", e);
+  }
+};
 
 const Map = () => {
   const [allSpots, setAllSpots] = useState([]);
@@ -318,8 +335,6 @@ const Map = () => {
   if (currentUser) {
     localId = currentUser.uid;
   }
-
-  const center = { lat: 66.536772, lng: 25.779681 };
 
   const showFavoriteHandler = () => {
     setShowFavorites(true);
@@ -363,22 +378,6 @@ const Map = () => {
     getData();
     getFavorites();
   }, [localId]);
-
-  const deleteHandler = async (id) => {
-    try {
-      await deleteFireStoreDocument("Favorites", `${id}`);
-    } catch (e) {
-      console.error("Error deleting document: ", e);
-    }
-  };
-
-  const addToFavorite = async (obj) => {
-    try {
-      await addDocumentToFirestore("Favorites", obj);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  };
 
   const categoryHandler = async (category) => {
     setShowFavorites(false);

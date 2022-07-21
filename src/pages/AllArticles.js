@@ -188,6 +188,21 @@ const Label = styled.h2`
 
 let localId;
 
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
+const newPostHandler = () => {
+  if (!localId) {
+    Swal.fire({
+      icon: "error",
+      title: "請先登入",
+      confirmButtonColor: "#3085d6",
+      footer: '<a href="/member">前往登入頁面</a>',
+    });
+  }
+};
+
 const AllArticles = () => {
   const [allSpots, setAllSpots] = useState([]);
 
@@ -209,25 +224,10 @@ const AllArticles = () => {
     }
   };
 
-  const scrollToTop = () => {
-    window.scroll({ top: 0, behavior: "smooth" });
-    getData();
-  };
-
   useEffect(() => {
     scrollToTop();
+    getData();
   }, []);
-
-  const newPostHandler = () => {
-    if (!localId) {
-      Swal.fire({
-        icon: "error",
-        title: "請先登入",
-        confirmButtonColor: "#3085d6",
-        footer: '<a href="/member">前往登入頁面</a>',
-      });
-    }
-  };
 
   return (
     <>

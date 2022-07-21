@@ -291,6 +291,14 @@ let localId;
 let previousDocumentSnapshots;
 let categorySelected;
 
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
+const scrollTo250PxFromTop = () => {
+  window.scroll({ top: 250, behavior: "smooth" });
+};
+
 const Favorites = () => {
   const [displayName, setDisplayName] = useState("");
   const [totalFavorites, setTotalFavorites] = useState([]);
@@ -309,14 +317,6 @@ const Favorites = () => {
     }
   };
 
-  const scrollToTop = () => {
-    window.scroll({ top: 0, behavior: "smooth" });
-  };
-
-  const scrollTo250PxFromTop = () => {
-    window.scroll({ top: 250, behavior: "smooth" });
-  };
-
   const observer = useRef();
   const lastFavoriteItem = useCallback((node) => {
     if (observer.current) {
@@ -329,7 +329,6 @@ const Favorites = () => {
         } else {
           loadMoreItems();
         }
-
         return;
       }
     });
