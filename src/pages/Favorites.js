@@ -289,13 +289,13 @@ const categoryArray = [
 
 let localId;
 let previousDocumentSnapshots;
+let categorySelected;
 
 const Favorites = () => {
   const [displayName, setDisplayName] = useState("");
   const [totalFavorites, setTotalFavorites] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState(categoryArray);
-  const [categorySelected, setCategorySelected] = useState(undefined);
   const [allCategoriesSelected, setAllCategoriesSelected] = useState(false);
 
   const currentUser = useAuth();
@@ -323,13 +323,11 @@ const Favorites = () => {
       observer.current.disconnect();
     }
     observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        if (previousDocumentSnapshots) {
-          if (categorySelected) {
-            loadMoreItems(categorySelected);
-          } else {
-            loadMoreItems();
-          }
+      if (entries[0].isIntersecting && previousDocumentSnapshots) {
+        if (categorySelected) {
+          loadMoreItems(categorySelected);
+        } else {
+          loadMoreItems();
         }
 
         return;
@@ -375,7 +373,7 @@ const Favorites = () => {
         );
       }
     } catch (e) {
-      console.log(`Error getting total favorites: ${e}`);
+      console.error(`Error getting total favorites: ${e}`);
     }
 
     let totalFavoritesArray = [];
@@ -386,7 +384,6 @@ const Favorites = () => {
   };
 
   const getFavoritesWithPagination = async (localId, category) => {
-    setCategorySelected(category);
     let documentSnapshots;
     try {
       if (!category) {
@@ -402,6 +399,7 @@ const Favorites = () => {
           3
         );
       } else {
+        categorySelected = category;
         documentSnapshots = await favoritesGetFirestoreDocumentsWithPagination(
           "Favorites",
           "localId",
@@ -605,7 +603,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.photo}
+                    img={item.img}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />
@@ -619,7 +617,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.photo}
+                    img={item.img}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />
