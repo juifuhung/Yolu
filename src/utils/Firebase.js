@@ -235,7 +235,7 @@ export const favoritesLoadMoreItems = async (
   startAfterItem,
   limitNumber
 ) => {
-  if (!secondQueryKey && !secondQueryValue) {
+  if (!secondQueryKey && !secondOperator && !secondQueryValue) {
     return await getDocs(
       query(
         collection(db, `${collectionName}`),

@@ -437,43 +437,45 @@ const Favorites = () => {
         previousDocumentSnapshots.docs[
           previousDocumentSnapshots.docs.length - 1
         ];
-      let nextDocumentSnapshots;
-      if (!category) {
-        nextDocumentSnapshots = await favoritesLoadMoreItems(
-          "Favorites",
-          "localId",
-          "==",
-          localId,
-          null,
-          null,
-          null,
-          "created_time",
-          lastVisible,
-          3
-        );
-      } else {
-        nextDocumentSnapshots = await favoritesLoadMoreItems(
-          "Favorites",
-          "localId",
-          "==",
-          localId,
-          "category",
-          "==",
-          category,
-          "created_time",
-          lastVisible,
-          3
-        );
-      }
+      if (lastVisible) {
+        let nextDocumentSnapshots;
+        if (!category) {
+          nextDocumentSnapshots = await favoritesLoadMoreItems(
+            "Favorites",
+            "localId",
+            "==",
+            localId,
+            null,
+            null,
+            null,
+            "created_time",
+            lastVisible,
+            3
+          );
+        } else {
+          nextDocumentSnapshots = await favoritesLoadMoreItems(
+            "Favorites",
+            "localId",
+            "==",
+            localId,
+            "category",
+            "==",
+            category,
+            "created_time",
+            lastVisible,
+            3
+          );
+        }
 
-      let newFavoritesArray = [];
-      nextDocumentSnapshots.forEach((doc) => {
-        newFavoritesArray.push({ ...doc.data(), id: doc.id });
-      });
-      setFavorites((prevFavorites) => {
-        return [...prevFavorites, ...newFavoritesArray];
-      });
-      previousDocumentSnapshots = nextDocumentSnapshots;
+        let newFavoritesArray = [];
+        nextDocumentSnapshots.forEach((doc) => {
+          newFavoritesArray.push({ ...doc.data(), id: doc.id });
+        });
+        setFavorites((prevFavorites) => {
+          return [...prevFavorites, ...newFavoritesArray];
+        });
+        previousDocumentSnapshots = nextDocumentSnapshots;
+      }
     } catch (e) {
       console.error("Error getting more favorite documents: ", e);
     }
