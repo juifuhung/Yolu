@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import striptags from "striptags";
-import { Link } from "react-router-dom";
 
 const SpotItemLink = styled(Link)`
   color: black;

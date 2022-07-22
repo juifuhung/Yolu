@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import { Font } from "../styles/styles";
 import { useAuth, logOut } from "../utils/Firebase";
-import Swal from "sweetalert2";
 import headerLogo from "../images/header-yolu.png";
 import webMemberIcon from "../images/web-member-icon.png";
 import mobileMemberLoginIcon from "../images/mobile-member-login.png";
@@ -195,31 +195,31 @@ const MobileMember = styled(Link)`
 
 let localId;
 
+const displayMessage = () => {
+  if (!localId) {
+    Swal.fire({
+      icon: "error",
+      title: "請先登入",
+      confirmButtonColor: "#3085d6",
+      footer: '<a href="/member">前往登入頁面</a>',
+    });
+  }
+};
+
+const logoutHandler = async () => {
+  try {
+    await logOut();
+    location.replace("./");
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 const Header = () => {
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
   }
-
-  const displayMessage = () => {
-    if (!localId) {
-      Swal.fire({
-        icon: "error",
-        title: "請先登入",
-        confirmButtonColor: "#3085d6",
-        footer: '<a href="/member">前往登入頁面</a>',
-      });
-    }
-  };
-
-  const logoutHandler = async () => {
-    try {
-      await logOut();
-      location.replace("./");
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   return (
     <>

@@ -1,24 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useAuth } from "../utils/Firebase";
 import Swal from "sweetalert2";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  doc,
-  getDoc,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import {
+  useAuth,
+  getDisplayName,
+  addDocumentToFirestore,
+  getFirestoreDocumentsWithQuery,
+} from "../utils/Firebase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-const db = getFirestore();
 
 const spots = [
   { title: "奧納斯山", state: false },
@@ -173,10 +166,43 @@ const SubmitButton = styled.button`
 let localId;
 let articleId;
 
+const API_URl = "https://noteyard-backend.herokuapp.com";
+const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
+
+const uploadAdapter = (loader) => {
+  return {
+    upload: () => {
+      return new Promise((resolve, reject) => {
+        const body = new FormData();
+        loader.file.then((file) => {
+          body.append("uploadImg", file);
+          fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
+            method: "post",
+            body: body,
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              resolve({ default: `${API_URl}/${res.url}` });
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        });
+      });
+    },
+  };
+};
+
+const uploadPlugin = (editor) => {
+  editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+    return uploadAdapter(loader);
+  };
+};
+
 const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
   const [displayName, setDisplayName] = useState("");
-  const [enteredTitle, setEnteredTitle] = useState("難忘的聖誕馴鹿雪橇體檢");
+  const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredContent, setEnteredContent] = useState("");
 
   const currentUser = useAuth();
@@ -187,45 +213,17 @@ const Post = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getDisplayName(localId);
+    showDisplayName(localId);
   }, [localId]);
 
-  const API_URl = "https://noteyard-backend.herokuapp.com";
-  const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
-
-  function uploadAdapter(loader) {
-    return {
-      upload: () => {
-        return new Promise((resolve, reject) => {
-          const body = new FormData();
-          loader.file.then((file) => {
-            body.append("uploadImg", file);
-            fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
-              method: "post",
-              body: body,
-            })
-              .then((res) => res.json())
-              .then((res) => {
-                resolve({ default: `${API_URl}/${res.url}` });
-              })
-              .catch((err) => {
-                reject(err);
-              });
-          });
-        });
-      },
-    };
-  }
-
-  function uploadPlugin(editor) {
-    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-      return uploadAdapter(loader);
-    };
-  }
-
-  const getDisplayName = async (localId) => {
-    const docSnap = await getDoc(doc(db, "User", `${localId}`));
-    setDisplayName(docSnap.data().name);
+  const showDisplayName = async (localId) => {
+    try {
+      if (localId) {
+        setDisplayName(await getDisplayName("User", localId));
+      }
+    } catch (e) {
+      console.error(`Error getting displayName: ${e}`);
+    }
   };
 
   const handleFormSubmit = async (event) => {
@@ -251,7 +249,7 @@ const Post = () => {
       });
     } else {
       try {
-        await addDoc(collection(db, "Post"), {
+        await addDocumentToFirestore("Post", {
           title: enteredTitle,
           content: enteredContent,
           fullTagArray: tagArray,
@@ -260,12 +258,15 @@ const Post = () => {
           displayName: displayName,
         });
 
-        const q = query(
-          collection(db, "Post"),
-          where("title", "==", enteredTitle),
-          where("localId", "==", localId)
+        const querySnapshot = await getFirestoreDocumentsWithQuery(
+          "Post",
+          "title",
+          "==",
+          enteredTitle,
+          "localId",
+          "==",
+          localId
         );
-        const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
           articleId = doc.id;
         });
@@ -274,7 +275,7 @@ const Post = () => {
           navigate(`/article/${articleId}`);
         }
       } catch (e) {
-        console.log("error", e);
+        console.log(`Error submitting new post: ${e}`);
       }
     }
   };
@@ -316,7 +317,7 @@ const Post = () => {
               extraPlugins: [uploadPlugin],
             }}
             editor={ClassicEditor}
-            data="今天居然跑去體驗馴鹿雪橇！跟聖誕老人搭同一種交通工具超酷的。"
+            data=""
             onChange={(event, editor) => {
               const data = editor.getData();
               setEnteredContent(data);
@@ -324,19 +325,17 @@ const Post = () => {
           />
           <TagTitle>選擇標籤</TagTitle>
           <TagContainer>
-            {tagArray.map((item, index) => {
-              return (
-                <Tag
-                  key={item.title}
-                  state={item.state}
-                  onClick={() => {
-                    chooseTagHandler(index);
-                  }}
-                >
-                  {item.title}
-                </Tag>
-              );
-            })}
+            {tagArray.map((item, index) => (
+              <Tag
+                key={item.title}
+                state={item.state}
+                onClick={() => {
+                  chooseTagHandler(index);
+                }}
+              >
+                {item.title}
+              </Tag>
+            ))}
           </TagContainer>
           <ButtonContainer>
             <SubmitButton>發表</SubmitButton>

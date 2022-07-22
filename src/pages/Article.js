@@ -1,28 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import parse from "html-react-parser";
 import Swal from "sweetalert2";
-import "../styles/yesOrNo.css";
-import { initializeApp } from "firebase/app";
-import { doc, getFirestore, getDoc, deleteDoc } from "firebase/firestore";
+import parse from "html-react-parser";
+import {
+  useAuth,
+  getFirestoreDocument,
+  deleteFireStoreDocument,
+} from "../utils/Firebase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
+import "../styles/yesOrNo.css";
 
 const FavoritesHeaderContainer = styled.div`
   position: sticky;
@@ -263,9 +252,14 @@ const ViewAllCategoriesButton = styled(Link)`
 
 let localId;
 
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
 const Article = () => {
   const [article, setArticle] = useState({});
   const [timestamp, setTimestamp] = useState();
+
   const params = useParams();
   const navigate = useNavigate();
 
@@ -275,14 +269,17 @@ const Article = () => {
   }
 
   const getArticle = async () => {
-    const docRef = doc(db, "Post", `${params.articleId}`);
-    const docSnap = await getDoc(docRef);
-    setArticle(docSnap.data());
-    setTimestamp(docSnap.data().created_time.toDate());
+    try {
+      const docSnap = await getFirestoreDocument("Post", `${params.articleId}`);
+      setArticle(docSnap.data());
+      setTimestamp(docSnap.data().created_time.toDate());
+    } catch (e) {
+      console.error(`Error getting article: ${e}`);
+    }
   };
 
   useEffect(() => {
-    window.scroll({ top: 0, behavior: "smooth" });
+    scrollToTop();
     getArticle();
   }, []);
 
@@ -297,7 +294,7 @@ const Article = () => {
       cancelButtonText: "否",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteDoc(doc(db, "Post", `${params.articleId}`));
+        deleteFireStoreDocument("Post", `${params.articleId}`);
         Swal.fire({
           title: "遊記已刪除",
           icon: "success",

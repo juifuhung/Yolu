@@ -1,29 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useAuth } from "../utils/Firebase";
-import { initializeApp } from "firebase/app";
 import Swal from "sweetalert2";
-import { doc, getDoc, getFirestore, updateDoc } from "firebase/firestore";
+import {
+  useAuth,
+  getDisplayName,
+  getFirestoreDocument,
+  updateFirestoreDocument,
+} from "../utils/Firebase";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
-
-const falseState = (item) => item.state === false;
 
 const BodyContainer = styled.div`
   width: 100%;
@@ -167,6 +155,40 @@ const SubmitButton = styled.button`
 `;
 
 let localId;
+const falseState = (item) => item.state === false;
+
+const API_URl = "https://noteyard-backend.herokuapp.com";
+const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
+
+const uploadAdapter = (loader) => {
+  return {
+    upload: () => {
+      return new Promise((resolve, reject) => {
+        const body = new FormData();
+        loader.file.then((file) => {
+          body.append("uploadImg", file);
+          fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
+            method: "post",
+            body: body,
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              resolve({ default: `${API_URl}/${res.url}` });
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        });
+      });
+    },
+  };
+};
+
+const uploadPlugin = (editor) => {
+  editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+    return uploadAdapter(loader);
+  };
+};
 
 const EditPost = () => {
   const [tagArray, setTagArray] = useState([]);
@@ -182,55 +204,31 @@ const EditPost = () => {
     localId = currentUser.uid;
   }
 
-  const API_URl = "https://noteyard-backend.herokuapp.com";
-  const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
-
-  function uploadAdapter(loader) {
-    return {
-      upload: () => {
-        return new Promise((resolve, reject) => {
-          const body = new FormData();
-          loader.file.then((file) => {
-            body.append("uploadImg", file);
-            fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
-              method: "post",
-              body: body,
-            })
-              .then((res) => res.json())
-              .then((res) => {
-                resolve({ default: `${API_URl}/${res.url}` });
-              })
-              .catch((err) => {
-                reject(err);
-              });
-          });
-        });
-      },
-    };
-  }
-
-  function uploadPlugin(editor) {
-    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-      return uploadAdapter(loader);
-    };
-  }
-
-  const getDisplayName = async (localId) => {
-    const docSnap = await getDoc(doc(db, "User", `${localId}`));
-    setDisplayName(docSnap.data().name);
+  const showDisplayName = async (localId) => {
+    try {
+      if (localId) {
+        setDisplayName(await getDisplayName("User", localId));
+      }
+    } catch (e) {
+      console.error(`Error getting displayName: ${e}`);
+    }
   };
 
   const params = useParams();
 
   const getArticle = async () => {
-    const docSnap = await getDoc(doc(db, "Post", params.articleId));
-    setTagArray(docSnap.data().fullTagArray);
-    setEnteredTitle(docSnap.data().title);
-    setEnteredContent(docSnap.data().content);
-    setTimestamp(docSnap.data().created_time.toDate());
+    try {
+      const docSnap = await getFirestoreDocument("Post", params.articleId);
+      setTagArray(docSnap.data().fullTagArray);
+      setEnteredTitle(docSnap.data().title);
+      setEnteredContent(docSnap.data().content);
+      setTimestamp(docSnap.data().created_time.toDate());
+    } catch (e) {
+      console.error(`Error getting article: ${e}`);
+    }
   };
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
 
     if (enteredTitle === "") {
@@ -252,19 +250,15 @@ const EditPost = () => {
         title: `請選擇標籤`,
       });
     } else {
-      try {
-        await updateDoc(doc(db, "Post", params.articleId), {
-          title: enteredTitle,
-          content: enteredContent,
-          fullTagArray: tagArray,
-          created_time: new Date(),
-          localId: localId,
-          displayName: displayName,
-        });
-        navigate(`/article/${params.articleId}`);
-      } catch (e) {
-        console.log("error", e);
-      }
+      updateFirestoreDocument("Post", params.articleId, {
+        title: enteredTitle,
+        content: enteredContent,
+        fullTagArray: tagArray,
+        created_time: new Date(),
+        localId: localId,
+        displayName: displayName,
+      });
+      navigate(`/article/${params.articleId}`);
     }
   };
 
@@ -277,7 +271,7 @@ const EditPost = () => {
   }, []);
 
   useEffect(() => {
-    getDisplayName(localId);
+    showDisplayName(localId);
   }, [localId]);
 
   const chooseTagHandler = (index) => {

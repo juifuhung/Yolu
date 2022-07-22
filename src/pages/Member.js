@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { signUp, signIn } from "../utils/Firebase";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
 import Swal from "sweetalert2";
+import { signUp, signIn, setDocumentToFirestore } from "../utils/Firebase";
+import memberBackground from "../images/aurora_gif.gif";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import memberBackground from "../images/aurora_gif.gif";
 
 const MemberHeaderContainer = styled.div`
   position: sticky;
@@ -120,7 +119,9 @@ const Button = styled.button`
   }
 `;
 
-const db = getFirestore();
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
 
 const Member = () => {
   const [enteredName, setEnteredName] = useState("");
@@ -129,7 +130,7 @@ const Member = () => {
   const [isLogin, setIsLogin] = useState(true);
 
   useEffect(() => {
-    window.scroll({ top: 0, behavior: "smooth" });
+    scrollToTop();
   }, []);
 
   const isLoginHandler = () => {
@@ -139,7 +140,7 @@ const Member = () => {
   const signUpHandler = async () => {
     try {
       const result = await signUp(enteredEmail, enteredPassword);
-      await setDoc(doc(db, "User", `${result.user.uid}`), {
+      await setDocumentToFirestore("User", `${result.user.uid}`, {
         name: enteredName,
         uid: result.user.uid,
         email: result.user.email,
@@ -185,10 +186,14 @@ const Member = () => {
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    if (isLogin) {
-      await signInHandler();
-    } else {
-      await signUpHandler();
+    try {
+      if (isLogin) {
+        await signInHandler();
+      } else {
+        await signUpHandler();
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 

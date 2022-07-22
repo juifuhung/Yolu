@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import { FaEdit } from "react-icons/fa";
-import { initializeApp } from "firebase/app";
-import { getFirestore, getDocs, collection } from "firebase/firestore";
 import Swal from "sweetalert2";
+import { useAuth, getFirestoreDocuments } from "../utils/Firebase";
 import LoadingImage from "../images/loading.gif";
+import TopIcon from "../images/top.png";
 import AllArticlesItem from "../components/AllArticlesItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import TopIcon from "../images/top.png";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
 
 const TopButton = styled.div`
   width: 62px;
@@ -198,13 +186,26 @@ const Label = styled.h2`
   }
 `;
 
-initializeApp(firebaseConfig);
-const db = getFirestore();
-
 let localId;
+
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
+const newPostHandler = () => {
+  if (!localId) {
+    Swal.fire({
+      icon: "error",
+      title: "請先登入",
+      confirmButtonColor: "#3085d6",
+      footer: '<a href="/member">前往登入頁面</a>',
+    });
+  }
+};
 
 const AllArticles = () => {
   const [allSpots, setAllSpots] = useState([]);
+
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
@@ -213,7 +214,7 @@ const AllArticles = () => {
   const getData = async () => {
     try {
       let allSpotsArray = [];
-      const querySnapshot = await getDocs(collection(db, "Spots"));
+      const querySnapshot = await getFirestoreDocuments("Spots");
       querySnapshot.forEach((doc) => {
         allSpotsArray.push(doc.data());
       });
@@ -224,20 +225,9 @@ const AllArticles = () => {
   };
 
   useEffect(() => {
-    window.scroll({ top: 0, behavior: "smooth" });
+    scrollToTop();
     getData();
   }, []);
-
-  const newPostHandler = async () => {
-    if (!localId) {
-      Swal.fire({
-        icon: "error",
-        title: "請先登入",
-        confirmButtonColor: "#3085d6",
-        footer: '<a href="/member">前往登入頁面</a>',
-      });
-    }
-  };
 
   return (
     <>
@@ -353,7 +343,7 @@ const AllArticles = () => {
       </BodyContainer>
       <TopButton
         onClick={() => {
-          window.scroll({ top: 0, behavior: "smooth" });
+          scrollToTop();
         }}
       />
       <Footer />

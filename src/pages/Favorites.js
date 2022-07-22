@@ -1,43 +1,23 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { initializeApp } from "firebase/app";
-import {
-  doc,
-  deleteDoc,
-  collection,
-  getDoc,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-  orderBy,
-  limit,
-  startAfter,
-} from "firebase/firestore";
-import { useAuth } from "../utils/Firebase";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import {
+  useAuth,
+  getDisplayName,
+  deleteFireStoreDocument,
+  getFirestoreDocumentsWithQuery,
+  favoritesGetFirestoreDocumentsWithPagination,
+  favoritesLoadMoreItems,
+} from "../utils/Firebase";
 import "../styles/yesOrNo.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import FavoriteItem from "../components/FavoriteItem";
+import FavoritesCategory from "../components/FavoritesCategory";
 import FavoritesCover from "../images/favorites_cover.jpg";
 import TopIcon from "../images/top.png";
 import Loading from "../images/loading.gif";
 import NoItemImage from "../images/no_item_found.png";
-import FavoriteItem from "../components/FavoriteItem";
-import FavoritesCategory from "../components/FavoritesCategory";
-
-const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
-  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
 
 const FavoritesHeaderContainer = styled.div`
   position: sticky;
@@ -308,11 +288,19 @@ const categoryArray = [
 ];
 
 let localId;
-let displayName;
 let previousDocumentSnapshots;
 let categorySelected;
 
+const scrollToTop = () => {
+  window.scroll({ top: 0, behavior: "smooth" });
+};
+
+const scrollTo250PxFromTop = () => {
+  window.scroll({ top: 250, behavior: "smooth" });
+};
+
 const Favorites = () => {
+  const [displayName, setDisplayName] = useState("");
   const [totalFavorites, setTotalFavorites] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState(categoryArray);
@@ -323,9 +311,14 @@ const Favorites = () => {
     localId = currentUser.uid;
   }
 
-  const getDisplayName = async (localId) => {
-    const docSnap = await getDoc(doc(db, "User", `${localId}`));
-    displayName = docSnap.data().name;
+  const showDisplayName = async (localId) => {
+    try {
+      if (localId) {
+        setDisplayName(await getDisplayName("User", localId));
+      }
+    } catch (e) {
+      console.error(`Error getting displayName: ${e}`);
+    }
   };
 
   const observer = useRef();
@@ -334,15 +327,12 @@ const Favorites = () => {
       observer.current.disconnect();
     }
     observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        if (previousDocumentSnapshots) {
-          if (categorySelected) {
-            loadMoreItems(categorySelected);
-          } else {
-            loadMoreItems();
-          }
+      if (entries[0].isIntersecting && previousDocumentSnapshots) {
+        if (categorySelected) {
+          loadMoreItems(categorySelected);
+        } else {
+          loadMoreItems();
         }
-
         return;
       }
     });
@@ -352,31 +342,43 @@ const Favorites = () => {
   }, []);
 
   useEffect(() => {
-    getDisplayName(localId);
+    showDisplayName(localId);
     getTotalFavorites(localId);
     getFavoritesWithPagination(localId);
   }, [localId]);
 
   useEffect(() => {
-    window.scroll({ top: 0, behavior: "smooth" });
+    scrollToTop();
   }, []);
 
   const getTotalFavorites = async (localId, category) => {
-    let totalFavoritesItems;
-    if (!category || category === "undefined") {
-      totalFavoritesItems = query(
-        collection(db, "Favorites"),
-        where("localId", "==", `${localId}`)
-      );
-    } else {
-      totalFavoritesItems = query(
-        collection(db, "Favorites"),
-        where("localId", "==", `${localId}`),
-        where("category", "==", `${category}`)
-      );
+    let querySnapshot;
+    try {
+      if (!category || category === "undefined") {
+        querySnapshot = await getFirestoreDocumentsWithQuery(
+          "Favorites",
+          "localId",
+          "==",
+          `${localId}`,
+          null,
+          null,
+          null
+        );
+      } else {
+        querySnapshot = await getFirestoreDocumentsWithQuery(
+          "Favorites",
+          "localId",
+          "==",
+          `${localId}`,
+          "category",
+          "==",
+          `${category}`
+        );
+      }
+    } catch (e) {
+      console.error(`Error getting total favorites: ${e}`);
     }
 
-    const querySnapshot = await getDocs(totalFavoritesItems);
     let totalFavoritesArray = [];
     querySnapshot.forEach((doc) => {
       totalFavoritesArray.push({ ...doc.data(), id: doc.id });
@@ -385,32 +387,40 @@ const Favorites = () => {
   };
 
   const getFavoritesWithPagination = async (localId, category) => {
-    let first;
+    let documentSnapshots;
     try {
-      if (category) {
-        first = query(
-          collection(db, "Favorites"),
-          where("localId", "==", localId),
-          where("category", "==", `${category}`),
-          orderBy("created_time"),
-          limit(3)
+      if (!category) {
+        documentSnapshots = await favoritesGetFirestoreDocumentsWithPagination(
+          "Favorites",
+          "localId",
+          "==",
+          localId,
+          null,
+          null,
+          null,
+          "created_time",
+          3
         );
       } else {
-        first = query(
-          collection(db, "Favorites"),
-          where("localId", "==", `${localId}`),
-          orderBy("created_time"),
-          limit(3)
+        categorySelected = category;
+        documentSnapshots = await favoritesGetFirestoreDocumentsWithPagination(
+          "Favorites",
+          "localId",
+          "==",
+          localId,
+          "category",
+          "==",
+          `${category}`,
+          "created_time",
+          3
         );
       }
 
-      const documentSnapshots = await getDocs(first);
       let favoritesArray = [];
       documentSnapshots.forEach((doc) => {
         favoritesArray.push({ ...doc.data(), id: doc.id });
       });
       setFavorites(favoritesArray);
-      categorySelected = category;
       previousDocumentSnapshots = documentSnapshots;
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
@@ -423,27 +433,35 @@ const Favorites = () => {
         previousDocumentSnapshots.docs[
           previousDocumentSnapshots.docs.length - 1
         ];
-      let next;
-      if (category) {
-        next = query(
-          collection(db, "Favorites"),
-          where("localId", "==", localId),
-          where("category", "==", category),
-          orderBy("created_time"),
-          startAfter(lastVisible),
-          limit(3)
+      let nextDocumentSnapshots;
+      if (!category) {
+        nextDocumentSnapshots = await favoritesLoadMoreItems(
+          "Favorites",
+          "localId",
+          "==",
+          localId,
+          null,
+          null,
+          null,
+          "created_time",
+          lastVisible,
+          3
         );
       } else {
-        next = query(
-          collection(db, "Favorites"),
-          where("localId", "==", localId),
-          orderBy("created_time"),
-          startAfter(lastVisible),
-          limit(3)
+        nextDocumentSnapshots = await favoritesLoadMoreItems(
+          "Favorites",
+          "localId",
+          "==",
+          localId,
+          "category",
+          "==",
+          category,
+          "created_time",
+          lastVisible,
+          3
         );
       }
 
-      const nextDocumentSnapshots = await getDocs(next);
       let newFavoritesArray = [];
       nextDocumentSnapshots.forEach((doc) => {
         newFavoritesArray.push({ ...doc.data(), id: doc.id });
@@ -457,37 +475,28 @@ const Favorites = () => {
     }
   };
 
-  const deleteHandler = (id, category) => {
-    try {
-      Swal.fire({
-        title: "確定移出最愛清單？",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "是，請移除",
-        cancelButtonText: "否",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          deleteDoc(doc(db, "Favorites", `${id}`));
-          Swal.fire({
-            title: "已移除",
-            icon: "success",
-            confirmButtonColor: "#3085d6",
-          });
-          window.scroll({ top: 0, behavior: "smooth" });
-          if (!categorySelected) {
-            getTotalFavorites(localId);
-            getFavoritesWithPagination(localId);
-          } else {
-            getTotalFavorites(localId, category);
-            getFavoritesWithPagination(localId, category);
-          }
-        }
-      });
-    } catch (e) {
-      console.error("Error deleting document: ", e);
-    }
+  const deleteHandler = (id) => {
+    Swal.fire({
+      title: "確定移出最愛清單？",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "是，請移除",
+      cancelButtonText: "否",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteFireStoreDocument("Favorites", `${id}`);
+        Swal.fire({
+          title: "已移除",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+        });
+        scrollToTop();
+        getTotalFavorites(localId);
+        getFavoritesWithPagination(localId);
+      }
+    });
   };
 
   const sortFromOldToNew = () => {
@@ -495,7 +504,7 @@ const Favorites = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
-    window.scroll({ top: 420, behavior: "smooth" });
+    scrollTo250PxFromTop();
   };
 
   const sortFromNewToOld = () => {
@@ -503,7 +512,7 @@ const Favorites = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setFavorites(newToOldArray);
-    window.scroll({ top: 250, behavior: "smooth" });
+    scrollTo250PxFromTop();
   };
 
   const selectionHandler = (i) => {
@@ -516,13 +525,13 @@ const Favorites = () => {
       }
     });
     setCategories(newCategoryArray);
-    window.scroll({ top: 250, behavior: "smooth" });
+    scrollTo250PxFromTop();
   };
 
   const categorySelectionHandler = () => {
     setAllCategoriesSelected(true);
     setCategories(categoryArray);
-    window.scroll({ top: 250, behavior: "smooth" });
+    scrollTo250PxFromTop();
   };
 
   return (
@@ -593,7 +602,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.photo}
+                    img={item.img}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />
@@ -607,7 +616,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.photo}
+                    img={item.img}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />
@@ -618,7 +627,7 @@ const Favorites = () => {
       </BodyContainer>
       <TopButton
         onClick={() => {
-          window.scroll({ top: 0, behavior: "smooth" });
+          scrollToTop();
         }}
       />
       <Footer />
