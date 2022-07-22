@@ -174,7 +174,9 @@ const uploadAdapter = (loader) => {
     upload: () => {
       return new Promise((resolve, reject) => {
         const body = new FormData();
+        console.log(11111, body);
         loader.file.then((file) => {
+          console.log(22222, file);
           body.append("uploadImg", file);
           fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
             method: "post",
@@ -182,6 +184,8 @@ const uploadAdapter = (loader) => {
           })
             .then((res) => res.json())
             .then((res) => {
+              console.log(3333, res);
+              console.log(4444, res.url);
               resolve({ default: `${API_URl}/${res.url}` });
             })
             .catch((err) => {

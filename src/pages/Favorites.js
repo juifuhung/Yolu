@@ -387,41 +387,45 @@ const Favorites = () => {
   };
 
   const getFavoritesWithPagination = async (localId, category) => {
-    let documentSnapshots;
     try {
-      if (!category) {
-        documentSnapshots = await favoritesGetFirestoreDocumentsWithPagination(
-          "Favorites",
-          "localId",
-          "==",
-          localId,
-          null,
-          null,
-          null,
-          "created_time",
-          3
-        );
-      } else {
-        categorySelected = category;
-        documentSnapshots = await favoritesGetFirestoreDocumentsWithPagination(
-          "Favorites",
-          "localId",
-          "==",
-          localId,
-          "category",
-          "==",
-          `${category}`,
-          "created_time",
-          3
-        );
-      }
+      if (localId) {
+        let documentSnapshots;
+        if (!category) {
+          documentSnapshots =
+            await favoritesGetFirestoreDocumentsWithPagination(
+              "Favorites",
+              "localId",
+              "==",
+              localId,
+              null,
+              null,
+              null,
+              "created_time",
+              3
+            );
+        } else {
+          categorySelected = category;
+          documentSnapshots =
+            await favoritesGetFirestoreDocumentsWithPagination(
+              "Favorites",
+              "localId",
+              "==",
+              localId,
+              "category",
+              "==",
+              `${category}`,
+              "created_time",
+              3
+            );
+        }
 
-      let favoritesArray = [];
-      documentSnapshots.forEach((doc) => {
-        favoritesArray.push({ ...doc.data(), id: doc.id });
-      });
-      setFavorites(favoritesArray);
-      previousDocumentSnapshots = documentSnapshots;
+        let favoritesArray = [];
+        documentSnapshots.forEach((doc) => {
+          favoritesArray.push({ ...doc.data(), id: doc.id });
+        });
+        setFavorites(favoritesArray);
+        previousDocumentSnapshots = documentSnapshots;
+      }
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
     }
@@ -602,7 +606,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.img}
+                    img={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />
@@ -616,7 +620,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.img}
+                    img={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />
