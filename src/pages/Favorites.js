@@ -391,6 +391,7 @@ const Favorites = () => {
       if (localId) {
         let documentSnapshots;
         if (!category) {
+          categorySelected = undefined;
           documentSnapshots =
             await favoritesGetFirestoreDocumentsWithPagination(
               "Favorites",
