@@ -12,6 +12,7 @@ import AllArticles from "./pages/AllArticles";
 import Spot from "./pages/Spot";
 import NewPost from "./pages/NewPost";
 import EditPost from "./pages/EditPost";
+import Image from "./pages/Image";
 
 let localId;
 
@@ -45,6 +46,7 @@ const App = () => {
             element={localId ? <NewPost /> : <Navigate to="/member" />}
           />
           <Route path="edit/:articleId" element={<EditPost />} />
+          <Route path="/person" element={<Image />} />
         </Routes>
       </Font>
     </>

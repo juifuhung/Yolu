@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { v4 } from "uuid";
+import { storage } from "../utils/Firebase";
+import { ref, uploadBytes } from "firebase/storage";
 import {
   useAuth,
   getDisplayName,
@@ -166,43 +169,6 @@ const SubmitButton = styled.button`
 let localId;
 let articleId;
 
-const API_URl = "https://noteyard-backend.herokuapp.com";
-const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
-
-const uploadAdapter = (loader) => {
-  return {
-    upload: () => {
-      return new Promise((resolve, reject) => {
-        const body = new FormData();
-        console.log(11111, body);
-        loader.file.then((file) => {
-          console.log(22222, file);
-          body.append("uploadImg", file);
-          fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
-            method: "post",
-            body: body,
-          })
-            .then((res) => res.json())
-            .then((res) => {
-              console.log(3333, res);
-              console.log(4444, res.url);
-              resolve({ default: `${API_URl}/${res.url}` });
-            })
-            .catch((err) => {
-              reject(err);
-            });
-        });
-      });
-    },
-  };
-};
-
-const uploadPlugin = (editor) => {
-  editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-    return uploadAdapter(loader);
-  };
-};
-
 const Post = () => {
   const [tagArray, setTagArray] = useState(spots);
   const [displayName, setDisplayName] = useState("");
@@ -228,6 +194,25 @@ const Post = () => {
     } catch (e) {
       console.error(`Error getting displayName: ${e}`);
     }
+  };
+
+  const uploadAdapter = (loader) => {
+    return {
+      upload: () => {
+        return new Promise(() => {
+          loader.file.then((file) => {
+            const imageRef = ref(storage, `photos/${file.name + v4()}`);
+            uploadBytes(imageRef, file);
+          });
+        });
+      },
+    };
+  };
+
+  const uploadPlugin = (editor) => {
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      return uploadAdapter(loader);
+    };
   };
 
   const handleFormSubmit = async (event) => {
