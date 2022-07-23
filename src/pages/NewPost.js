@@ -4,9 +4,9 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { v4 } from "uuid";
+// import { v4 } from "uuid";
 import { storage } from "../utils/Firebase";
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   useAuth,
   getDisplayName,
@@ -174,6 +174,9 @@ const Post = () => {
   const [displayName, setDisplayName] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredContent, setEnteredContent] = useState("");
+  const [a, setA] = useState(false);
+  const [r123, setR123] = useState("");
+  const [imageToShow, setImageToShow] = useState("");
 
   const currentUser = useAuth();
   if (currentUser) {
@@ -201,8 +204,10 @@ const Post = () => {
       upload: () => {
         return new Promise(() => {
           loader.file.then((file) => {
-            const imageRef = ref(storage, `photos/${file.name + v4()}`);
+            const imageRef = ref(storage, `photos/${file.name}`);
             uploadBytes(imageRef, file);
+            setR123(`photos/${file.name}`);
+            setA((prev) => !prev);
           });
         });
       },
@@ -214,6 +219,20 @@ const Post = () => {
       return uploadAdapter(loader);
     };
   };
+
+  const downloadImage = async () => {
+    console.log(r123);
+    const a = await getDownloadURL(
+      ref(storage, `${r123}`)
+      // ref(storage, `photos/robert-tjalondo-OJ2S6di8xDo-unsplash.jpg`)
+    );
+    setImageToShow(a);
+  };
+
+  useEffect(() => {
+    console.log("abc");
+    downloadImage();
+  }, [a]);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -288,6 +307,7 @@ const Post = () => {
     <>
       <Header />
       <BodyContainer>
+        {<img src={imageToShow} />}
         <MainForm action="" onSubmit={handleFormSubmit}>
           {displayName ? (
             <DisplayName>{displayName}</DisplayName>
