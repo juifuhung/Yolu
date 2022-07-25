@@ -2,14 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { storage } from "../utils/Firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
   useAuth,
   getDisplayName,
   getFirestoreDocument,
   updateFirestoreDocument,
 } from "../utils/Firebase";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { v4 } from "uuid";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -157,23 +160,18 @@ const SubmitButton = styled.button`
 let localId;
 const falseState = (item) => item.state === false;
 
-const API_URl = "https://noteyard-backend.herokuapp.com";
-const UPLOAD_ENDPOINT = "api/blogs/uploadImg";
-
 const uploadAdapter = (loader) => {
   return {
     upload: () => {
       return new Promise((resolve, reject) => {
-        const body = new FormData();
         loader.file.then((file) => {
-          body.append("uploadImg", file);
-          fetch(`${API_URl}/${UPLOAD_ENDPOINT}`, {
-            method: "post",
-            body: body,
-          })
-            .then((res) => res.json())
-            .then((res) => {
-              resolve({ default: `${API_URl}/${res.url}` });
+          const fileName = `photos/${file.name + v4()}`;
+          const imageRef = ref(storage, `${fileName}`);
+          uploadBytes(imageRef, file)
+            .then(() => {
+              getDownloadURL(ref(storage, `${fileName}`)).then((storageUrl) => {
+                resolve({ default: storageUrl });
+              });
             })
             .catch((err) => {
               reject(err);

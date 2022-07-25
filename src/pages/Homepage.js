@@ -604,7 +604,6 @@ const Homepage = () => {
       <HomepageHeaderContainer>
         <Header />
       </HomepageHeaderContainer>
-      {console.log("homepage00000")}
       <Font>
         <SlideShow>
           <SlideshowSlider index={index}>
