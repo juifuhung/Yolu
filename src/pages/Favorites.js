@@ -387,41 +387,46 @@ const Favorites = () => {
   };
 
   const getFavoritesWithPagination = async (localId, category) => {
-    let documentSnapshots;
     try {
-      if (!category) {
-        documentSnapshots = await favoritesGetFirestoreDocumentsWithPagination(
-          "Favorites",
-          "localId",
-          "==",
-          localId,
-          null,
-          null,
-          null,
-          "created_time",
-          3
-        );
-      } else {
-        categorySelected = category;
-        documentSnapshots = await favoritesGetFirestoreDocumentsWithPagination(
-          "Favorites",
-          "localId",
-          "==",
-          localId,
-          "category",
-          "==",
-          `${category}`,
-          "created_time",
-          3
-        );
-      }
+      if (localId) {
+        let documentSnapshots;
+        if (!category) {
+          categorySelected = undefined;
+          documentSnapshots =
+            await favoritesGetFirestoreDocumentsWithPagination(
+              "Favorites",
+              "localId",
+              "==",
+              localId,
+              null,
+              null,
+              null,
+              "created_time",
+              3
+            );
+        } else {
+          categorySelected = category;
+          documentSnapshots =
+            await favoritesGetFirestoreDocumentsWithPagination(
+              "Favorites",
+              "localId",
+              "==",
+              localId,
+              "category",
+              "==",
+              `${category}`,
+              "created_time",
+              3
+            );
+        }
 
-      let favoritesArray = [];
-      documentSnapshots.forEach((doc) => {
-        favoritesArray.push({ ...doc.data(), id: doc.id });
-      });
-      setFavorites(favoritesArray);
-      previousDocumentSnapshots = documentSnapshots;
+        let favoritesArray = [];
+        documentSnapshots.forEach((doc) => {
+          favoritesArray.push({ ...doc.data(), id: doc.id });
+        });
+        setFavorites(favoritesArray);
+        previousDocumentSnapshots = documentSnapshots;
+      }
     } catch (e) {
       console.error("Error getting favorite documents: ", e);
     }
@@ -433,43 +438,45 @@ const Favorites = () => {
         previousDocumentSnapshots.docs[
           previousDocumentSnapshots.docs.length - 1
         ];
-      let nextDocumentSnapshots;
-      if (!category) {
-        nextDocumentSnapshots = await favoritesLoadMoreItems(
-          "Favorites",
-          "localId",
-          "==",
-          localId,
-          null,
-          null,
-          null,
-          "created_time",
-          lastVisible,
-          3
-        );
-      } else {
-        nextDocumentSnapshots = await favoritesLoadMoreItems(
-          "Favorites",
-          "localId",
-          "==",
-          localId,
-          "category",
-          "==",
-          category,
-          "created_time",
-          lastVisible,
-          3
-        );
-      }
+      if (lastVisible) {
+        let nextDocumentSnapshots;
+        if (!category) {
+          nextDocumentSnapshots = await favoritesLoadMoreItems(
+            "Favorites",
+            "localId",
+            "==",
+            localId,
+            null,
+            null,
+            null,
+            "created_time",
+            lastVisible,
+            3
+          );
+        } else {
+          nextDocumentSnapshots = await favoritesLoadMoreItems(
+            "Favorites",
+            "localId",
+            "==",
+            localId,
+            "category",
+            "==",
+            category,
+            "created_time",
+            lastVisible,
+            3
+          );
+        }
 
-      let newFavoritesArray = [];
-      nextDocumentSnapshots.forEach((doc) => {
-        newFavoritesArray.push({ ...doc.data(), id: doc.id });
-      });
-      setFavorites((prevFavorites) => {
-        return [...prevFavorites, ...newFavoritesArray];
-      });
-      previousDocumentSnapshots = nextDocumentSnapshots;
+        let newFavoritesArray = [];
+        nextDocumentSnapshots.forEach((doc) => {
+          newFavoritesArray.push({ ...doc.data(), id: doc.id });
+        });
+        setFavorites((prevFavorites) => {
+          return [...prevFavorites, ...newFavoritesArray];
+        });
+        previousDocumentSnapshots = nextDocumentSnapshots;
+      }
     } catch (e) {
       console.error("Error getting more favorite documents: ", e);
     }
@@ -602,7 +609,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.img}
+                    img={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />
@@ -616,7 +623,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.img}
+                    img={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />

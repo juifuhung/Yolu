@@ -25,6 +25,7 @@ import {
   updateDoc,
   setDoc,
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -36,9 +37,10 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
 };
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
+export const storage = getStorage(app);
 
 export const signUp = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password);
@@ -235,7 +237,7 @@ export const favoritesLoadMoreItems = async (
   startAfterItem,
   limitNumber
 ) => {
-  if (!secondQueryKey && !secondQueryValue) {
+  if (!secondQueryKey && !secondOperator && !secondQueryValue) {
     return await getDocs(
       query(
         collection(db, `${collectionName}`),
