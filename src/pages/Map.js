@@ -521,7 +521,7 @@ const Map = () => {
                           title: selected.title,
                           subtitle: selected.subtitle,
                           description: selected.description,
-                          img: selected.image,
+                          image: selected.image,
                           lng: selected.lng,
                           lat: selected.lat,
                           icon: selected.icon,
