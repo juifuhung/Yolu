@@ -609,7 +609,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.image}
+                    image={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />
@@ -623,7 +623,7 @@ const Favorites = () => {
                     title={item.title}
                     subtitle={item.subtitle}
                     description={item.description}
-                    img={item.image}
+                    image={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
                   />

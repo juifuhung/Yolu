@@ -208,7 +208,16 @@ const Trash = styled(FaTrash)`
 `;
 
 const FavoriteItemDiv = (
-  { id, title, subtitle, description, img, category, timestamp, deleteHandler },
+  {
+    id,
+    title,
+    subtitle,
+    description,
+    image,
+    category,
+    timestamp,
+    deleteHandler,
+  },
   ref
 ) => {
   return (
@@ -216,7 +225,7 @@ const FavoriteItemDiv = (
       <FavoriteItemSection>
         <FavoriteItem ref={ref} id={id} title={`查看「${title}」遊記頁面`}>
           <FavoriteItemLeft
-            img={img}
+            img={image}
             alt="Loading..."
             to={`/articles/${title}`}
           >
