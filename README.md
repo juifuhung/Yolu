@@ -37,6 +37,10 @@ Yolu is an interactive **travel website** in traditional Chinese featuring **Rov
 
 ![](https://i.imgur.com/AQBhSy3.gif)
 
+- Post articles in HTML with CKEditor
+
+![](https://i.imgur.com/n94aS56.gif)
+
 - Article page of a particular spot with lazy loading
 
 ![](https://i.imgur.com/FToUwSC.gif)
