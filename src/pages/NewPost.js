@@ -315,6 +315,7 @@ const Post = () => {
           <CKEditor
             config={{
               extraPlugins: [uploadPlugin],
+              mediaEmbed: { previewsInData: true },
             }}
             editor={ClassicEditor}
             data=""
