@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# Yolu
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Yolu is an interactive **travel website** in traditional Chinese featuring **Rovaniemi, Finland**. It is based on the author's experiences as a tour guide in the arctic city from 2019 to 2020. Users may not only view tour spot information but also write travel notes to share firsthand views after visit.
 
-## Available Scripts
+![](https://i.imgur.com/Z2AhEhb.jpg)
 
-In the project directory, you can run:
+[Site Link](https://yolu-4a398.web.app/)
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Interactive map: displays local spot information with category filter function
+2. Favorite list: allows users to build customized list for itinerary planning
+3. Articles: provides users with access to share firsthand experiences after visit
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Experience Our Site
 
-### `npm test`
+- Sign up your account or sign in [here](https://yolu-4a398.web.app/member)
+- Feel free to use the test account:
+  - username: yolu@test.com
+  - password: qwertyuiop
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Demos
 
-### `npm run build`
+- Filter spots based on categories and selecting favorite list
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![](https://i.imgur.com/YY4vkua.gif)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Add and remove spots from favorites list on map page
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![](https://i.imgur.com/BRcvVjU.gif)
 
-### `npm run eject`
+- Filter spots based on categories on favorites page
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![](https://i.imgur.com/APkUPCE.gif)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Sort spots by time on favorites page
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![](https://i.imgur.com/AQBhSy3.gif)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Post articles in HTML with CKEditor
 
-## Learn More
+![](https://i.imgur.com/n94aS56.gif)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Article page of a particular spot with lazy loading
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![](https://i.imgur.com/FToUwSC.gif)
 
-### Code Splitting
+## Tools & Packages
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. - [React](https://reactjs.org/)
+1. - [React Router](https://reactrouter.com/)
+1. - [styled-components](https://styled-components.com/)
+1. - [react-icons](https://www.npmjs.com/package/react-icons)
+1. - [html-react-parser](https://www.npmjs.com/package/html-react-parser)
+1. - [striptags](https://www.npmjs.com/package/striptags)
+1. - [sweetalert2](https://sweetalert2.github.io/)
+1. - [uuidv4](https://www.npmjs.com/package/uuidv4)
+1. - [Google Map API](https://developers.google.com/maps)
+1. - [CKEditor](https://ckeditor.com/)
+1. - [Firebase](https://firebase.google.com/) (Firestore, Authentification, Cloud Storage, and Hosting)
+1. - [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)

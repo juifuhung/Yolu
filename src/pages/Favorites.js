@@ -123,7 +123,7 @@ const FavoritesCoverTitleWords = styled.h1`
 const BodyContainer = styled.div`
   display: flex;
   width: 100%;
-  min-height: 58vh;
+  min-height: 65vh;
   margin-bottom: 20px;
 
   @media (max-width: 1100px) {
