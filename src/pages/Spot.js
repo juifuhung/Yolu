@@ -311,7 +311,7 @@ const Spot = () => {
       });
       setSpots(spotsArray);
       previousDocumentSnapshots = documentSnapshots;
-    } catch (e) {
+    } catch {
       Swal.fire({
         icon: "error",
         title: "讀取遊記時發生錯誤",
@@ -319,7 +319,6 @@ const Spot = () => {
       }).then(() => {
         window.location = "/";
       });
-      console.error(`Error getting article documents: ${e}`);
     }
   };
 
@@ -354,13 +353,12 @@ const Spot = () => {
         return [...prevSpots, ...newSpotsArray];
       });
       previousDocumentSnapshots = nextDocumentSnapshots;
-    } catch (e) {
+    } catch {
       Swal.fire({
         icon: "error",
         title: "讀取遊記時發生錯誤",
         // footer: '<a href="">回報問題</a>',
       });
-      console.error(`Error getting more article documents: ${e}`);
     }
   };
 
@@ -371,13 +369,12 @@ const Spot = () => {
         `${params.spot}`
       );
       setCoverPhoto(docSnap.data().image);
-    } catch (e) {
+    } catch {
       Swal.fire({
         icon: "error",
         title: "讀取封面照片時發生錯誤",
         // footer: '<a href="">回報問題</a>',
       });
-      console.error(`Error getting cover photo: ${e}`);
     }
   };
 

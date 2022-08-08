@@ -219,7 +219,7 @@ const AllArticles = () => {
         allSpotsArray.push(doc.data());
       });
       setAllSpots(allSpotsArray);
-    } catch (e) {
+    } catch {
       Swal.fire({
         icon: "error",
         title: "讀取資料時發生錯誤",
@@ -227,7 +227,6 @@ const AllArticles = () => {
       }).then(() => {
         window.location = "/";
       });
-      console.error("Error getting document: ", e);
     }
   };
 

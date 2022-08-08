@@ -210,8 +210,12 @@ const logoutHandler = async () => {
   try {
     await logOut();
     location.replace("./");
-  } catch (e) {
-    console.error(e);
+  } catch {
+    Swal.fire({
+      icon: "error",
+      title: "登出時發生錯誤",
+      // footer: '<a href="">回報問題</a>',
+    });
   }
 };
 

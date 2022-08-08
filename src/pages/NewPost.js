@@ -191,13 +191,12 @@ const Post = () => {
       if (localId) {
         setDisplayName(await getDisplayName("User", localId));
       }
-    } catch (e) {
+    } catch {
       Swal.fire({
         icon: "error",
         title: "無法讀取作者姓名",
         // footer: '<a href="">回報問題</a>',
       });
-      console.error(`Error getting displayName: ${e}`);
     }
   };
 
@@ -216,13 +215,13 @@ const Post = () => {
                   }
                 );
               })
-              .catch((err) => {
+              .catch((e) => {
                 Swal.fire({
                   icon: "error",
                   title: "存取照片時發生錯誤",
                   // footer: '<a href="">回報問題</a>',
                 });
-                reject(err);
+                reject(e);
               });
           });
         });
@@ -284,13 +283,12 @@ const Post = () => {
         if (articleId) {
           navigate(`/article/${articleId}`);
         }
-      } catch (e) {
+      } catch {
         Swal.fire({
           icon: "error",
           title: "發表文章時發生錯誤",
           // footer: '<a href="">回報問題</a>',
         });
-        console.log(`Error submitting new post: ${e}`);
       }
     }
   };

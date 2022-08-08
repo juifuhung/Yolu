@@ -273,7 +273,7 @@ const Article = () => {
       const docSnap = await getFirestoreDocument("Post", `${params.articleId}`);
       setArticle(docSnap.data());
       setTimestamp(docSnap.data().created_time.toDate());
-    } catch (e) {
+    } catch {
       Swal.fire({
         icon: "error",
         title: "讀取文章時發生錯誤",
@@ -281,7 +281,6 @@ const Article = () => {
       }).then(() => {
         window.location = "/articles";
       });
-      console.error(`Error getting article: ${e}`);
     }
   };
 
