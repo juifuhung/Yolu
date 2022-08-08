@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Swal from "sweetalert2";
 import { getFirestoreDocuments } from "../utils/Firebase";
 import LoadingImage from "../images/loading.gif";
+import AllArticlesItem from "../components/AllArticlesItem";
 
 const CategoryBlock = styled.div`
   width: 85%;
@@ -43,28 +44,27 @@ const Label = styled.h2`
   }
 `;
 
-const getData = async () => {
-  try {
-    let allSpotsArray = [];
-    const querySnapshot = await getFirestoreDocuments("Spots");
-    querySnapshot.forEach((doc) => {
-      allSpotsArray.push(doc.data());
-    });
-    setAllSpots(allSpotsArray);
-  } catch {
-    Swal.fire({
-      icon: "error",
-      title: "讀取資料時發生錯誤",
-      // footer: '<a href="">回報問題</a>',
-    }).then(() => {
-      window.location = "/";
-    });
-  }
-};
-
 const CategorySection = ({ label }) => {
-  console.log(label);
   const [allSpots, setAllSpots] = useState([]);
+
+  const getData = async () => {
+    try {
+      let allSpotsArray = [];
+      const querySnapshot = await getFirestoreDocuments("Spots");
+      querySnapshot.forEach((doc) => {
+        allSpotsArray.push(doc.data());
+      });
+      setAllSpots(allSpotsArray);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "讀取資料時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      }).then(() => {
+        window.location = "/";
+      });
+    }
+  };
 
   useEffect(() => {
     getData();
@@ -72,12 +72,12 @@ const CategorySection = ({ label }) => {
 
   return (
     <CategoryBlock>
-      <Label>博物館</Label>
+      <Label>{label}</Label>
       <CategoryRedLine />
       {!allSpots && <img src={LoadingImage} />}
       <ItemSection>
         {allSpots
-          .filter((item) => item.category === "博物館")
+          .filter((item) => item.category === label)
           .map((item) => (
             <AllArticlesItem
               key={item.title}

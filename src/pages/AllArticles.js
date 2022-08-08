@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
-import { useAuth, getFirestoreDocuments } from "../utils/Firebase";
-import LoadingImage from "../images/loading.gif";
+import { useAuth } from "../utils/Firebase";
 import TopIcon from "../images/top.png";
-import AllArticlesItem from "../components/AllArticlesItem";
 import CategorySection from "../components/CategorySection";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -148,45 +146,6 @@ const EditWords = styled.h3`
   }
 `;
 
-const CategoryBlock = styled.div`
-  width: 85%;
-  margin: 0.5rem 0;
-`;
-
-const CategoryRedLine = styled.div`
-  width: 100%;
-  height: 9px;
-  margin: 0.7rem 0;
-  background-color: #ff0000;
-
-  @media (max-width: 480px) {
-    height: 6.5px;
-    margin: 0.4rem 0;
-  }
-`;
-
-const ItemSection = styled.div`
-  width: 100%;
-  height: 70%;
-  display: flex;
-  flex-wrap: wrap;
-
-  @media (max-width: 352px) {
-    justify-content: center;
-  }
-`;
-
-const Label = styled.h2`
-  color: #333333;
-  margin: 0;
-  font-size: 1.3rem;
-  font-weight: 600;
-
-  @media (max-width: 480px) {
-    font-size: 1.1rem;
-  }
-`;
-
 let localId;
 
 const scrollToTop = () => {
@@ -206,7 +165,7 @@ const newPostHandler = () => {
 
 const categoryArray = [
   "博物館",
-  "自然景館",
+  "自然景觀",
   "餐廳",
   "聖誕主題",
   "購物",
@@ -214,37 +173,13 @@ const categoryArray = [
 ];
 
 const AllArticles = () => {
-  const [allSpots, setAllSpots] = useState([]);
-
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
   }
 
-  const getData = async () => {
-    try {
-      let allSpotsArray = [];
-      const querySnapshot = await getFirestoreDocuments("Spots");
-      querySnapshot.forEach((doc) => {
-        allSpotsArray.push(doc.data());
-      });
-      setAllSpots(allSpotsArray);
-    } catch {
-      Swal.fire({
-        icon: "error",
-        title: "讀取資料時發錯誤",
-        confirmButtonColor: "#3085d6",
-        confirmButtonText: "回首頁",
-        // footer: '<a href="">回報問題</a>',
-      }).then(() => {
-        window.location = "/";
-      });
-    }
-  };
-
   useEffect(() => {
     scrollToTop();
-    getData();
   }, []);
 
   return (
@@ -262,105 +197,9 @@ const AllArticles = () => {
             <EditWords>發表文章</EditWords>
           </EditSection>
         </TitleContainer>
-        {/* {categoryArray.map((item) => (
+        {categoryArray.map((item) => (
           <CategorySection label={item} key={item} />
-        ))} */}
-        <CategoryBlock>
-          <Label>博物館</Label>
-          <CategoryRedLine />
-          {!allSpots && <img src={LoadingImage} />}
-          <ItemSection>
-            {allSpots
-              .filter((item) => item.category === "博物館")
-              .map((item) => (
-                <AllArticlesItem
-                  key={item.title}
-                  title={item.title}
-                  image={item.image}
-                />
-              ))}
-          </ItemSection>
-        </CategoryBlock>
-        <CategoryBlock>
-          <Label>自然景觀</Label>
-          <CategoryRedLine />
-          {!allSpots && <img src={LoadingImage} />}
-          <ItemSection>
-            {allSpots
-              .filter((item) => item.category === "自然景觀")
-              .map((item) => (
-                <AllArticlesItem
-                  key={item.title}
-                  title={item.title}
-                  image={item.image}
-                />
-              ))}
-          </ItemSection>
-        </CategoryBlock>
-        <CategoryBlock>
-          <Label>餐廳</Label>
-          <CategoryRedLine />
-          {!allSpots && <img src={LoadingImage} />}
-          <ItemSection>
-            {allSpots
-              .filter((item) => item.category === "餐廳")
-              .map((item) => (
-                <AllArticlesItem
-                  key={item.title}
-                  title={item.title}
-                  image={item.image}
-                />
-              ))}
-          </ItemSection>
-        </CategoryBlock>
-        <CategoryBlock>
-          <Label>聖誕主題</Label>
-          <CategoryRedLine />
-          {!allSpots && <img src={LoadingImage} />}
-          <ItemSection>
-            {allSpots
-              .filter((item) => item.category === "聖誕主題")
-              .map((item) => (
-                <AllArticlesItem
-                  key={item.title}
-                  title={item.title}
-                  image={item.image}
-                />
-              ))}
-          </ItemSection>
-        </CategoryBlock>
-        <CategoryBlock>
-          <Label>購物</Label>
-          <CategoryRedLine />
-          {!allSpots && <img src={LoadingImage} />}
-          <ItemSection>
-            {allSpots
-              .filter((item) => item.category === "購物")
-              .map((item) => (
-                <AllArticlesItem
-                  key={item.title}
-                  title={item.title}
-                  image={item.image}
-                />
-              ))}
-          </ItemSection>
-        </CategoryBlock>
-        <CategoryBlock>
-          <Label>交通</Label>
-          <CategoryRedLine />
-          {!allSpots && <img src={LoadingImage} />}
-          <ItemSection>
-            {allSpots
-              .filter((item) => item.category === "交通")
-              .map((item) => (
-                <AllArticlesItem
-                  key={item.title}
-                  title={item.title}
-                  image={item.image}
-                />
-              ))}
-          </ItemSection>
-        </CategoryBlock>
+        ))}
       </BodyContainer>
       <TopButton
         onClick={() => {
