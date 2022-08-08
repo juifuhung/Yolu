@@ -214,6 +214,7 @@ const logoutHandler = async () => {
     Swal.fire({
       icon: "error",
       title: "登出時發生錯誤",
+      confirmButtonColor: "#3085d6",
       // footer: '<a href="">回報問題</a>',
     });
   }

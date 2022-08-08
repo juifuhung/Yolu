@@ -316,6 +316,7 @@ const addToFavorite = async (obj) => {
     Swal.fire({
       icon: "error",
       title: "加入最愛清單時發生錯誤",
+      confirmButtonColor: "#3085d6",
       // footer: '<a href="">回報問題</a>',
     });
   }
@@ -328,6 +329,7 @@ const deleteHandler = async (id) => {
     Swal.fire({
       icon: "error",
       title: "自最愛清單移除時發生錯誤",
+      confirmButtonColor: "#3085d6",
       // footer: '<a href="">回報問題</a>',
     });
   }
@@ -361,6 +363,8 @@ const Map = () => {
       Swal.fire({
         icon: "error",
         title: "取得景點資料時發生錯誤",
+        confirmButtonText: "回首頁",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       }).then(() => {
         window.location = "/";
@@ -387,6 +391,7 @@ const Map = () => {
       Swal.fire({
         icon: "error",
         title: "取得最愛清單資料時發生錯誤",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
     }
@@ -415,6 +420,7 @@ const Map = () => {
       Swal.fire({
         icon: "error",
         title: "取得景點資料時發生錯誤",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
     }

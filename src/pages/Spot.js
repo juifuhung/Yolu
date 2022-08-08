@@ -315,9 +315,11 @@ const Spot = () => {
       Swal.fire({
         icon: "error",
         title: "讀取遊記時發生錯誤",
+        confirmButtonText: "回遊記專區",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       }).then(() => {
-        window.location = "/";
+        window.location = "/articles";
       });
     }
   };
@@ -357,6 +359,7 @@ const Spot = () => {
       Swal.fire({
         icon: "error",
         title: "讀取遊記時發生錯誤",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
     }
@@ -373,6 +376,7 @@ const Spot = () => {
       Swal.fire({
         icon: "error",
         title: "讀取封面照片時發生錯誤",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
     }

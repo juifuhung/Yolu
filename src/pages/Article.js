@@ -277,6 +277,8 @@ const Article = () => {
       Swal.fire({
         icon: "error",
         title: "讀取文章時發生錯誤",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "回遊記專區",
         // footer: '<a href="">回報問題</a>',
       }).then(() => {
         window.location = "/articles";

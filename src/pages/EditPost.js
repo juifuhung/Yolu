@@ -177,6 +177,7 @@ const uploadAdapter = (loader) => {
               Swal.fire({
                 icon: "error",
                 title: "存取照片時發生錯誤",
+                confirmButtonColor: "#3085d6",
                 // footer: '<a href="">回報問題</a>',
               });
               reject(e);
@@ -216,6 +217,7 @@ const EditPost = () => {
       Swal.fire({
         icon: "error",
         title: "無法讀取作者姓名",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
     }
@@ -234,6 +236,8 @@ const EditPost = () => {
       Swal.fire({
         icon: "error",
         title: "讀取文章時發生錯誤",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "回上頁",
         // footer: '<a href="">回報問題</a>',
       }).then(() => {
         history.back();
@@ -277,6 +281,7 @@ const EditPost = () => {
         Swal.fire({
           icon: "error",
           title: "提交更改時發生錯誤",
+          confirmButtonColor: "#3085d6",
           // footer: '<a href="">回報問題</a>',
         });
       }

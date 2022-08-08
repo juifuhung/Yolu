@@ -319,7 +319,8 @@ const Favorites = () => {
     } catch {
       Swal.fire({
         icon: "error",
-        title: "無法讀取作者姓名",
+        title: "無法讀取您的名稱",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
     }
@@ -383,6 +384,7 @@ const Favorites = () => {
       Swal.fire({
         icon: "error",
         title: "讀取最愛清單數量時發生錯誤",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
     }
@@ -439,6 +441,8 @@ const Favorites = () => {
       Swal.fire({
         icon: "error",
         title: "讀取最愛清單資料時發生錯誤",
+        confirmButtonText: "回首頁",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       }).then(() => {
         window.location = "/";
@@ -495,6 +499,7 @@ const Favorites = () => {
       Swal.fire({
         icon: "error",
         title: "載入更多最愛清單資料時發生錯誤",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
     }

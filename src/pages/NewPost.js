@@ -194,7 +194,8 @@ const Post = () => {
     } catch {
       Swal.fire({
         icon: "error",
-        title: "無法讀取作者姓名",
+        title: "無法讀取您的名稱",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
     }
@@ -219,6 +220,7 @@ const Post = () => {
                 Swal.fire({
                   icon: "error",
                   title: "存取照片時發生錯誤",
+                  confirmButtonColor: "#3085d6",
                   // footer: '<a href="">回報問題</a>',
                 });
                 reject(e);
@@ -287,6 +289,7 @@ const Post = () => {
         Swal.fire({
           icon: "error",
           title: "發表文章時發生錯誤",
+          confirmButtonColor: "#3085d6",
           // footer: '<a href="">回報問題</a>',
         });
       }

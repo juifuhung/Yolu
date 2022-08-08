@@ -7,6 +7,7 @@ import { useAuth, getFirestoreDocuments } from "../utils/Firebase";
 import LoadingImage from "../images/loading.gif";
 import TopIcon from "../images/top.png";
 import AllArticlesItem from "../components/AllArticlesItem";
+import CategorySection from "../components/CategorySection";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -203,6 +204,15 @@ const newPostHandler = () => {
   }
 };
 
+const categoryArray = [
+  "博物館",
+  "自然景館",
+  "餐廳",
+  "聖誕主題",
+  "購物",
+  "交通",
+];
+
 const AllArticles = () => {
   const [allSpots, setAllSpots] = useState([]);
 
@@ -222,7 +232,9 @@ const AllArticles = () => {
     } catch {
       Swal.fire({
         icon: "error",
-        title: "讀取資料時發生錯誤",
+        title: "讀取資料時發錯誤",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "回首頁",
         // footer: '<a href="">回報問題</a>',
       }).then(() => {
         window.location = "/";
@@ -250,6 +262,9 @@ const AllArticles = () => {
             <EditWords>發表文章</EditWords>
           </EditSection>
         </TitleContainer>
+        {/* {categoryArray.map((item) => (
+          <CategorySection label={item} key={item} />
+        ))} */}
         <CategoryBlock>
           <Label>博物館</Label>
           <CategoryRedLine />
