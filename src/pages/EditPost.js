@@ -173,8 +173,13 @@ const uploadAdapter = (loader) => {
                 resolve({ default: storageUrl });
               });
             })
-            .catch((err) => {
-              reject(err);
+            .catch((e) => {
+              Swal.fire({
+                icon: "error",
+                title: "存取照片時發生錯誤",
+                // footer: '<a href="">回報問題</a>',
+              });
+              reject(e);
             });
         });
       });
@@ -208,6 +213,11 @@ const EditPost = () => {
         setDisplayName(await getDisplayName("User", localId));
       }
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "無法讀取作者姓名",
+        // footer: '<a href="">回報問題</a>',
+      });
       console.error(`Error getting displayName: ${e}`);
     }
   };
@@ -222,6 +232,13 @@ const EditPost = () => {
       setEnteredContent(docSnap.data().content);
       setTimestamp(docSnap.data().created_time.toDate());
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "讀取文章時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      }).then(() => {
+        history.back();
+      });
       console.error(`Error getting article: ${e}`);
     }
   };
@@ -248,15 +265,24 @@ const EditPost = () => {
         title: `請選擇標籤`,
       });
     } else {
-      updateFirestoreDocument("Post", params.articleId, {
-        title: enteredTitle,
-        content: enteredContent,
-        fullTagArray: tagArray,
-        created_time: new Date(),
-        localId: localId,
-        displayName: displayName,
-      });
-      navigate(`/article/${params.articleId}`);
+      try {
+        updateFirestoreDocument("Post", params.articleId, {
+          title: enteredTitle,
+          content: enteredContent,
+          fullTagArray: tagArray,
+          created_time: new Date(),
+          localId: localId,
+          displayName: displayName,
+        });
+        navigate(`/article/${params.articleId}`);
+      } catch (e) {
+        Swal.fire({
+          icon: "error",
+          title: "提交更改時發生錯誤",
+          // footer: '<a href="">回報問題</a>',
+        });
+        console.log(`Error updating post: ${e}`);
+      }
     }
   };
 

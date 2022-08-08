@@ -152,8 +152,9 @@ const Member = () => {
       Swal.fire({
         icon: "error",
         confirmButtonColor: "#3085d6",
-        title: e.message,
+        title: "註冊時發生問題",
       });
+      console.log(e.message);
     }
   };
 
@@ -166,8 +167,9 @@ const Member = () => {
       Swal.fire({
         icon: "error",
         confirmButtonColor: "#3085d6",
-        title: e.message,
+        title: "登入時發生問題",
       });
+      console.log(e.message);
     }
   };
 
@@ -193,6 +195,19 @@ const Member = () => {
         await signUpHandler();
       }
     } catch (e) {
+      if (isLogin) {
+        Swal.fire({
+          icon: "error",
+          title: "登入時發生問題",
+          // footer: '<a href="">回報問題</a>',
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "註冊時發生問題",
+          // footer: '<a href="">回報問題</a>',
+        });
+      }
       console.log(e);
     }
   };

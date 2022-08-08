@@ -37,9 +37,9 @@ Yolu is an interactive **travel website** in traditional Chinese featuring **Rov
 
 ![](https://i.imgur.com/AQBhSy3.gif)
 
-- Post, read, edit, and delete articles in HTML with CKEditor
+- Article posting and editing page with CKEditor
 
-![](./src/images/20220728_085631.gif)
+![](https://i.imgur.com/su42sW6.png)
 
 - Article page of a particular spot with lazy loading
 
@@ -47,15 +47,15 @@ Yolu is an interactive **travel website** in traditional Chinese featuring **Rov
 
 ## Tools & Packages
 
-1. - [React](https://reactjs.org/)
-1. - [React Router](https://reactrouter.com/)
-1. - [styled-components](https://styled-components.com/)
-1. - [react-icons](https://www.npmjs.com/package/react-icons)
-1. - [html-react-parser](https://www.npmjs.com/package/html-react-parser)
-1. - [striptags](https://www.npmjs.com/package/striptags)
-1. - [sweetalert2](https://sweetalert2.github.io/)
-1. - [uuidv4](https://www.npmjs.com/package/uuidv4)
-1. - [Google Map API](https://developers.google.com/maps)
-1. - [CKEditor](https://ckeditor.com/)
-1. - [Firebase](https://firebase.google.com/) (Firestore, Authentification, Cloud Storage, and Hosting)
-1. - [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
+1. [React](https://reactjs.org/)
+1. [React Router](https://reactrouter.com/)
+1. [styled-components](https://styled-components.com/)
+1. [react-icons](https://www.npmjs.com/package/react-icons)
+1. [html-react-parser](https://www.npmjs.com/package/html-react-parser)
+1. [striptags](https://www.npmjs.com/package/striptags)
+1. [sweetalert2](https://sweetalert2.github.io/)
+1. [uuidv4](https://www.npmjs.com/package/uuidv4)
+1. [Google Map API](https://developers.google.com/maps)
+1. [CKEditor](https://ckeditor.com/)
+1. [Firebase](https://firebase.google.com/) (Firestore, Authentification, Cloud Storage, and Hosting)
+1. [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)

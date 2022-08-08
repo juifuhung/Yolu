@@ -274,6 +274,13 @@ const Article = () => {
       setArticle(docSnap.data());
       setTimestamp(docSnap.data().created_time.toDate());
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "讀取文章時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      }).then(() => {
+        window.location = "/articles";
+      });
       console.error(`Error getting article: ${e}`);
     }
   };

@@ -317,6 +317,11 @@ const Favorites = () => {
         setDisplayName(await getDisplayName("User", localId));
       }
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "無法讀取作者姓名",
+        // footer: '<a href="">回報問題</a>',
+      });
       console.error(`Error getting displayName: ${e}`);
     }
   };
@@ -376,6 +381,11 @@ const Favorites = () => {
         );
       }
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "讀取最愛清單數量時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      });
       console.error(`Error getting total favorites: ${e}`);
     }
 
@@ -428,6 +438,11 @@ const Favorites = () => {
         previousDocumentSnapshots = documentSnapshots;
       }
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "讀取最愛清單資料時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      });
       console.error("Error getting favorite documents: ", e);
     }
   };
@@ -478,6 +493,11 @@ const Favorites = () => {
         previousDocumentSnapshots = nextDocumentSnapshots;
       }
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "讀取最愛清單資料時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      });
       console.error("Error getting more favorite documents: ", e);
     }
   };

@@ -313,6 +313,11 @@ const addToFavorite = async (obj) => {
   try {
     await addDocumentToFirestore("Favorites", obj);
   } catch (e) {
+    Swal.fire({
+      icon: "error",
+      title: "加入最愛清單時發生錯誤",
+      // footer: '<a href="">回報問題</a>',
+    });
     console.error("Error adding document: ", e);
   }
 };
@@ -321,6 +326,11 @@ const deleteHandler = async (id) => {
   try {
     await deleteFireStoreDocument("Favorites", `${id}`);
   } catch (e) {
+    Swal.fire({
+      icon: "error",
+      title: "自最愛清單移除時發生錯誤",
+      // footer: '<a href="">回報問題</a>',
+    });
     console.error("Error deleting document: ", e);
   }
 };
@@ -350,6 +360,13 @@ const Map = () => {
       });
       setAllSpots(allSpotsArray);
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "取得景點資料時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      }).then(() => {
+        window.location = "/";
+      });
       console.error("Error getting document: ", e);
     }
   };
@@ -370,6 +387,11 @@ const Map = () => {
         setFavorites(favoritesArray);
       }
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "取得最愛清單資料時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      });
       console.error("Error getting favorite documents: ", e);
     }
   };
@@ -394,6 +416,11 @@ const Map = () => {
       });
       setAllSpots(categoryArray);
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "取得景點資料時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      });
       console.error("Error adding document: ", e);
     }
   };

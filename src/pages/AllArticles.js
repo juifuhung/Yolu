@@ -220,6 +220,13 @@ const AllArticles = () => {
       });
       setAllSpots(allSpotsArray);
     } catch (e) {
+      Swal.fire({
+        icon: "error",
+        title: "讀取資料時發生錯誤",
+        // footer: '<a href="">回報問題</a>',
+      }).then(() => {
+        window.location = "/";
+      });
       console.error("Error getting document: ", e);
     }
   };
