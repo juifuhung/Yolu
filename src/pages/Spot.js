@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 import {
   getFirestoreDocumentsWithPagination,
   getFirestoreDocumentsForLoadMoreItems,
@@ -310,8 +311,16 @@ const Spot = () => {
       });
       setSpots(spotsArray);
       previousDocumentSnapshots = documentSnapshots;
-    } catch (e) {
-      console.error(`Error getting article documents: ${e}`);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "讀取遊記時發生錯誤",
+        confirmButtonText: "回遊記專區",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      }).then(() => {
+        window.location = "/articles";
+      });
     }
   };
 
@@ -346,8 +355,13 @@ const Spot = () => {
         return [...prevSpots, ...newSpotsArray];
       });
       previousDocumentSnapshots = nextDocumentSnapshots;
-    } catch (e) {
-      console.error(`Error getting more article documents: ${e}`);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "讀取遊記時發生錯誤",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      });
     }
   };
 
@@ -358,8 +372,13 @@ const Spot = () => {
         `${params.spot}`
       );
       setCoverPhoto(docSnap.data().image);
-    } catch (e) {
-      console.error(`Error getting cover photo: ${e}`);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "讀取封面照片時發生錯誤",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      });
     }
   };
 
@@ -374,8 +393,6 @@ const Spot = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setSpots(oldToNewArray);
-    setOldToNewSelected(true);
-    setNewToOldSelected(false);
   };
 
   const sortFromNewToOld = () => {
@@ -383,8 +400,6 @@ const Spot = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setSpots(newToOldArray);
-    setNewToOldSelected(true);
-    setOldToNewSelected(false);
   };
 
   return (
@@ -400,12 +415,21 @@ const Spot = () => {
           <SortSection>
             <SortWords
               position={"left"}
-              onClick={sortFromNewToOld}
+              onClick={() => {
+                sortFromNewToOld(), setNewToOldSelected(true);
+                setOldToNewSelected(false);
+              }}
               selected={newToOldSelected}
             >
               由新到舊
             </SortWords>
-            <SortWords selected={oldToNewSelected} onClick={sortFromOldToNew}>
+            <SortWords
+              selected={oldToNewSelected}
+              onClick={() => {
+                sortFromOldToNew(), setNewToOldSelected(false);
+                setOldToNewSelected(true);
+              }}
+            >
               由舊到新
             </SortWords>
           </SortSection>

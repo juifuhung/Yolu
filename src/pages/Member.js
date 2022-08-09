@@ -192,8 +192,22 @@ const Member = () => {
       } else {
         await signUpHandler();
       }
-    } catch (e) {
-      console.log(e);
+    } catch {
+      if (isLogin) {
+        Swal.fire({
+          icon: "error",
+          title: "登入時發生問題",
+          confirmButtonColor: "#3085d6",
+          // footer: '<a href="">回報問題</a>',
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "註冊時發生問題",
+          confirmButtonColor: "#3085d6",
+          // footer: '<a href="">回報問題</a>',
+        });
+      }
     }
   };
 

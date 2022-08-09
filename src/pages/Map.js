@@ -312,16 +312,26 @@ const center = { lat: 66.536772, lng: 25.779681 };
 const addToFavorite = async (obj) => {
   try {
     await addDocumentToFirestore("Favorites", obj);
-  } catch (e) {
-    console.error("Error adding document: ", e);
+  } catch {
+    Swal.fire({
+      icon: "error",
+      title: "加入最愛清單時發生錯誤",
+      confirmButtonColor: "#3085d6",
+      // footer: '<a href="">回報問題</a>',
+    });
   }
 };
 
 const deleteHandler = async (id) => {
   try {
     await deleteFireStoreDocument("Favorites", `${id}`);
-  } catch (e) {
-    console.error("Error deleting document: ", e);
+  } catch {
+    Swal.fire({
+      icon: "error",
+      title: "自最愛清單移除時發生錯誤",
+      confirmButtonColor: "#3085d6",
+      // footer: '<a href="">回報問題</a>',
+    });
   }
 };
 
@@ -341,7 +351,6 @@ const Map = () => {
   };
 
   const getData = async () => {
-    setShowFavorites(false);
     try {
       let allSpotsArray = [];
       const querySnapshot = await getFirestoreDocuments("Spots");
@@ -349,8 +358,16 @@ const Map = () => {
         allSpotsArray.push(doc.data());
       });
       setAllSpots(allSpotsArray);
-    } catch (e) {
-      console.error("Error getting document: ", e);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "取得景點資料時發生錯誤",
+        confirmButtonText: "回首頁",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      }).then(() => {
+        window.location = "/";
+      });
     }
   };
 
@@ -369,8 +386,13 @@ const Map = () => {
         });
         setFavorites(favoritesArray);
       }
-    } catch (e) {
-      console.error("Error getting favorite documents: ", e);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "取得最愛清單資料時發生錯誤",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      });
     }
   };
 
@@ -380,7 +402,6 @@ const Map = () => {
   }, [localId]);
 
   const categoryHandler = async (category) => {
-    setShowFavorites(false);
     try {
       let categoryArray = [];
       const querySnapshot = await getFirestoreDocumentsWithQuery(
@@ -393,8 +414,13 @@ const Map = () => {
         categoryArray.push(doc.data());
       });
       setAllSpots(categoryArray);
-    } catch (e) {
-      console.error("Error adding document: ", e);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "取得景點資料時發生錯誤",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      });
     }
   };
 
@@ -427,14 +453,19 @@ const Map = () => {
               key={category.title}
               category={category}
               categoryHandler={categoryHandler}
+              setShowFavorites={setShowFavorites}
             />
           ))}
 
-          <MapCategoryItem getData={getData} />
+          <MapCategoryItem
+            getData={getData}
+            setShowFavorites={setShowFavorites}
+          />
           {localId && (
             <MapCategoryItem
               favorites={favorites}
               showFavoriteHandler={showFavoriteHandler}
+              setShowFavorites={setShowFavorites}
             />
           )}
         </Buttons>

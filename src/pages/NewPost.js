@@ -191,8 +191,13 @@ const Post = () => {
       if (localId) {
         setDisplayName(await getDisplayName("User", localId));
       }
-    } catch (e) {
-      console.error(`Error getting displayName: ${e}`);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "無法讀取您的名稱",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      });
     }
   };
 
@@ -211,8 +216,14 @@ const Post = () => {
                   }
                 );
               })
-              .catch((err) => {
-                reject(err);
+              .catch((e) => {
+                Swal.fire({
+                  icon: "error",
+                  title: "存取照片時發生錯誤",
+                  confirmButtonColor: "#3085d6",
+                  // footer: '<a href="">回報問題</a>',
+                });
+                reject(e);
               });
           });
         });
@@ -274,8 +285,13 @@ const Post = () => {
         if (articleId) {
           navigate(`/article/${articleId}`);
         }
-      } catch (e) {
-        console.log(`Error submitting new post: ${e}`);
+      } catch {
+        Swal.fire({
+          icon: "error",
+          title: "發表文章時發生錯誤",
+          confirmButtonColor: "#3085d6",
+          // footer: '<a href="">回報問題</a>',
+        });
       }
     }
   };

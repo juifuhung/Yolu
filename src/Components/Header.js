@@ -195,7 +195,7 @@ const MobileMember = styled(Link)`
 
 let localId;
 
-const displayMessage = () => {
+const displaySignInMessage = () => {
   if (!localId) {
     Swal.fire({
       icon: "error",
@@ -210,8 +210,13 @@ const logoutHandler = async () => {
   try {
     await logOut();
     location.replace("./");
-  } catch (e) {
-    console.error(e);
+  } catch {
+    Swal.fire({
+      icon: "error",
+      title: "登出時發生錯誤",
+      confirmButtonColor: "#3085d6",
+      // footer: '<a href="">回報問題</a>',
+    });
   }
 };
 
@@ -237,7 +242,7 @@ const Header = () => {
             <WebNavLink to="/articles">遊記專區</WebNavLink>
             <WebNavLink
               to={localId ? "/favorites" : ""}
-              onClick={displayMessage}
+              onClick={displaySignInMessage}
             >
               我的最愛
             </WebNavLink>

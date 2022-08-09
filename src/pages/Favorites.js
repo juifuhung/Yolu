@@ -316,8 +316,13 @@ const Favorites = () => {
       if (localId) {
         setDisplayName(await getDisplayName("User", localId));
       }
-    } catch (e) {
-      console.error(`Error getting displayName: ${e}`);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "無法讀取您的名稱",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      });
     }
   };
 
@@ -375,8 +380,13 @@ const Favorites = () => {
           `${category}`
         );
       }
-    } catch (e) {
-      console.error(`Error getting total favorites: ${e}`);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "讀取最愛清單數量時發生錯誤",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      });
     }
 
     let totalFavoritesArray = [];
@@ -427,8 +437,16 @@ const Favorites = () => {
         setFavorites(favoritesArray);
         previousDocumentSnapshots = documentSnapshots;
       }
-    } catch (e) {
-      console.error("Error getting favorite documents: ", e);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "讀取最愛清單資料時發生錯誤",
+        confirmButtonText: "回首頁",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      }).then(() => {
+        window.location = "/";
+      });
     }
   };
 
@@ -477,8 +495,13 @@ const Favorites = () => {
         });
         previousDocumentSnapshots = nextDocumentSnapshots;
       }
-    } catch (e) {
-      console.error("Error getting more favorite documents: ", e);
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "載入更多最愛清單資料時發生錯誤",
+        confirmButtonColor: "#3085d6",
+        // footer: '<a href="">回報問題</a>',
+      });
     }
   };
 
@@ -511,7 +534,6 @@ const Favorites = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
-    scrollTo250PxFromTop();
   };
 
   const sortFromNewToOld = () => {
@@ -519,10 +541,9 @@ const Favorites = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setFavorites(newToOldArray);
-    scrollTo250PxFromTop();
   };
 
-  const selectionHandler = (i) => {
+  const categorySelectionHandler = (i) => {
     setAllCategoriesSelected(false);
     const newCategoryArray = [...categoryArray].map((item, index) => {
       if (i === index) {
@@ -532,13 +553,11 @@ const Favorites = () => {
       }
     });
     setCategories(newCategoryArray);
-    scrollTo250PxFromTop();
   };
 
-  const categorySelectionHandler = () => {
+  const unselectCategoryHandler = () => {
     setAllCategoriesSelected(true);
     setCategories(categoryArray);
-    scrollTo250PxFromTop();
   };
 
   return (
@@ -565,18 +584,31 @@ const Favorites = () => {
               )}
             </Subtitle>
             <SortOptionArea>
-              <SortOption onClick={sortFromOldToNew}>由舊到新</SortOption>
-              <SortOption onClick={sortFromNewToOld}>由新到舊</SortOption>
+              <SortOption
+                onClick={() => {
+                  sortFromOldToNew(), scrollTo250PxFromTop();
+                }}
+              >
+                由舊到新
+              </SortOption>
+              <SortOption
+                onClick={() => {
+                  sortFromNewToOld(), scrollTo250PxFromTop();
+                }}
+              >
+                由新到舊
+              </SortOption>
             </SortOptionArea>
           </SubtitleContainer>
           <BodyRightLine />
           <ButtonArea>
             <FavoritesCategory
               selected={allCategoriesSelected}
+              unselectCategoryHandler={unselectCategoryHandler}
               categorySelectionHandler={categorySelectionHandler}
-              selectionHandler={selectionHandler}
               getTotalFavorites={getTotalFavorites}
               getFavoritesWithPagination={getFavoritesWithPagination}
+              scrollTo250PxFromTop={scrollTo250PxFromTop}
             />
             {categories.map((category, index) => (
               <FavoritesCategory
@@ -584,9 +616,10 @@ const Favorites = () => {
                 category={category.title}
                 selected={category.selected}
                 index={index}
-                selectionHandler={selectionHandler}
+                categorySelectionHandler={categorySelectionHandler}
                 getTotalFavorites={getTotalFavorites}
                 getFavoritesWithPagination={getFavoritesWithPagination}
+                scrollTo250PxFromTop={scrollTo250PxFromTop}
               />
             ))}
           </ButtonArea>
@@ -612,6 +645,9 @@ const Favorites = () => {
                     image={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
+                    scrollToTop={scrollToTop}
+                    getTotalFavorites={getTotalFavorites}
+                    getFavoritesWithPagination={getFavoritesWithPagination}
                   />
                 );
               } else {
@@ -626,6 +662,9 @@ const Favorites = () => {
                     image={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
+                    scrollToTop={scrollToTop}
+                    getTotalFavorites={getTotalFavorites}
+                    getFavoritesWithPagination={getFavoritesWithPagination}
                   />
                 );
               }
