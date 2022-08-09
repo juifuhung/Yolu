@@ -41,11 +41,12 @@ let localId;
 const FavoritesCategory = ({
   category,
   selected,
+  unselectCategoryHandler,
   categorySelectionHandler,
-  selectionHandler,
   getFavoritesWithPagination,
   getTotalFavorites,
   index,
+  scrollTo250PxFromTop,
 }) => {
   const currentUser = useAuth();
   if (currentUser) {
@@ -57,7 +58,10 @@ const FavoritesCategory = ({
       <CategoryButton
         selected={selected}
         onClick={() => {
-          category ? selectionHandler(index) : categorySelectionHandler();
+          scrollTo250PxFromTop();
+          category
+            ? categorySelectionHandler(index)
+            : unselectCategoryHandler();
           getTotalFavorites(localId, `${category}`);
           category
             ? getFavoritesWithPagination(localId, `${category}`)

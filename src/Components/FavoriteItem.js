@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../utils/Firebase";
 import { FaTrash } from "react-icons/fa";
 import loadingIcon from "../images/loading.gif";
 
@@ -207,6 +208,8 @@ const Trash = styled(FaTrash)`
   }
 `;
 
+let localId;
+
 const FavoriteItemDiv = (
   {
     id,
@@ -217,9 +220,17 @@ const FavoriteItemDiv = (
     category,
     timestamp,
     deleteHandler,
+    scrollToTop,
+    getTotalFavorites,
+    getFavoritesWithPagination,
   },
   ref
 ) => {
+  const currentUser = useAuth();
+  if (currentUser) {
+    localId = currentUser.uid;
+  }
+
   return (
     <>
       <FavoriteItemSection>
@@ -269,6 +280,9 @@ const FavoriteItemDiv = (
             title={"移出最愛清單"}
             onClick={() => {
               deleteHandler(id);
+              scrollToTop();
+              getTotalFavorites(localId);
+              getFavoritesWithPagination(localId);
             }}
           />
         </FavoriteItem>

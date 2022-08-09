@@ -56,16 +56,17 @@ const MapCategoryItem = ({
   categoryHandler,
   getData,
   showFavoriteHandler,
+  setShowFavorites,
 }) => {
   return (
     <>
       <Container
         onClick={() => {
           category
-            ? categoryHandler(`${category.title}`)
+            ? (categoryHandler(`${category.title}`), setShowFavorites(false))
             : favorites
             ? showFavoriteHandler()
-            : getData();
+            : (setShowFavorites(false), getData());
         }}
       >
         <Icon

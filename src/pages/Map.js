@@ -351,7 +351,6 @@ const Map = () => {
   };
 
   const getData = async () => {
-    setShowFavorites(false);
     try {
       let allSpotsArray = [];
       const querySnapshot = await getFirestoreDocuments("Spots");
@@ -403,7 +402,6 @@ const Map = () => {
   }, [localId]);
 
   const categoryHandler = async (category) => {
-    setShowFavorites(false);
     try {
       let categoryArray = [];
       const querySnapshot = await getFirestoreDocumentsWithQuery(
@@ -455,14 +453,19 @@ const Map = () => {
               key={category.title}
               category={category}
               categoryHandler={categoryHandler}
+              setShowFavorites={setShowFavorites}
             />
           ))}
 
-          <MapCategoryItem getData={getData} />
+          <MapCategoryItem
+            getData={getData}
+            setShowFavorites={setShowFavorites}
+          />
           {localId && (
             <MapCategoryItem
               favorites={favorites}
               showFavoriteHandler={showFavoriteHandler}
+              setShowFavorites={setShowFavorites}
             />
           )}
         </Buttons>

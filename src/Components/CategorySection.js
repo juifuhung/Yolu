@@ -59,6 +59,8 @@ const CategorySection = ({ label }) => {
       Swal.fire({
         icon: "error",
         title: "讀取資料時發生錯誤",
+        confirmButtonText: "回首頁",
+        confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       }).then(() => {
         window.location = "/";

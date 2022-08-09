@@ -195,7 +195,7 @@ const MobileMember = styled(Link)`
 
 let localId;
 
-const displayMessage = () => {
+const displaySignInMessage = () => {
   if (!localId) {
     Swal.fire({
       icon: "error",
@@ -242,7 +242,7 @@ const Header = () => {
             <WebNavLink to="/articles">遊記專區</WebNavLink>
             <WebNavLink
               to={localId ? "/favorites" : ""}
-              onClick={displayMessage}
+              onClick={displaySignInMessage}
             >
               我的最愛
             </WebNavLink>

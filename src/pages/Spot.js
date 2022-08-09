@@ -393,8 +393,6 @@ const Spot = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setSpots(oldToNewArray);
-    setOldToNewSelected(true);
-    setNewToOldSelected(false);
   };
 
   const sortFromNewToOld = () => {
@@ -402,8 +400,6 @@ const Spot = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setSpots(newToOldArray);
-    setNewToOldSelected(true);
-    setOldToNewSelected(false);
   };
 
   return (
@@ -419,12 +415,21 @@ const Spot = () => {
           <SortSection>
             <SortWords
               position={"left"}
-              onClick={sortFromNewToOld}
+              onClick={() => {
+                sortFromNewToOld(), setNewToOldSelected(true);
+                setOldToNewSelected(false);
+              }}
               selected={newToOldSelected}
             >
               由新到舊
             </SortWords>
-            <SortWords selected={oldToNewSelected} onClick={sortFromOldToNew}>
+            <SortWords
+              selected={oldToNewSelected}
+              onClick={() => {
+                sortFromOldToNew(), setNewToOldSelected(false);
+                setOldToNewSelected(true);
+              }}
+            >
               由舊到新
             </SortWords>
           </SortSection>

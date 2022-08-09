@@ -534,7 +534,6 @@ const Favorites = () => {
       return a.created_time.seconds - b.created_time.seconds;
     });
     setFavorites(oldToNewArray);
-    scrollTo250PxFromTop();
   };
 
   const sortFromNewToOld = () => {
@@ -542,10 +541,9 @@ const Favorites = () => {
       return b.created_time.seconds - a.created_time.seconds;
     });
     setFavorites(newToOldArray);
-    scrollTo250PxFromTop();
   };
 
-  const selectionHandler = (i) => {
+  const categorySelectionHandler = (i) => {
     setAllCategoriesSelected(false);
     const newCategoryArray = [...categoryArray].map((item, index) => {
       if (i === index) {
@@ -555,13 +553,11 @@ const Favorites = () => {
       }
     });
     setCategories(newCategoryArray);
-    scrollTo250PxFromTop();
   };
 
-  const categorySelectionHandler = () => {
+  const unselectCategoryHandler = () => {
     setAllCategoriesSelected(true);
     setCategories(categoryArray);
-    scrollTo250PxFromTop();
   };
 
   return (
@@ -588,18 +584,31 @@ const Favorites = () => {
               )}
             </Subtitle>
             <SortOptionArea>
-              <SortOption onClick={sortFromOldToNew}>由舊到新</SortOption>
-              <SortOption onClick={sortFromNewToOld}>由新到舊</SortOption>
+              <SortOption
+                onClick={() => {
+                  sortFromOldToNew(), scrollTo250PxFromTop();
+                }}
+              >
+                由舊到新
+              </SortOption>
+              <SortOption
+                onClick={() => {
+                  sortFromNewToOld(), scrollTo250PxFromTop();
+                }}
+              >
+                由新到舊
+              </SortOption>
             </SortOptionArea>
           </SubtitleContainer>
           <BodyRightLine />
           <ButtonArea>
             <FavoritesCategory
               selected={allCategoriesSelected}
+              unselectCategoryHandler={unselectCategoryHandler}
               categorySelectionHandler={categorySelectionHandler}
-              selectionHandler={selectionHandler}
               getTotalFavorites={getTotalFavorites}
               getFavoritesWithPagination={getFavoritesWithPagination}
+              scrollTo250PxFromTop={scrollTo250PxFromTop}
             />
             {categories.map((category, index) => (
               <FavoritesCategory
@@ -607,9 +616,10 @@ const Favorites = () => {
                 category={category.title}
                 selected={category.selected}
                 index={index}
-                selectionHandler={selectionHandler}
+                categorySelectionHandler={categorySelectionHandler}
                 getTotalFavorites={getTotalFavorites}
                 getFavoritesWithPagination={getFavoritesWithPagination}
+                scrollTo250PxFromTop={scrollTo250PxFromTop}
               />
             ))}
           </ButtonArea>
@@ -635,6 +645,9 @@ const Favorites = () => {
                     image={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
+                    scrollToTop={scrollToTop}
+                    getTotalFavorites={getTotalFavorites}
+                    getFavoritesWithPagination={getFavoritesWithPagination}
                   />
                 );
               } else {
@@ -649,6 +662,9 @@ const Favorites = () => {
                     image={item.image}
                     timestamp={item.created_time.toDate()}
                     deleteHandler={deleteHandler}
+                    scrollToTop={scrollToTop}
+                    getTotalFavorites={getTotalFavorites}
+                    getFavoritesWithPagination={getFavoritesWithPagination}
                   />
                 );
               }
