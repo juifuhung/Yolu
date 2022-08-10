@@ -207,17 +207,30 @@ const displaySignInMessage = () => {
 };
 
 const logoutHandler = async () => {
-  try {
-    await logOut();
-    location.replace("./");
-  } catch {
-    Swal.fire({
-      icon: "error",
-      title: "登出時發生錯誤",
-      confirmButtonColor: "#3085d6",
-      // footer: '<a href="">回報問題</a>',
-    });
-  }
+  Swal.fire({
+    title: "確定登出",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "是",
+    cancelButtonText: "否",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("已登出");
+      try {
+        logOut();
+        location.replace("/");
+      } catch {
+        Swal.fire({
+          icon: "error",
+          title: "登出時發生錯誤",
+          confirmButtonColor: "#3085d6",
+          // footer: '<a href="">回報問題</a>',
+        });
+      }
+    }
+  });
 };
 
 const Header = () => {
