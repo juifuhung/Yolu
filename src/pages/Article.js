@@ -347,8 +347,6 @@ const Article = () => {
           ) : (
             <SpotItemSubtitle>Loading...</SpotItemSubtitle>
           )}
-          {}
-
           {timestamp && (
             <SpotItemSubtitle
               time={true}
