@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import parse from "html-react-parser";
 import striptags from "striptags";
 
 const SpotItemLink = styled(Link)`
+  display: flex;
+  justify-content: center;
   color: black;
   text-decoration: none;
   margin-bottom: 1rem;
@@ -19,6 +22,28 @@ const SpotItemLink = styled(Link)`
 
   &:hover {
     background-color: #ebecf0;
+  }
+`;
+
+const SpotItemLinkLeft = styled.div`
+  width: 78%;
+  margin-right: 2%;
+
+  @media (max-width: 1450px) {
+    width: 90%;
+  }
+`;
+
+const SpotItemLinkRight = styled.div`
+  width: 15%;
+  border-radius: 0.5rem;
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  @media (max-width: 1450px) {
+    display: none;
   }
 `;
 
@@ -75,41 +100,55 @@ const SpotItemContent = styled.p`
 `;
 
 const SpotItem = ({ title, content, displayName, created_time, id }, ref) => {
+  const arraySplitedWithBeginningFigureTag = content.split(
+    '</p><figure class="image">'
+  );
+  const arraySplitedWithEndingFigureTag =
+    arraySplitedWithBeginningFigureTag[1] &&
+    arraySplitedWithBeginningFigureTag[1].split("</figure>");
+  const firstImage =
+    arraySplitedWithEndingFigureTag && arraySplitedWithEndingFigureTag[0];
+  const src = firstImage && parse(firstImage).props.src;
+
   return (
     <>
       <SpotItemLink to={`/article/${id}`} ref={ref}>
-        <SpotItemTitle>{title}</SpotItemTitle>
-        <SpotItemAuthorAndTime>
-          <SpotItemSubtitle>{`作者：${displayName}`}</SpotItemSubtitle>
-          <SpotItemSubtitle
-            time={true}
-          >{`最近更新：${created_time.getFullYear()}年${
-            created_time.getMonth() + 1 < 10
-              ? "0" + (created_time.getMonth() + 1).toString()
-              : (created_time.getMonth() + 1).toString()
-          }月${
-            created_time.getDate() < 10
-              ? "0" + created_time.getDate().toString()
-              : created_time.getDate().toString()
-          }日 ${
-            created_time.getHours() === 0
-              ? "00"
-              : created_time.getHours() < 10
-              ? "0" + created_time.getHours().toString()
-              : created_time.getHours().toString()
-          }:${
-            created_time.getMinutes() === 0
-              ? "00"
-              : created_time.getMinutes() < 10
-              ? "0" + created_time.getMinutes().toString()
-              : created_time.getMinutes().toString()
-          }`}</SpotItemSubtitle>
-        </SpotItemAuthorAndTime>
-        <SpotItemContent>
-          {content.length <= 100
-            ? striptags(`${content}`)
-            : striptags(`${content.substring(0, 100)}...`)}
-        </SpotItemContent>
+        <SpotItemLinkLeft>
+          <SpotItemTitle>{title}</SpotItemTitle>
+          <SpotItemAuthorAndTime>
+            <SpotItemSubtitle>{`作者：${displayName}`}</SpotItemSubtitle>
+            <SpotItemSubtitle
+              time={true}
+            >{`最近更新：${created_time.getFullYear()}年${
+              created_time.getMonth() + 1 < 10
+                ? "0" + (created_time.getMonth() + 1).toString()
+                : (created_time.getMonth() + 1).toString()
+            }月${
+              created_time.getDate() < 10
+                ? "0" + created_time.getDate().toString()
+                : created_time.getDate().toString()
+            }日 ${
+              created_time.getHours() === 0
+                ? "00"
+                : created_time.getHours() < 10
+                ? "0" + created_time.getHours().toString()
+                : created_time.getHours().toString()
+            }:${
+              created_time.getMinutes() === 0
+                ? "00"
+                : created_time.getMinutes() < 10
+                ? "0" + created_time.getMinutes().toString()
+                : created_time.getMinutes().toString()
+            }`}</SpotItemSubtitle>
+          </SpotItemAuthorAndTime>
+
+          <SpotItemContent>
+            {content.length <= 100
+              ? striptags(`${content}`)
+              : striptags(`${content.substring(0, 100)}...`)}
+          </SpotItemContent>
+        </SpotItemLinkLeft>
+        <SpotItemLinkRight src={src} />
       </SpotItemLink>
     </>
   );

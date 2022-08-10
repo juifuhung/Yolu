@@ -44,7 +44,10 @@ const App = () => {
             path="new-post"
             element={localId ? <NewPost /> : <Navigate to="/member" />}
           />
-          <Route path="edit/:articleId" element={<EditPost />} />
+          <Route
+            path="edit/:articleId"
+            element={localId ? <EditPost /> : <Article />}
+          />
         </Routes>
       </Font>
     </>

@@ -1,20 +1,32 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { v4 } from "uuid";
 import {
   useAuth,
   getDisplayName,
+  setDocumentToFirestore,
   deleteFireStoreDocument,
+  getFirestoreDocument,
   getFirestoreDocumentsWithQuery,
   favoritesGetFirestoreDocumentsWithPagination,
   favoritesLoadMoreItems,
 } from "../utils/Firebase";
+import {
+  getDownloadURL,
+  uploadBytes,
+  deleteObject,
+  ref,
+} from "firebase/storage";
+import { storage } from "../utils/Firebase";
 import "../styles/yesOrNo.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import FavoriteItem from "../components/FavoriteItem";
 import FavoritesCategory from "../components/FavoritesCategory";
 import FavoritesCover from "../images/favorites_cover.jpg";
+import DefaultProfile from "../images/defaultProfile.jpg";
+import ProfileCamera from "../images/profie_camera.jpg";
 import TopIcon from "../images/top.png";
 import Loading from "../images/loading.gif";
 import NoItemImage from "../images/no_item_found.png";
@@ -135,12 +147,73 @@ const BodyContainer = styled.div`
 const BodyLeft = styled.div`
   width: 20%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 
   @media (max-width: 1100px) {
     justify-content: flex-start;
     width: 90%;
   }
+`;
+
+const ProfileImageLabel = styled.label`
+  width: 100px,
+  height: 100px,
+  display: flex,
+  justify-content: center,
+  align-items: center,
+`;
+
+const ProfileImage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  background-image: url(${(props) => props.img});
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: 3rem;
+  border: ${(props) => (props.default ? "solid 3px #afabab" : "none")};
+
+  @media (max-width: 1620px) {
+    width: 160px;
+    height: 160px;
+  }
+
+  @media (max-width: 1240px) {
+    width: 140px;
+    height: 140px;
+  }
+
+  @media (max-width: 1100px) {
+    width: 180px;
+    height: 180px;
+  }
+
+  @media (max-width: 420px) {
+    width: 140px;
+    height: 140px;
+  }
+`;
+
+const UploadProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.8;
+  display: none;
+  ${ProfileImage}:hover & {
+    display: flex;
+  }
+`;
+
+const ImageInput = styled.input`
+  display: none;
 `;
 
 const BodyRight = styled.div`
@@ -305,11 +378,32 @@ const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState(categoryArray);
   const [allCategoriesSelected, setAllCategoriesSelected] = useState(false);
+  const [image, setImage] = useState();
+  const [imgUrl, setImgUrl] = useState("");
+  const [imgPath, setImgPath] = useState("");
 
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
   }
+
+  useEffect(() => {
+    if (image) {
+      const uploadImg = async () => {
+        const imgRef = ref(storage, `profile-pictures/${displayName + v4()}`);
+        if (imgPath) {
+          await deleteObject(ref(storage, imgPath));
+        }
+        const snap = await uploadBytes(imgRef, image);
+        const url = await getDownloadURL(ref(storage, snap.ref.fullPath));
+        setImgUrl(url);
+        await setDocumentToFirestore("ProfilePic", localId, { image: url });
+        setImgPath(snap.ref.fullPath);
+        setImage(undefined);
+      };
+      uploadImg();
+    }
+  }, [image]);
 
   const showDisplayName = async (localId) => {
     try {
@@ -323,6 +417,13 @@ const Favorites = () => {
         confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
+    }
+  };
+
+  const getProfilePic = async (localId) => {
+    if (localId) {
+      const docSnap = await getFirestoreDocument("ProfilePic", localId);
+      setImgUrl(docSnap.data().image);
     }
   };
 
@@ -350,6 +451,7 @@ const Favorites = () => {
     showDisplayName(localId);
     getTotalFavorites(localId);
     getFavoritesWithPagination(localId);
+    getProfilePic(localId);
   }, [localId]);
 
   useEffect(() => {
@@ -572,6 +674,29 @@ const Favorites = () => {
       </FavoritesCoverSection>
       <BodyContainer>
         <BodyLeft>
+          <ProfileImageLabel htmlFor="photo">
+            {imgUrl ? (
+              <ProfileImage img={imgUrl} alt="Loading Image...">
+                <UploadProfileImage src={ProfileCamera} />
+              </ProfileImage>
+            ) : (
+              <ProfileImage
+                img={DefaultProfile}
+                default={true}
+                alt="Loading Image..."
+              >
+                <UploadProfileImage src={ProfileCamera} />
+              </ProfileImage>
+            )}
+            <ImageInput
+              type="file"
+              accept="image/*"
+              id="photo"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+              }}
+            />
+          </ProfileImageLabel>
           <UserName>{`你好，${displayName}`}</UserName>
         </BodyLeft>
         <BodyRight>

@@ -320,7 +320,7 @@ const EditPost = () => {
             type="text"
             value={enteredTitle}
             onChange={titleInputChangeHandler}
-            maxlength="20"
+            maxLength="20"
           />
           <NameAndTime>
             {!displayName && (
