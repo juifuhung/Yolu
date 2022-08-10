@@ -25,6 +25,8 @@ import Footer from "../components/Footer";
 import FavoriteItem from "../components/FavoriteItem";
 import FavoritesCategory from "../components/FavoritesCategory";
 import FavoritesCover from "../images/favorites_cover.jpg";
+import DefaultProfile from "../images/defaultProfile.jpg";
+import ProfileCamera from "../images/profie_camera.jpg";
 import TopIcon from "../images/top.png";
 import Loading from "../images/loading.gif";
 import NoItemImage from "../images/no_item_found.png";
@@ -145,12 +147,52 @@ const BodyContainer = styled.div`
 const BodyLeft = styled.div`
   width: 20%;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 
   @media (max-width: 1100px) {
     justify-content: flex-start;
     width: 90%;
   }
+`;
+
+const ProfileImageLabel = styled.label`
+  width: 100px,
+  height: 100px,
+  display: flex,
+  justify-content: center,
+  align-items: center,
+`;
+
+const ProfileImage = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  background-image: url(${(props) => props.img});
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  border-radius: 50%;
+  cursor: pointer;
+  border: ${(props) => (props.default ? "solid 3px #afabab" : "none")};
+`;
+
+const UploadProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+  display: none;
+  ${ProfileImage}:hover & {
+    display: flex;
+  }
+`;
+
+const ImageInput = styled.input`
+  display: none;
 `;
 
 const BodyRight = styled.div`
@@ -612,38 +654,29 @@ const Favorites = () => {
       <BodyContainer>
         <BodyLeft>
           <UserName>{`你好，${displayName}`}</UserName>
-          <label
-            htmlFor="photo"
-            style={{
-              width: "400px",
-              height: "300px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "rgb(238, 238, 238)",
-              borderRadius: "3px",
-              cursor: "pointer",
-            }}
-          >
+          <ProfileImageLabel htmlFor="photo">
             {imgUrl ? (
-              <img
-                src={imgUrl}
-                alt="Image"
-                style={{ width: "100%", height: "100%", objectFit: "contain" }}
-              />
+              <ProfileImage img={imgUrl} alt="Loading Image...">
+                <UploadProfileImage src={ProfileCamera} />
+              </ProfileImage>
             ) : (
-              "hi"
+              <ProfileImage
+                img={DefaultProfile}
+                default={true}
+                alt="Loading Image..."
+              >
+                <UploadProfileImage src={ProfileCamera} />
+              </ProfileImage>
             )}
-            <input
+            <ImageInput
               type="file"
               accept="image/*"
-              style={{ display: "none" }}
               id="photo"
               onChange={(e) => {
                 setImage(e.target.files[0]);
               }}
             />
-          </label>
+          </ProfileImageLabel>
         </BodyLeft>
         <BodyRight>
           <SubtitleContainer>
