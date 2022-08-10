@@ -208,7 +208,7 @@ const displaySignInMessage = () => {
 
 const logoutHandler = async () => {
   Swal.fire({
-    title: "確定登出",
+    title: "確定登出？",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
