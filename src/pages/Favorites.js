@@ -163,7 +163,6 @@ const ProfileImageLabel = styled.label`
   display: flex,
   justify-content: center,
   align-items: center,
-  
 `;
 
 const ProfileImage = styled.div`
