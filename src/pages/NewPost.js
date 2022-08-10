@@ -325,7 +325,7 @@ const Post = () => {
             type="text"
             onChange={titleInputChangeHandler}
             value={enteredTitle}
-            maxlength="20"
+            maxLength="20"
             placeholder="標題"
           />
           <CKEditor
