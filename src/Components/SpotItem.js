@@ -28,6 +28,10 @@ const SpotItemLink = styled(Link)`
 const SpotItemLinkLeft = styled.div`
   width: 78%;
   margin-right: 2%;
+
+  @media (max-width: 1450px) {
+    width: 90%;
+  }
 `;
 
 const SpotItemLinkRight = styled.div`
@@ -37,6 +41,10 @@ const SpotItemLinkRight = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+
+  @media (max-width: 1450px) {
+    display: none;
+  }
 `;
 
 const SpotItemTitle = styled.h1`

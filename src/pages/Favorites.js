@@ -180,13 +180,33 @@ const ProfileImage = styled.div`
   cursor: pointer;
   margin-top: 3rem;
   border: ${(props) => (props.default ? "solid 3px #afabab" : "none")};
+
+  @media (max-width: 1620px) {
+    width: 160px;
+    height: 160px;
+  }
+
+  @media (max-width: 1240px) {
+    width: 140px;
+    height: 140px;
+  }
+
+  @media (max-width: 1100px) {
+    width: 180px;
+    height: 180px;
+  }
+
+  @media (max-width: 420px) {
+    width: 140px;
+    height: 140px;
+  }
 `;
 
 const UploadProfileImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.6;
+  opacity: 0.8;
   display: none;
   ${ProfileImage}:hover & {
     display: flex;
