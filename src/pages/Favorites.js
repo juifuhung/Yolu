@@ -163,6 +163,7 @@ const ProfileImageLabel = styled.label`
   display: flex,
   justify-content: center,
   align-items: center,
+  
 `;
 
 const ProfileImage = styled.div`
@@ -177,6 +178,7 @@ const ProfileImage = styled.div`
   overflow: hidden;
   border-radius: 50%;
   cursor: pointer;
+  margin-top: 3rem;
   border: ${(props) => (props.default ? "solid 3px #afabab" : "none")};
 `;
 
@@ -653,7 +655,6 @@ const Favorites = () => {
       </FavoritesCoverSection>
       <BodyContainer>
         <BodyLeft>
-          <UserName>{`你好，${displayName}`}</UserName>
           <ProfileImageLabel htmlFor="photo">
             {imgUrl ? (
               <ProfileImage img={imgUrl} alt="Loading Image...">
@@ -677,6 +678,7 @@ const Favorites = () => {
               }}
             />
           </ProfileImageLabel>
+          <UserName>{`你好，${displayName}`}</UserName>
         </BodyLeft>
         <BodyRight>
           <SubtitleContainer>
