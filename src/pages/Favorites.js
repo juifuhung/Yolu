@@ -1,14 +1,24 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "styled-components";
 import Swal from "sweetalert2";
+import { v4 } from "uuid";
 import {
   useAuth,
   getDisplayName,
+  setDocumentToFirestore,
   deleteFireStoreDocument,
+  getFirestoreDocument,
   getFirestoreDocumentsWithQuery,
   favoritesGetFirestoreDocumentsWithPagination,
   favoritesLoadMoreItems,
 } from "../utils/Firebase";
+import {
+  getDownloadURL,
+  uploadBytes,
+  deleteObject,
+  ref,
+} from "firebase/storage";
+import { storage } from "../utils/Firebase";
 import "../styles/yesOrNo.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -305,11 +315,32 @@ const Favorites = () => {
   const [favorites, setFavorites] = useState([]);
   const [categories, setCategories] = useState(categoryArray);
   const [allCategoriesSelected, setAllCategoriesSelected] = useState(false);
+  const [image, setImage] = useState();
+  const [imgUrl, setImgUrl] = useState("");
+  const [imgPath, setImgPath] = useState("");
 
   const currentUser = useAuth();
   if (currentUser) {
     localId = currentUser.uid;
   }
+
+  useEffect(() => {
+    if (image) {
+      const uploadImg = async () => {
+        const imgRef = ref(storage, `profile-pictures/${displayName + v4()}`);
+        if (imgPath) {
+          await deleteObject(ref(storage, imgPath));
+        }
+        const snap = await uploadBytes(imgRef, image);
+        const url = await getDownloadURL(ref(storage, snap.ref.fullPath));
+        setImgUrl(url);
+        await setDocumentToFirestore("ProfilePic", localId, { image: url });
+        setImgPath(snap.ref.fullPath);
+        setImage(undefined);
+      };
+      uploadImg();
+    }
+  }, [image]);
 
   const showDisplayName = async (localId) => {
     try {
@@ -323,6 +354,13 @@ const Favorites = () => {
         confirmButtonColor: "#3085d6",
         // footer: '<a href="">回報問題</a>',
       });
+    }
+  };
+
+  const getProfilePic = async (localId) => {
+    if (localId) {
+      const docSnap = await getFirestoreDocument("ProfilePic", localId);
+      setImgUrl(docSnap.data().image);
     }
   };
 
@@ -350,6 +388,7 @@ const Favorites = () => {
     showDisplayName(localId);
     getTotalFavorites(localId);
     getFavoritesWithPagination(localId);
+    getProfilePic(localId);
   }, [localId]);
 
   useEffect(() => {
@@ -573,6 +612,38 @@ const Favorites = () => {
       <BodyContainer>
         <BodyLeft>
           <UserName>{`你好，${displayName}`}</UserName>
+          <label
+            htmlFor="photo"
+            style={{
+              width: "400px",
+              height: "300px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgb(238, 238, 238)",
+              borderRadius: "3px",
+              cursor: "pointer",
+            }}
+          >
+            {imgUrl ? (
+              <img
+                src={imgUrl}
+                alt="Image"
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+              />
+            ) : (
+              "hi"
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              id="photo"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+              }}
+            />
+          </label>
         </BodyLeft>
         <BodyRight>
           <SubtitleContainer>
