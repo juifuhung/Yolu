@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@babel/eslint-parser": "^7.18.2",
-    "@ckeditor/ckeditor5-autosave": "^35.0.1",
     "@ckeditor/ckeditor5-build-classic": "^34.2.0",
     "@ckeditor/ckeditor5-react": "^5.0.2",
     "@react-google-maps/api": "^2.12.0",
