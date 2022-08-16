@@ -165,11 +165,14 @@ const newPostHandler = () => {
 
 const categoryArray = [
   "博物館",
-  "自然景觀",
+  "購物",
   "餐廳",
   "聖誕主題",
-  "購物",
-  "交通",
+  "自然景觀",
+  "城市建築",
+  "歷史人文",
+  "動物主題",
+  "住宿",
 ];
 
 const AllArticles = () => {

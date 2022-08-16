@@ -181,6 +181,7 @@ const EmptyHeart = styled(FaRegHeart)`
 `;
 
 const InfoWindowTitle = styled(Link)`
+  max-width: 82%;
   color: black;
   text-decoration: none;
   margin: 12px 0 0;
@@ -199,6 +200,7 @@ const InfoWindowTitle = styled(Link)`
 `;
 
 const InfoWindowSubTitle = styled(Link)`
+  max-width: 82%;
   color: black;
   text-decoration: none;
   margin: 0 0 2px;
@@ -303,11 +305,14 @@ const categoryArray = [
   { title: "餐廳", icon: "https://img.onl/Dw7xbi" },
   { title: "聖誕主題", icon: "https://img.onl/t3NmW1" },
   { title: "自然景觀", icon: "https://img.onl/djbguI" },
-  { title: "交通", icon: "https://img.onl/0S0gd6" },
+  { title: "城市建築", icon: "https://img.onl/6PqNDL" },
+  { title: "歷史人文", icon: "https://img.onl/tdZEIK" },
+  { title: "動物主題", icon: "https://img.onl/8GVz1" },
+  { title: "住宿", icon: "https://img.onl/U9kvRS" },
 ];
 
 let localId;
-const center = { lat: 66.536772, lng: 25.779681 };
+const center = { lat: 66.656772, lng: 25.779681 };
 
 const addToFavorite = async (obj) => {
   try {
@@ -472,7 +477,7 @@ const Map = () => {
       </ButtonSection>
       <MapContainer>
         <GoogleMap
-          zoom={10.4}
+          zoom={8}
           center={center}
           mapContainerStyle={{ width: "85%", height: "90%" }}
         >

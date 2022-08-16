@@ -40,6 +40,10 @@ const FavoriteItem = styled.div`
     justify-content: start;
     align-items: flex-start;
   }
+
+  @media (max-width: 350px) {
+    height: 220px;
+  }
 `;
 
 const FavoriteItemLeft = styled(Link)`
@@ -81,6 +85,7 @@ const FavoriteItemRight = styled(Link)`
 `;
 
 const FavoriteItemTitle = styled.h2`
+  max-width: 92%;
   margin: 0;
   font-size: 1.6rem;
   font-weight: 600;
@@ -88,10 +93,15 @@ const FavoriteItemTitle = styled.h2`
   @media (max-width: 370px) {
     font-size: 1.4rem;
   }
+
+  @media (max-width: 350px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const FavoriteItemSubtitle = styled.h3`
   margin: 0;
+  max-width: 95%;
   font-size: 1rem;
   font-weight: 400;
 
