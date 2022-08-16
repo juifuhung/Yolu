@@ -242,7 +242,7 @@ const Header = () => {
   return (
     <>
       <Font>
-        <MobileMember to="/member" onClick={localId && logoutHandler}>
+        <MobileMember to={localId ? "/favorites" : "/member"}>
           <img src={localId ? mobileLogOutMemberIcon : mobileMemberLoginIcon} />
         </MobileMember>
 
