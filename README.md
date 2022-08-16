@@ -21,29 +21,57 @@ Yolu is an interactive **travel website** in traditional Chinese featuring **Rov
 
 ## Demos
 
+- Carousel and animation with intersection observer on homepage
+
+![](https://img.onl/B5JEI4)
+
 - Filter spots based on categories and selecting favorite list
 
-![](https://i.imgur.com/YY4vkua.gif)
+![](https://img.onl/1sqGJ)
 
 - Add and remove spots from favorites list on map page
 
-![](https://i.imgur.com/BRcvVjU.gif)
+![](https://img.onl/DM6Vuw)
 
 - Filter spots based on categories on favorites page
 
-![](https://i.imgur.com/APkUPCE.gif)
+![](https://img.onl/BB0fs)
 
 - Sort spots by time on favorites page
 
-![](https://i.imgur.com/AQBhSy3.gif)
+![](https://img.onl/3uasqU)
 
-- Article posting and editing page with CKEditor
+- Update profile picture on favorites page
 
-![](https://i.imgur.com/su42sW6.png)
+![](https://img.onl/IWBvnS)
 
-- Article page of a particular spot with lazy loading
+- Post an article with bold & italic words, a photo, and a video included with CKEditor
 
-![](https://i.imgur.com/FToUwSC.gif)
+![](https://img.onl/cTcSba)
+
+- Edit post with CKEditor
+
+![](https://img.onl/Iybw83)
+
+- Sort articles by time on articles page
+
+![](https://img.onl/MQAlF)
+
+- Edit post with CKEditor
+
+![](https://img.onl/ynURv)
+
+- Delete post
+
+![](https://img.onl/Iybw83)
+
+- Read an article
+
+![](https://img.onl/IbReVO)
+
+- Link to the page displaying all articles related to a particular spot based on tag selected
+
+![](https://img.onl/FnnlAB)
 
 ## Tools & Packages
 
@@ -57,5 +85,5 @@ Yolu is an interactive **travel website** in traditional Chinese featuring **Rov
 1. [uuidv4](https://www.npmjs.com/package/uuidv4)
 1. [Google Map API](https://developers.google.com/maps)
 1. [CKEditor](https://ckeditor.com/)
-1. [Firebase](https://firebase.google.com/) (Firestore, Authentification, Cloud Storage, and Hosting)
+1. [Firebase](https://firebase.google.com/) (Firestore, Authentification, Cloud Storage, Hosting)
 1. [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
