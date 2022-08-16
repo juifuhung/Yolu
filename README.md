@@ -87,3 +87,9 @@ Yolu is an interactive **travel website** in traditional Chinese featuring **Rov
 1. [CKEditor](https://ckeditor.com/)
 1. [Firebase](https://firebase.google.com/) (Firestore, Authentification, Cloud Storage, Hosting)
 1. [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
+
+## Contact
+
+Author: Ralph Hung (AppWorks School Batch #16 Front-End Trainee)
+Email: juifuhung@gmail.com
+Medium / Instagram (in traditional Chinese): ralphhong5465
