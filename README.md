@@ -90,6 +90,6 @@ Yolu is an interactive **travel website** in traditional Chinese featuring **Rov
 
 ## Contact
 
-Author: Ralph Hung (AppWorks School Batch #16 Front-End Trainee)
-Email: juifuhung@gmail.com
-Medium / Instagram (in traditional Chinese): ralphhong5465
+- Author: Ralph Hung (AppWorks School Batch #16 Front-End Trainee)
+- Email: juifuhung@gmail.com
+- Medium / Instagram (in traditional Chinese): ralphhong5465
