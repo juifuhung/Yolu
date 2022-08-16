@@ -357,7 +357,10 @@ const categoryArray = [
   { title: "餐廳", selected: false },
   { title: "聖誕主題", selected: false },
   { title: "自然景觀", selected: false },
-  { title: "交通", selected: false },
+  { title: "城市建築", selected: false },
+  { title: "歷史人文", selected: false },
+  { title: "動物主題", selected: false },
+  { title: "住宿", selected: false },
 ];
 
 let localId;

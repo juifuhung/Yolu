@@ -11,28 +11,11 @@ import {
   useAuth,
   getDisplayName,
   addDocumentToFirestore,
+  getFirestoreDocuments,
   getFirestoreDocumentsWithQuery,
 } from "../utils/Firebase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-
-const spots = [
-  { title: "奧納斯山", state: false },
-  { title: "聖誕老人的鮭魚餐廳", state: false },
-  { title: "聖誕老人辦公室", state: false },
-  { title: "北極圈", state: false },
-  { title: "聖誕屋", state: false },
-  { title: "哈士奇公園", state: false },
-  { title: "聖誕老人馴鹿", state: false },
-  { title: "馬勒蒂尼北極圈工廠店", state: false },
-  { title: "Curry Masala", state: false },
-  { title: "極光購物中心", state: false },
-  { title: "北極科學博物館", state: false },
-  { title: "皮爾凱科學中心", state: false },
-  { title: "羅瓦涅米機場", state: false },
-  { title: "羅瓦涅米中央巴士站", state: false },
-  { title: "羅瓦涅米火車站", state: false },
-];
 
 const BodyContainer = styled.div`
   width: 100%;
@@ -168,9 +151,10 @@ const SubmitButton = styled.button`
 
 let localId;
 let articleId;
+const falseState = (item) => item.state === false;
 
 const Post = () => {
-  const [tagArray, setTagArray] = useState(spots);
+  const [tagArray, setTagArray] = useState([]);
   const [displayName, setDisplayName] = useState("");
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredContent, setEnteredContent] = useState("");
@@ -186,6 +170,10 @@ const Post = () => {
     showDisplayName(localId);
   }, [localId]);
 
+  useEffect(() => {
+    getTagHandler();
+  }, []);
+
   const showDisplayName = async (localId) => {
     try {
       if (localId) {
@@ -199,6 +187,15 @@ const Post = () => {
         // footer: '<a href="">回報問題</a>',
       });
     }
+  };
+
+  const getTagHandler = async () => {
+    const tags = [];
+    const querySnapshot = await getFirestoreDocuments("Spots");
+    querySnapshot.forEach((doc) => {
+      tags.push({ title: doc.data().title, selected: false });
+    });
+    setTagArray(tags);
   };
 
   const uploadAdapter = (loader) => {
@@ -252,7 +249,7 @@ const Post = () => {
         confirmButtonColor: "#3085d6",
         title: `請填寫內容`,
       });
-    } else if (tagArray === spots) {
+    } else if (tagArray.every(falseState)) {
       Swal.fire({
         icon: "warning",
         confirmButtonColor: "#3085d6",
@@ -342,6 +339,7 @@ const Post = () => {
           />
           <TagTitle>選擇標籤</TagTitle>
           <TagContainer>
+            {!tagArray && <div>Loading...</div>}
             {tagArray.map((item, index) => (
               <Tag
                 key={item.title}

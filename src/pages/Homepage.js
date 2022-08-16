@@ -629,9 +629,7 @@ const Homepage = () => {
 
           <CarouselTitle>
             <CarouselYolu>Yolu</CarouselYolu>
-            <CarouselChinese>
-              最詳細的羅瓦涅米繁體中文旅遊資訊網
-            </CarouselChinese>
+            <CarouselChinese>羅瓦涅米繁體中文旅遊資訊網</CarouselChinese>
           </CarouselTitle>
         </SlideShow>
 

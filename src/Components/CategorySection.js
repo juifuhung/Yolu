@@ -84,7 +84,7 @@ const CategorySection = ({ label }) => {
             <AllArticlesItem
               key={item.title}
               title={item.title}
-              image={item.image}
+              image={item.article_image}
             />
           ))}
       </ItemSection>

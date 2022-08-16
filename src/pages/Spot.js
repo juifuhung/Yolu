@@ -85,10 +85,10 @@ const SpotsCover = styled.div`
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: top;
+  background-position: center;
   position: relative;
 
-  @media (max-width: 880px) {
+  @media (max-width: 930px) {
     height: 200px;
   }
 
@@ -112,21 +112,31 @@ const SpotsCoverTitleWords = styled.h1`
   text-shadow: 5px 5px 4px black;
   font-weight: 800;
   font-size: 4.5rem;
+  text-align: center;
 
-  @media (max-width: 880px) {
+  @media (max-width: 1400px) {
     font-size: 3.5rem;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 1100px) {
     font-size: 3rem;
   }
 
-  @media (max-width: 460px) {
+  @media (max-width: 930px) {
     font-size: 2.5rem;
   }
 
-  @media (max-width: 360px) {
+  @media (max-width: 790px) {
+    line-height: 40px;
+    margin-top: -35px;
+  }
+
+  @media (max-width: 480px) {
     font-size: 2rem;
+  }
+
+  @media (max-width: 430px) {
+    font-size: 1.5rem;
   }
 `;
 
@@ -138,7 +148,7 @@ const SortSection = styled.div`
   width: 100%;
 
   @media (max-width: 460px) {
-    bottom: 26%;
+    bottom: 20%;
   }
 
   @media (max-width: 420px) {
@@ -367,11 +377,8 @@ const Spot = () => {
 
   const getCoverPhoto = async () => {
     try {
-      const docSnap = await getFirestoreDocument(
-        "SpotsCoverPhoto",
-        `${params.spot}`
-      );
-      setCoverPhoto(docSnap.data().image);
+      const docSnap = await getFirestoreDocument("Spots", `${params.spot}`);
+      setCoverPhoto(docSnap.data().cover_image);
     } catch {
       Swal.fire({
         icon: "error",
