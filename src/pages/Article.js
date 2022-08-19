@@ -242,6 +242,10 @@ const ViewAllCategoriesButton = styled(Link)`
   border: none;
   cursor: pointer;
 
+  &:hover {
+    background-color: #7f0000;
+  }
+
   @media (max-width: 570px) {
     border-radius: 0.8rem;
     width: 150px;

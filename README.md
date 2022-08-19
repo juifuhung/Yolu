@@ -41,11 +41,13 @@ https://user-images.githubusercontent.com/80564528/184855639-06389414-5475-4ea8-
 
 https://user-images.githubusercontent.com/80564528/184855708-3137e94f-d4a4-4e35-8f46-aac366365f69.mp4
 
+- Remove favorite item on favorites page
+
 - Update profile picture on favorites page
 
 https://user-images.githubusercontent.com/80564528/184855808-3390d119-4349-4ad1-be5e-dc6e38c6183f.mp4
 
-- Post, edit, read and delete  article
+- Post, edit, read and delete article
 
 https://user-images.githubusercontent.com/80564528/184855939-840acdff-dd17-4bee-8801-3ab9c5be75ad.mp4
 

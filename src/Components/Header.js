@@ -180,16 +180,8 @@ const MobileMember = styled(Link)`
   right: 0;
   z-index: 10;
 
-  @media (min-width: 1101px) {
+  @media (min-width: 611px) {
     display: none;
-  }
-
-  @media (max-width: 1100px) {
-    top: 120px;
-  }
-
-  @media (max-width: 600px) {
-    top: 150px;
   }
 `;
 
