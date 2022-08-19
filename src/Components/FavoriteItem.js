@@ -230,7 +230,6 @@ const FavoriteItemDiv = (
     category,
     timestamp,
     deleteHandler,
-    scrollToTop,
     getTotalFavorites,
     getFavoritesWithPagination,
   },
