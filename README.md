@@ -23,39 +23,39 @@ Yolu is an interactive **travel website** in traditional Chinese featuring **Rov
 
 - Carousel and animation with intersection observer on homepage
 
-https://user-images.githubusercontent.com/80564528/184855493-46897c76-814e-4fd6-80e5-af6c0441c2e8.mp4
+https://user-images.githubusercontent.com/80564528/185557533-8a0e54b2-17b7-48ef-9634-64bae890ea4a.mp4
 
 - Filter spots based on categories and selecting favorite list on map page
 
-https://user-images.githubusercontent.com/80564528/184855560-4bc63a5d-3ade-41f5-adfc-451644312805.mp4
+https://user-images.githubusercontent.com/80564528/185557636-c210eb6b-84c2-4d31-a64d-1bbf7e4fed26.mp4
 
 - Add and remove spots to and from favorites list on map page
 
-https://user-images.githubusercontent.com/80564528/184855597-f5f48c81-82f0-4273-a28c-38eba168c412.mp4
+https://user-images.githubusercontent.com/80564528/185557679-58ae8d5c-c706-4b3b-9381-6ebf5451af58.mp4
 
 - Filter spots based on categories on favorites page
 
-https://user-images.githubusercontent.com/80564528/184855639-06389414-5475-4ea8-b8af-443caba276e4.mp4
+https://user-images.githubusercontent.com/80564528/185557725-44bae8e5-ec41-4aa2-a362-50961b14573a.mp4
 
 - Sort spots by time on favorites page
 
-https://user-images.githubusercontent.com/80564528/184855708-3137e94f-d4a4-4e35-8f46-aac366365f69.mp4
+https://user-images.githubusercontent.com/80564528/185557796-3a79a67a-1246-46bf-a67f-43b5a253463b.mp4
+
+- Remove favorite item on favorites page
+
+https://user-images.githubusercontent.com/80564528/185558606-88f41894-7e99-419f-8570-0b174309882c.mp4
 
 - Update profile picture on favorites page
 
-https://user-images.githubusercontent.com/80564528/184855808-3390d119-4349-4ad1-be5e-dc6e38c6183f.mp4
+https://user-images.githubusercontent.com/80564528/185557974-0f00d8cb-8ab2-41cc-8799-a267f81718a5.mp4
 
-- Post, edit, read and delete  article
+- Post, read, edit and delete article
 
-https://user-images.githubusercontent.com/80564528/184855939-840acdff-dd17-4bee-8801-3ab9c5be75ad.mp4
-
-- Read an article
-
-https://user-images.githubusercontent.com/80564528/184856162-3b13f8b9-d0ad-4299-adf0-c2237c8a4771.mp4
+https://user-images.githubusercontent.com/80564528/185558029-f6d70968-aa93-42a5-b0a8-aafd6c42b62b.mp4
 
 - Link to the page displaying all articles related to a particular spot based on tag selected
 
-https://user-images.githubusercontent.com/80564528/184856189-024cbcaa-bba3-40b0-917d-ffaab8a5f3fb.mp4
+https://user-images.githubusercontent.com/80564528/185558186-2dd5c93c-662b-4fee-a72b-90fdb65628a7.mp4
 
 ## Tools & Packages
 

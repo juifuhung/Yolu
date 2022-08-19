@@ -193,7 +193,7 @@ const Post = () => {
     const tags = [];
     const querySnapshot = await getFirestoreDocuments("Spots");
     querySnapshot.forEach((doc) => {
-      tags.push({ title: doc.data().title, selected: false });
+      tags.push({ title: doc.data().title, state: false });
     });
     setTagArray(tags);
   };

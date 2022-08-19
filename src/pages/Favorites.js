@@ -11,6 +11,7 @@ import {
   getFirestoreDocumentsWithQuery,
   favoritesGetFirestoreDocumentsWithPagination,
   favoritesLoadMoreItems,
+  logOut,
 } from "../utils/Firebase";
 import {
   getDownloadURL,
@@ -216,6 +217,29 @@ const ImageInput = styled.input`
   display: none;
 `;
 
+const MobileLogOutButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  width: 70px;
+  height: 40px;
+  background-color: #d3d3d3;
+  color: #545454;
+  border-radius: 0.3rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #545454;
+    color: #bebebe;
+  }
+
+  @media (min-width: 611px) {
+    display: none;
+  }
+`;
+
 const BodyRight = styled.div`
   width: 80%;
   display: flex;
@@ -373,6 +397,33 @@ const scrollToTop = () => {
 
 const scrollTo250PxFromTop = () => {
   window.scroll({ top: 250, behavior: "smooth" });
+};
+
+const logoutHandler = async () => {
+  Swal.fire({
+    title: "確定登出？",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "是",
+    cancelButtonText: "否",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("已登出");
+      try {
+        logOut();
+        location.replace("/");
+      } catch {
+        Swal.fire({
+          icon: "error",
+          title: "登出時發生錯誤",
+          confirmButtonColor: "#3085d6",
+          // footer: '<a href="">回報問題</a>',
+        });
+      }
+    }
+  });
 };
 
 const Favorites = () => {
@@ -701,6 +752,7 @@ const Favorites = () => {
             />
           </ProfileImageLabel>
           <UserName>{`你好，${displayName}`}</UserName>
+          <MobileLogOutButton onClick={logoutHandler}>登出</MobileLogOutButton>
         </BodyLeft>
         <BodyRight>
           <SubtitleContainer>

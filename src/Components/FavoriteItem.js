@@ -230,7 +230,6 @@ const FavoriteItemDiv = (
     category,
     timestamp,
     deleteHandler,
-    scrollToTop,
     getTotalFavorites,
     getFavoritesWithPagination,
   },
@@ -290,7 +289,6 @@ const FavoriteItemDiv = (
             title={"移出最愛清單"}
             onClick={() => {
               deleteHandler(id);
-              scrollToTop();
               getTotalFavorites(localId);
               getFavoritesWithPagination(localId);
             }}
