@@ -74,6 +74,6 @@ https://user-images.githubusercontent.com/80564528/185558186-2dd5c93c-662b-4fee-
 
 ## Contact
 
-- Author: Ralph Hung (AppWorks School Batch #16 Front-End Trainee)
+- Author: Ralph Hung (AppWorks School Batch #16 Front-End Class)
 - Email: juifuhung@gmail.com
 - Medium / Instagram (in traditional Chinese): ralphhong5465
