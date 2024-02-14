@@ -1,3 +1,5 @@
+*This project is no longer maintained. Some APIs may be unavailable.*
+
 # Yolu
 
 Yolu is an interactive **travel website** in traditional Chinese featuring **Rovaniemi, Finland**. It is based on the author's experiences as a tour guide in the arctic city from 2019 to 2020. Users may not only view tour spot information but also write travel notes to share firsthand views after visit.
